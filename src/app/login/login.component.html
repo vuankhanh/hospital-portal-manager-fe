@@ -1,0 +1,20 @@
+<div class="containerLogin">
+    <img class="imgSheild" src="../../assets/imgs/sheild.png" height="300px">
+    <div class="frameLogin">
+        <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="doLogin()" >
+            <p class="welcome">Welcome to Insmart's Direct Billing</p>
+            <img class="logoInsmart" src="../../assets/imgs/logo-insmart-login.png" height="100px;">
+            <div class="inputForm">
+                <input type="text" formControlName="username" placeholder="User Name">
+                <input type="password" formControlName="password" placeholder="Password">
+                <button type="submit">LOGIN</button>
+            </div>
+        </form>
+    </div>
+    <div class="footerLogin">
+        <button class="btnHotline">
+            <mat-icon class="titleHotline">phone</mat-icon>
+            <span class="hotlineNumber">1900636730</span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+.item-list{
+
+    .background-pending-status-overtime{
+        background: #b71111 !important;
+        mat-icon{
+            color:white !important;
+        }
+        .primary-key, .secondary-key{
+            color: white !important;
+        }
+        button{
+            color: white !important;
+            border-color: white !important;
+        }
+    }
+    
+    .background-pending-status{
+        background:#ffc2c2;
+    
+        mat-icon{
+            color:#138206;
+        }
+    
+        .primary-key{
+            color: black;
+        }
+    
+        .secondary-key{
+            color: #333333;
+        }
+    
+        button{
+            color:black;
+            border-color: #333333;
+        }
+    }
+    
+    
+    .background-pending{
+        display: flex;
+        padding: 15px;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 10px solid #ededed;
+        border-bottom: 1px solid #ededed;
+        .information-container{
+            display: flex;
+            .icon-container{
+                justify-content: center;
+                align-items: center;
+                mat-icon{
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+            .text-container{
+                width: 300px;
+                p{
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0;
+                }
+            }
+    
+            .text-container, .icon-container{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+    
+    .refund-request-container{
+        border-bottom: 1px solid #ededed;
+        padding:15px;
+        table{
+            width: 100%;
+            .mat-cell{
+                min-width: 150px;
+            }
+            .mat-footer-cell{
+                font-weight: bold;
+            }
+        }
+    }
+    
+    .last-container{
+        padding: 5px 15px;
+        display: flex;
+        justify-content: space-between;
+        .clinic-information{
+            display: flex;
+            align-items: center;
+            img{
+                object-fit: contain;
+                background: white;
+                border-radius: 5px;
+            }
+            p{
+                margin:0;
+            }
+        }
+    
+        .button-container{
+            display: flex;
+            align-items: center;
+            button{
+                height: 30px;
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid #999999;
+                background: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,101 @@
+.containerLogin{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: url("../../assets/imgs/background-login.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    user-select: none;
+    .imgSheild{
+        position: absolute;
+        right: 200px;
+        top:0;
+        bottom:0;
+        margin:auto;
+    }
+    .frameLogin{
+        position: absolute;
+        display: flex;
+        height: 100%;
+        min-width: 400px;
+        width: 400px;
+        background-color: rgba(255,255,255,0.45);
+        padding:50px;
+        .loginForm{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .welcome{
+                font-family: 'Source Sans Pro', sans-serif;
+                font-size: 24px;
+                color: orange;
+            }
+            .logoInsmart{
+                padding: 50px 0;
+            }
+            .inputForm{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 400px;
+                input{
+                    width:100%;
+                    padding: 15px 0;
+                    border: none;
+                    background: none;
+                    color: #ededed;
+                    outline: none;
+                    border-bottom: 1px solid #ededed;
+                    font-size: 14px;
+                    height: 44px;
+                    padding: 0;
+                }
+                ::placeholder {
+                    color: #ededed;
+                    opacity: 0.45;
+                }
+                button[type="submit"]{
+                    background:#154897;
+                    width: 400px;
+                    height: 45px;
+                    border:none;
+                    border-radius: 45px;
+                    color:#ededed;
+                    outline: none;
+                    margin-top: 15px;
+                }
+                button[type="submit"]:hover{
+                    box-shadow: -3px 3px 5px 2px #999999;
+                }
+            }
+        }
+    }
+    .footerLogin{
+        position: fixed;
+        left:50px;
+        bottom: 50px;
+        .btnHotline{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            color:#ededed;
+            opacity: 0.45;
+            background: none;
+            border: none;
+            outline: none;
+            padding:0;
+            .hotlineNumber{
+                display: flex;
+                align-self: center;
+                margin-left: 5px;
+            }
+        }
+        .btnHotline:hover{
+            opacity: 1;
+        }
+    }
+}
+

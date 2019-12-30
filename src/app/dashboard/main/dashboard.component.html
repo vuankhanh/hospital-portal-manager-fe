@@ -1,0 +1,40 @@
+<div class="headerPage">
+    <img height="50" src="../../assets/imgs/LogoInsmart.png">
+    <div class="hospitalInformationContainer" [mdePopoverTriggerFor]="appPopover"
+    mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
+        <span>VinMec</span>
+        <div class="avatarContainer">
+            <img class="avatar" height="50" width="50" src="../../assets/imgs/LogoInsmart.png">
+            <mat-icon>arrow_drop_down</mat-icon>
+        </div>
+    </div>
+</div>
+<mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+    <mat-list class="popoverAvatarList" style="width:300px; max-width: 300px;background:#ededed">
+        <mat-option>Cập nhật Logo</mat-option>
+        <mat-option (click)="logout()" routerLink="/login">Đăng xuất</mat-option>
+    </mat-list>
+</mde-popover>
+<div class="mainPage">
+    <div class="leftPage">
+        <div class="list-menu">
+            <div class="item-menu" *ngFor="let sideMenu of sideMenus; let i = index" [routerLink]="[sideMenu.routerLink]" routerLinkActive="active" #rla="routerLinkActive">
+                <span class="text-menu">{{ sideMenu.name }}</span>
+                <span class="icon-menu">
+                    <span *ngIf="sideMenu.badge$ | async as badge" matBadge="{{badge}}" atBadgePosition="above before" [matBadgeHidden]="!badge || badge === 0 "></span>
+                    <mat-icon *ngIf="rla.isActive">arrow_forward</mat-icon>
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="centerPage">
+        <div [@routeAnimations]="o && o.activatedRouteData 
+        && o.activatedRouteData['animation']" style="height: 100%">
+            <router-outlet #o="outlet"></router-outlet>
+        </div>
+    </div>
+    <div class="bottomPage">
+        <!-- <app-chat-box></app-chat-box> -->
+    </div>
+</div>

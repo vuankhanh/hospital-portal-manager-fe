@@ -1,0 +1,32 @@
+[
+    {
+        "clientId":"tuantm",
+        "name":"Tuấn Thông Minh",
+        "dob":"1000197900000",
+        "usurerCode":"manu",
+        "id":"1102",
+        "passport":"0000",
+        "inOrOutPatient":"1",
+        "expired":"1575164760000"
+    },
+    {
+        "clientId":"thuongls",
+        "name":"Lê Sỹ Thương",
+        "dob":"1005270360",
+        "usurerCode":"manu",
+        "id":"2011",
+        "passport":"1111",
+        "inOrOutPatient":"2",
+        "expired":"1575085683000"
+    },
+    {
+        "clientId":"huyloa",
+        "name":"Nguyễn Quang Huy",
+        "dob":"1005270360",
+        "usurerCode":"mbal",
+        "id":"2222",
+        "passport":"3333",
+        "inOrOutPatient":"2",
+        "expired":"1561945560000"
+    }
+]

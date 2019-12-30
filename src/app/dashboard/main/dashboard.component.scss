@@ -1,0 +1,105 @@
+.headerPage{
+    height: 80px;
+    background: #333333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    .hospitalInformationContainer{
+        display: flex;
+        align-items: center;
+        span{
+            color:white;
+        }
+        .avatarContainer{
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+            .avatar{
+                object-fit: contain;
+                background:white;
+                border-radius: 50%;
+            }
+            mat-icon{
+                color:white;
+            }
+        }
+    }
+}
+
+.popoverAvatarList{
+    padding:0;
+    border-radius:5px;
+    mat-option{
+        padding:0 15px;
+    }
+}
+
+.mainPage{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 80px;
+    bottom: 0;
+    user-select: none;
+    .leftPage{
+        width: 300px;
+        min-width: 300px;
+        height: 100%;
+        background: #fdecce;
+        .list-menu{
+            padding-top: 15px;
+            .item-menu{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 15px;
+                height: 50px;
+                border-bottom:1px solid white;
+                font-size: 14px;
+                color:#999999;
+                outline: none;
+                .text-menu{
+
+                }
+                .icon-menu{
+                    display: flex;
+                    align-items: center;
+                    height: 24px;
+                    .mat-badge{
+                        height: 22px;
+                        .mat-badge-content{
+                            position: unset;
+                            background: #154897;
+                        }
+                    }
+                }
+            }
+            .item-menu:hover{
+                background:#ededed;
+            }
+            .item-menu:first-child{
+                border-top: 1px solid white;
+            }
+            .item-menu:last-child{
+                // border-top: 1px solid white;
+                // border-bottom:1px solid white;
+            }
+            .active{
+                color:orange;
+                background:#fff7e9 !important;
+                font-size: 16px;
+            }
+        }
+    }
+    .centerPage{
+        width: 100%;
+        height: 100%;
+    }
+    .bottomPage{
+        position: fixed;
+        bottom: 15px;
+        right: 30px;
+    }
+}
