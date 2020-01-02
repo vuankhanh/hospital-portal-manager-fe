@@ -52,7 +52,7 @@ export class RequestARefundComponent implements OnInit {
     //get index of element is selected in array
     let index = this.refundRequests.map(x => x.id).indexOf(element.id);
     this.refundRequests[index].checked = true;
-    this.directBillingService.setProccessDirectBilling(element);
+    this.directBillingService.setProccessRequestForRefund(element);
 
     this.router.navigate(['/dashboard/directbilling']).then(_=>this.tabPageService.setPageNumber(1));
   }

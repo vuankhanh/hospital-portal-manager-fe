@@ -5,14 +5,22 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class DirectBillingService {
-  storageProccessDirectBilling:any=[];
-  listentDirectBilling$: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(this.storageProccessDirectBilling);
+  storageProccessRequirement:any=[];
+  listentRequirement$: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(this.storageProccessRequirement);
+
+  storageProccessRequestForRefund:any=[];
+  listentProccessRequestForRefund$: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(this.storageProccessRequestForRefund);
   constructor() {
 
   }
 
-  setProccessDirectBilling(directBilling:any){
-    this.storageProccessDirectBilling.push(directBilling);
-    this.listentDirectBilling$.next(this.storageProccessDirectBilling);
+  setProccessRequest(requirement:any){
+    this.storageProccessRequirement.push(requirement);
+    this.listentRequirement$.next(this.storageProccessRequirement);
+  }
+
+  setProccessRequestForRefund(requestForRefund:any){
+    this.storageProccessRequestForRefund.push(requestForRefund);
+    this.listentProccessRequestForRefund$.next(this.storageProccessRequestForRefund);
   }
 }

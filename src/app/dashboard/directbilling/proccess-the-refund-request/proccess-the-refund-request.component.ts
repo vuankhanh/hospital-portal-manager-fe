@@ -11,6 +11,8 @@ import { TabPageService } from 'src/app/service/tab-page.service';
 export class ProccessTheRefundRequestComponent implements OnInit {
   countDownTimer: Timer;
   displayedColumns: string[] = ['category', 'money', 'note'];
+
+  displayedColumnsFix: string[] = ['money', 'note'];
   constructor(
     private timelineOfRequestsService: TimelineOfRequestsService,
     public directBillingService : DirectBillingService,

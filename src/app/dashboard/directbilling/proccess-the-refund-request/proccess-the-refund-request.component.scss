@@ -72,8 +72,16 @@
     .refund-request-container{
         border-bottom: 1px solid #ededed;
         padding:15px;
+        display: flex;
         table{
             width: 100%;
+            .input-normal-note{
+                border: 1px solid #ededed;
+                height: 24px;
+                border-radius: 5px;
+                outline: none;
+                padding: 0 5px;
+            }
             .mat-cell{
                 min-width: 150px;
                 .edit-container{
@@ -106,6 +114,11 @@
             }
             .mat-footer-cell{
                 font-weight: bold;
+                .input-total-note{
+                    width: 100%;
+                    padding:5px;
+                    max-height: unset !important;
+                }
             }
         }
     }

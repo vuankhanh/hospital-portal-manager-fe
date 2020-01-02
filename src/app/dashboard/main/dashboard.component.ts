@@ -6,8 +6,6 @@ import { slideInAnimation } from '../../animations/usually-use';
 import { TabPageService } from 'src/app/service/tab-page.service';
 import { Observable } from 'rxjs';
 
-import { WebsocketService } from '../../service/websocket.service';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -20,15 +18,9 @@ export class DashboardComponent implements OnInit {
   countPending: number;
   constructor(
     private router: Router,
-    private webSocketService: WebsocketService,
     public tabPageService: TabPageService
   ) {
-    this.listenSocketServerEmit();
     this.initSideMenu();
-  }
-
-  listenSocketServerEmit(){
-    this.webSocketService.listenWebSocket().subscribe(res=>console.log(res));
   }
 
   ngOnInit() {

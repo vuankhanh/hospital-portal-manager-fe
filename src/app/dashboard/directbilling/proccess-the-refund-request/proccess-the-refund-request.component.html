@@ -1,6 +1,6 @@
 <div class="container">
 
-    <div *ngFor="let element of directBillingService.listentDirectBilling$ | async;" class="item-list">
+    <div *ngFor="let element of directBillingService.listentProccessRequestForRefund$ | async;" class="item-list">
         <ng-container *ngIf="element.refundRequest && countDownTimer">
             <div class="background-pending">   
                 <div class="information-container">
@@ -70,6 +70,29 @@
                     <ng-container matColumnDef="money">
                         <th mat-header-cell *matHeaderCellDef>Số tiền</th>
                         <td mat-cell *matCellDef="let element; let i = index">
+                            <span>{{ element.value | currency:"VND" }}</span>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest) | currency:"VND"}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="note">
+                        <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
+                        <td mat-cell *matCellDef="let element"> {{element.note}} </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+                </table>
+
+                <div class="width-container"></div>
+
+                <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8" *ngIf="element.editable">
+
+                    <ng-container matColumnDef="money">
+                        <th mat-header-cell *matHeaderCellDef>Số tiền</th>
+                        <td mat-cell *matCellDef="let element; let i = index">
                             <span *ngIf="!element.checked" (click)="element.checked = true">{{ element.value | currency:"VND" }}</span>
                             
                             <div *ngIf="element.checked" class="edit-container">
@@ -84,13 +107,25 @@
 
                     <ng-container matColumnDef="note">
                         <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                        <td mat-cell *matCellDef="let element"> {{element.note}} </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
+                        <td mat-cell *matCellDef="let element">
+                            <input type="text" class="input-normal-note">
+                            <!-- {{element.note}} -->
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                            <textarea
+                            matInput
+                            cdkTextareaAutosize
+                            #autosize="cdkTextareaAutosize"
+                            cdkAutosizeMinRows="1"
+                            cdkAutosizeMaxRows="5"
+                            class="input-normal-note input-total-note"
+                            ></textarea>
+                        </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsFix"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsFix;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumnsFix"></tr>
                 </table>
             </div>
 
@@ -106,9 +141,13 @@
                 <div class="width-container"></div>
         
                 <div class="button-container">
-                    <!-- <button (click)="startProccess(element)">
-                        <span>{{ !element.cheked ? 'Bắt đầu xử lý': 'Đã có người xử lý' }}</span>
-                    </button> -->
+                    <button (click)="element.editable=true">
+                        <span>{{ element.editable?'OK':'Sửa lại' }}</span>
+                    </button>
+                    <div class="width-container"></div>
+                    <button (click)="startProccess(element)">
+                        <span>{{ 'Đồng ý' }}</span>
+                    </button>
                 </div>
             </div>
         </ng-container>

@@ -26,7 +26,7 @@ export class TabPageService {
   }
 
   getBadgeRefundRequest(): Observable<number> {
-    return this.directBillingService.listentDirectBilling$.asObservable().pipe(map(res=> res.length));
+    return this.directBillingService.listentRequirement$.asObservable().pipe(map(res=> res.length));
   }
 
   getBadgeDirectBilling(){
