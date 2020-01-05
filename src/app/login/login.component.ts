@@ -28,13 +28,21 @@ export class LoginComponent implements OnInit {
 
   createForm(){
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      user_name: ['', Validators.required],
       password: ['', Validators.required]
     })
   }
 
   doLogin(){
-    // this.loginService.login().subscribe(response=>console.log(response));
+    console.log(this.loginForm.valid);
+    console.log(this.loginForm.value);
+    
+    
+    if(this.loginForm.valid){
+      this.loginService.login(this.loginForm.value).subscribe(response=>{
+        console.log(response);
+      });
+    }
     this.router.navigateByUrl('/dashboard').then(_=>this.webSocketService.listenWebSocket());
   }
 }

@@ -32,4 +32,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .secondary-key{
     color: #999999;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    mat-icon{
+        margin-right:2px;
+    }
+}
+
+//Dialog Modal
+app-confirm-action{
+    .mat-dialog-actions{
+        justify-content: flex-end;
+    }
 }

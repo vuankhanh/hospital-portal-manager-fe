@@ -73,6 +73,67 @@
         border-bottom: 1px solid #ededed;
         padding:15px;
         display: flex;
+        .refund-request-left-container{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            .conversation-container{
+                .itemListContent{
+                    display: flex;
+                    flex-direction: row;
+                    margin-bottom: 5px;
+                    .textContent{
+                        color: #333333;
+                        font-size: 14px;
+                        background: #ededed;
+                        border-radius: 5px;
+                        max-width: 60%;
+                        padding:5px;
+                    }
+                    .dateTime{
+                        align-items: center;
+                        display: flex;
+                        color: #999999;
+                        font-size: 12px;
+                        .space{
+                            width: 15px;
+                        }
+                        .p{
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                    }
+                    p{
+                        margin: 0;
+                    }
+                }
+                .input-content-container{
+                    display: flex;
+                    min-height: 30px;
+                    padding: 5px 0;
+                    align-items: center;
+                    .soft-element{ 
+                        border-radius: 5px;
+                        border: 0.5px solid #ededed;
+                    }
+                    input, textarea{
+                        width: 100%;
+                        padding: 0 5px;
+                    }
+                    textarea{
+                        min-height: 30px !important;
+                        max-height: unset !important;
+                    }
+                    button{
+                        padding: 0 15px;
+                        height: 30px;
+                        color: #154897;
+                        border: 1px solid #154897 !important;
+                    }
+                }
+            }
+        }
         table{
             width: 100%;
             .input-normal-note{
@@ -127,6 +188,7 @@
         padding: 5px 15px;
         display: flex;
         justify-content: space-between;
+        border-bottom:1px solid #ededed;
         .clinic-information{
             display: flex;
             align-items: center;

@@ -21,7 +21,6 @@ export class RequestARefundComponent implements OnInit {
   ) {
     this.timelineOfRequestsService.historyDirectBilling().subscribe(refundRequests=>{
       this.refundRequests = refundRequests;
-      console.log(this.refundRequests);
     });
 
     this.countDownTime();
@@ -49,6 +48,7 @@ export class RequestARefundComponent implements OnInit {
   }
 
   startProccess(element){
+    console.log(element);
     //get index of element is selected in array
     let index = this.refundRequests.map(x => x.id).indexOf(element.id);
     this.refundRequests[index].checked = true;

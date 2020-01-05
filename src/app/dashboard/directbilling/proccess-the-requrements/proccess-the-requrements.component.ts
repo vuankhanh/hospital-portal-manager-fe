@@ -28,11 +28,14 @@ export class ProccessTheRequrementsComponent implements OnInit {
     });
   }
 
-  confirm(){
+  confirm(element){
+    console.log(element.id);
     this.hospitalCheckService.getHospitalConfirm().subscribe(response=>console.log(response));
   }
 
-  reject(){
+  reject(element){
+    console.log(element.id);
+    
     this.hospitalCheckService.getHospitalReject().subscribe(response=>console.log(response));
   }
 }

@@ -31,8 +31,9 @@ import { DirectbillingComponent } from './dashboard/directbilling/main/directbil
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { ProccessTheRequrementsComponent } from './dashboard/directbilling/proccess-the-requrements/proccess-the-requrements.component';
 import { ProccessTheRefundRequestComponent } from './dashboard/directbilling/proccess-the-refund-request/proccess-the-refund-request.component';
-
+import { ConfirmActionComponent } from './modal/confirm-action/confirm-action.component';
 @NgModule({
+  entryComponents:[ConfirmActionComponent],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -41,7 +42,8 @@ import { ProccessTheRefundRequestComponent } from './dashboard/directbilling/pro
     RequestARefundComponent,
     DirectbillingComponent,
     ProccessTheRequrementsComponent,
-    ProccessTheRefundRequestComponent
+    ProccessTheRefundRequestComponent,
+    ConfirmActionComponent
   ],
   imports: [
     BrowserModule,
