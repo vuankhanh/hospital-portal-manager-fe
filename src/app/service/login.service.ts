@@ -10,7 +10,7 @@ interface Account{
   providedIn: 'root'
 })
 export class LoginService {
-  urlLogin: string = 'http://192.168.1.5:7777/auth/user';
+  urlLogin: string = 'http://localhost:7777/auth/user';
   constructor(
     private httpClient: HttpClient
   ) { }

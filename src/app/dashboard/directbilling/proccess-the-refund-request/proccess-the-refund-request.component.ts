@@ -4,8 +4,9 @@ import { MatDialog } from '@angular/material';
 import { ConfirmActionComponent } from '../../../modal/confirm-action/confirm-action.component';
 
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
-import { DirectBillingService } from 'src/app/service/direct-billing.service';
 import { TabPageService } from 'src/app/service/tab-page.service';
+import { TraTuService } from '../../../service/tra-tu.service';
+import { FakeRequestARefundService } from '../../../service/fake-request-a-refund.service';
 @Component({
   selector: 'app-proccess-the-refund-request',
   templateUrl: './proccess-the-refund-request.component.html',
@@ -21,18 +22,11 @@ export class ProccessTheRefundRequestComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private timelineOfRequestsService: TimelineOfRequestsService,
-    public directBillingService : DirectBillingService,
-    private tabPageService: TabPageService
+    private tabPageService: TabPageService,
+    public traTuService: TraTuService,
+    private fakeRequestARefundService: FakeRequestARefundService
   ) {
-    this.timelineOfRequestsService.historyDirectBilling().subscribe(refundRequests=>{
-      let anyRefundRequests:any = refundRequests;
-      this.directBillingService.setProccessRequestForRefund(anyRefundRequests[anyRefundRequests.length-1]);
-    });
-    
-    this.directBillingService.listentProccessRequestForRefund$.subscribe(res=>{
-      this.requestForRefunds = res;
-      console.log(this.requestForRefunds);
-    });
+    this.requestForRefunds = this.fakeRequestARefundService.refundRequests;
   }
 
   ngOnInit() {

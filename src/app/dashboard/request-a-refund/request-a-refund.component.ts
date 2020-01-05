@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TimelineOfRequestsService, Timer, RefundRequest } from '../../service/timeline-of-requests.service';
-import { DirectBillingService } from '../../service/direct-billing.service';
 import { TabPageService } from 'src/app/service/tab-page.service';
+import { TraTuService } from '../../service/tra-tu.service';
+import { FakeRequestARefundService } from '../../service/fake-request-a-refund.service';
 @Component({
   selector: 'app-request-a-refund',
   templateUrl: './request-a-refund.component.html',
@@ -16,13 +17,11 @@ export class RequestARefundComponent implements OnInit {
   constructor(
     private router: Router,
     private timelineOfRequestsService: TimelineOfRequestsService,
-    private directBillingService: DirectBillingService,
-    private tabPageService: TabPageService
+    private tabPageService: TabPageService,
+    public traTuService: TraTuService,
+    private fakeRequestARefundService: FakeRequestARefundService
   ) {
-    this.timelineOfRequestsService.historyDirectBilling().subscribe(refundRequests=>{
-      this.refundRequests = refundRequests;
-    });
-
+    this.refundRequests = this.fakeRequestARefundService.refundRequests;
     this.countDownTime();
   }
 
@@ -52,7 +51,6 @@ export class RequestARefundComponent implements OnInit {
     //get index of element is selected in array
     let index = this.refundRequests.map(x => x.id).indexOf(element.id);
     this.refundRequests[index].checked = true;
-    this.directBillingService.setProccessRequestForRefund(element);
 
     this.router.navigate(['/dashboard/directbilling']).then(_=>this.tabPageService.setPageNumber(1));
   }

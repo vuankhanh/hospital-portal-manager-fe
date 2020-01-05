@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { TabPageService } from 'src/app/service/tab-page.service';
+import { DirectbillingTheRequirementService } from '../../../service/directbilling-the-requirement.service';
 @Component({
   selector: 'app-directbilling',
   templateUrl: './directbilling.component.html',
@@ -9,11 +10,11 @@ import { TabPageService } from 'src/app/service/tab-page.service';
 export class DirectbillingComponent implements OnInit {
   badgeRefundRequest: number;
   constructor(
-    public tabPageService: TabPageService
+    public tabPageService: TabPageService,
+    public directbillingTheRequirementService: DirectbillingTheRequirementService
   ) { }
 
   ngOnInit() {
-    this.tabPageService.getBadgeRefundRequest().subscribe(badge=> this.badgeRefundRequest = badge);
   }
 
   onTabChanged(event){

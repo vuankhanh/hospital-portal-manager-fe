@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { WebsocketService } from '../service/websocket.service';
 import { LoginService } from '../service/login.service';
+import { LocalStorageService } from '../service/local-storage.service';
+import { TimelineOfRequestsService } from '../service/timeline-of-requests.service';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +17,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private webSocketService: WebsocketService,
-    private loginService: LoginService
+    private timeLineOfRequest: TimelineOfRequestsService,
+    private loginService: LoginService,
+    private localStorageService: LocalStorageService
   ) {
 
   }
@@ -34,15 +36,12 @@ export class LoginComponent implements OnInit {
   }
 
   doLogin(){
-    console.log(this.loginForm.valid);
-    console.log(this.loginForm.value);
-    
-    
     if(this.loginForm.valid){
       this.loginService.login(this.loginForm.value).subscribe(response=>{
-        console.log(response);
+        let res:any = response;
+        this.localStorageService.setLocal('token', res.token)
+        this.router.navigateByUrl('/dashboard');
       });
     }
-    this.router.navigateByUrl('/dashboard').then(_=>this.webSocketService.listenWebSocket());
   }
 }

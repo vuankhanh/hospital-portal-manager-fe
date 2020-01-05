@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DirectBillingService } from '../../../service/direct-billing.service';
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
 import { HospitalCheckService } from '../../../service/hospital-check.service';
+import { LocalStorageService } from '../../../service/local-storage.service';
+import { DirectbillingTheRequirementService } from '../../../service/directbilling-the-requirement.service';
+import { TraTuService } from '../../../service/tra-tu.service';
+
 @Component({
   selector: 'app-proccess-the-requrements',
   templateUrl: './proccess-the-requrements.component.html',
@@ -10,16 +13,23 @@ import { HospitalCheckService } from '../../../service/hospital-check.service';
 })
 export class ProccessTheRequrementsComponent implements OnInit {
   countDownTimer: Timer;
+  processCase:any = [];
   constructor(
-    public directBillingService: DirectBillingService,
     private timelineOfRequestsService: TimelineOfRequestsService,
-    private hospitalCheckService: HospitalCheckService
+    private hospitalCheckService: HospitalCheckService,
+    private localStorageService: LocalStorageService,
+    private directbillingTheRequirementService: DirectbillingTheRequirementService,
+    public traTuService: TraTuService
   ) {
     this.countDownTime();
   }
 
   ngOnInit() {
-    
+    this.directbillingTheRequirementService.listenDbTheRequestments.subscribe(res=>{
+      console.log(res);
+      
+      this.processCase = res;
+    })
   }
 
   countDownTime(){
@@ -30,12 +40,19 @@ export class ProccessTheRequrementsComponent implements OnInit {
 
   confirm(element){
     console.log(element.id);
-    this.hospitalCheckService.getHospitalConfirm().subscribe(response=>console.log(response));
+    let token = this.localStorageService.getLocal('token');
+    this.hospitalCheckService.getHospitalConfirm(element.id, token).subscribe(response=>{
+      console.log(response);
+      this.directbillingTheRequirementService.removeTheRequestments(element);
+    });
   }
 
   reject(element){
     console.log(element.id);
-    
-    this.hospitalCheckService.getHospitalReject().subscribe(response=>console.log(response));
+    let token = this.localStorageService.getLocal('token');
+    this.hospitalCheckService.getHospitalReject(element.id, token).subscribe(response=>{
+      console.log(response);
+      this.directbillingTheRequirementService.removeTheRequestments(element);
+    });
   }
 }

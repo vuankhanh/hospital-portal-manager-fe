@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DirectBillingService } from './direct-billing.service';
+import { TraTuService } from './tra-tu.service';
 
-describe('DirectBillingService', () => {
+describe('TraTuService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: DirectBillingService = TestBed.get(DirectBillingService);
+    const service: TraTuService = TestBed.get(TraTuService);
     expect(service).toBeTruthy();
   });
 });

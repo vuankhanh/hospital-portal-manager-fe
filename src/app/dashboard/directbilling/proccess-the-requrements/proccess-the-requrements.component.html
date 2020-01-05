@@ -1,7 +1,7 @@
 <div class="container">
 
-    <div *ngFor="let element of directBillingService.listentRequirement$ | async;">
-        <ng-container *ngIf="element.status === 'pending' && countDownTimer">
+    <div *ngFor="let element of processCase;">
+        <ng-container *ngIf="element.check_benefit_status === 'IN PROCESS' && countDownTimer">
     
             <div class="background-pending">   
                 <div class="information-container">
@@ -15,47 +15,46 @@
                     <div class="text-container">
                         <p>
                             <span class="primary-key">- Nội hay Ngoại trú: </span>
-                            <span class="secondary-key">{{ element.clientInformation.inOrOutPatient === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
+                            <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
                         </p>
                         <p>
-                            <span class="primary-key">- Kiểu Bảo Lãnh: </span>
-                            <span class="secondary-key">{{ element.directbilling.types === 'thai_san' ? 'Thai sản' : '' }}</span>
+                            <span class="primary-key">- Loại hình điều trị: </span>
+                            <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
                         </p>
                         <p>
                             <span class="primary-key">- Nhà Bảo Hiểm: </span>
-                            <span class="secondary-key">{{ element.clientInformation.usurerCode }}</span>
+                            <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
                         </p>
-                        <p>
+                        <p *ngIf="element.card_no">
                             <span class="primary-key">- Số thẻ: </span>
-                            <span class="secondary-key">{{ element.clientInformation.cardNo }}</span>
+                            <span class="secondary-key">{{ element.card_no }}</span>
                         </p>
                         
                     </div>
         
                     <!-- Có thể không có thông tin này -->
         
-                    <!-- <div class="width-container"></div>
+                    <div class="width-container"></div>
         
                     <div class="text-container">
                         <p>
                             <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
-                            <span class="secondary-key">{{ element.clientInformation.id }}</span>
+                            <span class="secondary-key">{{ element.cmnd }}</span>
                         </p>
                         <p>
                             <span class="primary-key">- Tên Khách Hàng: </span>
-                            <span class="secondary-key">{{ element.clientInformation.name }}</span>
+                            <span class="secondary-key">{{ element.fullname }}</span>
                         </p>
                         <p>
                             <span class="primary-key">- Ngày Sinh: </span>
-                            <span class="secondary-key">{{ element.clientInformation.dob | date:'dd/MM/yyy' }}</span>
+                            <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
                         </p>
                         <p>
                             <span class="primary-key">- Số Hợp Đồng: </span>
-                            <span class="secondary-key">{{ element.clientInformation.policyNumber }}</span>
+                            <span class="secondary-key">{{ element.contract_no }}</span>
                         </p>
                         
-                    </div> -->
-        
+                    </div>
                     
                 </div>
         
@@ -65,9 +64,9 @@
             [class.background-pending-status-overtime]="countDownTimer.minutes == -1 && countDownTimer.seconds == -1">
         
                 <div class="clinic-information">
-                    <img src="{{ element.fromClinic.urlLogo }}" height="30">
+                    <img src="https://www.vinmec.com/static/img/vinmec-facebook.f6895e5f77a5.jpg" height="30">
                     <div class="width-container"></div>
-                    <span class="secondary-key">{{ element.fromClinic.name }}</span>
+                    <span class="secondary-key">{{ 'Vinmec' }}</span>
                     <div class="width-container"></div>
                     <span class="secondary-key"><mat-icon>phone</mat-icon>{{'042.666.888.999'}}</span>
                 </div>

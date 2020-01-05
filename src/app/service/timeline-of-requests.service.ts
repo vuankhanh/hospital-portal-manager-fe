@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
 
+import { WebsocketService } from './websocket.service';
+
+import { Observable, BehaviorSubject } from 'rxjs';
+import { TheRequirementService } from './the-requirement.service';
+import { DirectbillingTheRequirementService } from './directbilling-the-requirement.service';
 export interface Timer{
   minutes: number;
   seconds: number;
@@ -16,20 +19,16 @@ export interface RefundRequest{
   providedIn: 'root'
 })
 export class TimelineOfRequestsService {
-  requestsURL: string = 'assets/mock-data/fake-data-server/history-directbilling.json';
 
   listenCountdown$: BehaviorSubject<Timer> = new BehaviorSubject<Timer>(null);
-  listenCountPending$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   constructor(
-    private httpClient: HttpClient
+    private webSocketService: WebsocketService,
+    private theRequirementService: TheRequirementService,
+    private directbillingTheRequirementService: DirectbillingTheRequirementService
   ) {
     this.fakeCountdown().subscribe(timer=>{
       this.listenCountdown$.next(timer);
     });
-  }
-
-  historyDirectBilling(){
-    return this.httpClient.get(this.requestsURL);
   }
 
   fakeCountdown():Observable<Timer>{
@@ -61,7 +60,15 @@ export class TimelineOfRequestsService {
     })
   }
 
-  returnPending(historyDirectBilling:any):number{
-    return historyDirectBilling.filter(historyDirectBilling=>historyDirectBilling.status==='pending').length;
+  listentWebSocket(){
+    this.webSocketService.listenWebSocket().subscribe(res=>{
+      let response = JSON.parse(res);
+      console.log(response);
+      if(response.data.check_benefit_status==='WAITING'){
+        this.theRequirementService.setTheRequestments(response.data);
+      }else if(response.data.check_benefit_status==='IN PROCESS'){
+        this.directbillingTheRequirementService.setTheRequestments(response.data);
+      }
+    })
   }
 }

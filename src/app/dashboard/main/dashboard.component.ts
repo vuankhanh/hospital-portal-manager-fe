@@ -4,6 +4,8 @@ import { Router, RouterOutlet } from '@angular/router';
 import { slideInAnimation } from '../../animations/usually-use';
 
 import { TabPageService } from 'src/app/service/tab-page.service';
+import { DirectbillingTheRequirementService } from '../../service/directbilling-the-requirement.service';
+
 import { Observable } from 'rxjs';
 
 @Component({
@@ -18,19 +20,20 @@ export class DashboardComponent implements OnInit {
   countPending: number;
   constructor(
     private router: Router,
-    public tabPageService: TabPageService
+    public tabPageService: TabPageService,
+    public directbillingTheRequirementService: DirectbillingTheRequirementService
   ) {
     this.initSideMenu();
   }
 
   ngOnInit() {
-    this.tabPageService.getBadgeDirectBilling().subscribe(res=>console.log(res));
+    
   }
 
   initSideMenu(){
     this.sideMenus = [
-      { id: 0, routerLink:'/dashboard/directbilling', name:'Bảo Lãnh', badge$: this.tabPageService.getBadgeDirectBilling() },
-      { id: 1, routerLink:'/dashboard/therequirements' , name:'Không tìm thấy tự động', badge$: this.tabPageService.getBadgeRefundRequestPending()  },
+      { id: 0, routerLink:'/dashboard/directbilling', name:'Bảo Lãnh', badge$: this.directbillingTheRequirementService.getBadgeTheRequestments() },
+      { id: 1, routerLink:'/dashboard/therequirements' , name:'Không tìm thấy tự động' },
       { id: 2, routerLink:'/dashboard/requestarefund', name:'Yêu cầu Hoàn trả' },
     ]
   }

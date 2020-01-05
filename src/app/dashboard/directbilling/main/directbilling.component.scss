@@ -2,5 +2,13 @@ mat-tab-group{
     height:100%;
     .mat-tab-label{
         width: 33.33%;
+        .mat-badge{
+            left: 2px;
+            bottom: 5px;
+        }
+    }
+    .mat-badge{
+        left: 2px;
+        bottom: 5px;
     }
 }

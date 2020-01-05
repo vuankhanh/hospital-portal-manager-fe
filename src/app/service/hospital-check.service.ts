@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface Response{
   code:number;
@@ -11,23 +11,34 @@ interface Response{
   providedIn: 'root'
 })
 export class HospitalCheckService {
-  urlTake:string = 'http://localhost:7777/members/1/take';
-  urlConfirm:string = 'http://localhost:7777//members/1/confirm';
-  urlReject:string = 'http://localhost:7777//members/1/reject';
-
   constructor(
     private httpClient: HttpClient
   ) { }
 
-  getHospitalCheck(){
-    return this.httpClient.put<Response>(this.urlTake,{});
+  getHospitalCheck(id, token){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Requested-With':'XMLHttpRequest',
+      'Authorization':token
+    });
+    return this.httpClient.put<Response>('http://localhost:7777/members/'+id+'/take',{}, { headers: headers });
   }
 
-  getHospitalConfirm(){
-    return this.httpClient.put<Response>(this.urlConfirm,{});
+  getHospitalConfirm(id, token){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Requested-With':'XMLHttpRequest',
+      'Authorization':token
+    });
+    return this.httpClient.put<Response>('http://localhost:7777//members/'+id+'/confirm',{}, { headers: headers });
   }
 
-  getHospitalReject(){
-    return this.httpClient.put<Response>(this.urlReject,{});
+  getHospitalReject(id, token){
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Requested-With':'XMLHttpRequest',
+      'Authorization':token
+    });
+    return this.httpClient.put<Response>('http://localhost:7777//members/'+id+'/reject', {}, { headers: headers });
   }
 }

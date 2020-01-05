@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { TimelineOfRequestsService } from './service/timeline-of-requests.service'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-direct-billing-team';
+  constructor(
+    private timelineOfRequestsService: TimelineOfRequestsService
+  ){
+    this.timelineOfRequestsService.listentWebSocket();
+  }
 }
