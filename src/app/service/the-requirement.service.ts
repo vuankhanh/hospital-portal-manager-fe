@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +25,9 @@ export class TheRequirementService {
     }
     console.log(this.theRequestments);
     this.listenTheRequestments$.next(this.theRequestments);
+  }
+
+  getBadgeTheRequestments(){
+    return this.listenTheRequestments.pipe<number>(map(requestments=>requestments.length));
   }
 }

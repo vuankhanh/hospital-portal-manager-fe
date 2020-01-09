@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { WebsocketService } from './websocket.service';
 
-import { Observable, BehaviorSubject } from 'rxjs';
 import { TheRequirementService } from './the-requirement.service';
 import { DirectbillingTheRequirementService } from './directbilling-the-requirement.service';
+
+import { Observable, BehaviorSubject, interval } from 'rxjs';
+import { map } from 'rxjs/operators'
 export interface Timer{
   minutes: number;
   seconds: number;
@@ -70,5 +72,35 @@ export class TimelineOfRequestsService {
         this.directbillingTheRequirementService.setTheRequestments(response.data);
       }
     })
+  }
+
+  calcCountdown(createdCase){
+    let overTime = new Date(createdCase);
+    overTime.setMinutes(overTime.getMinutes()+5);
+    
+    let interval$ = interval(1000);
+
+    // return new Observable(observer=>{
+    //   let x = setInterval(()=>{
+  
+    //     // Find the distance between now and the count down date
+    //     var distance = overTime.getTime() - createCaseTime;
+
+        
+    //     // Time calculations for days, hours, minutes and seconds
+    //     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    //     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    //     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    //     let countDownTimer = { minutes: minutes, seconds: seconds }
+        
+    //     if (distance < 0) {
+    //       countDownTimer = { minutes: -1, seconds: -1 };
+    //       clearInterval(x);
+    //     }
+    //     observer.next(countDownTimer)
+    //   },1000);
+    // })
   }
 }

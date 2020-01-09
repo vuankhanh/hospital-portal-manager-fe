@@ -3,6 +3,10 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+::-webkit-scrollbar{
+    display: none;
+}
+
 .container{
     height:100%;
     overflow-y: auto;

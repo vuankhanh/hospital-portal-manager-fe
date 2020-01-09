@@ -11,5 +11,7 @@ export class AppComponent {
     private timelineOfRequestsService: TimelineOfRequestsService
   ){
     this.timelineOfRequestsService.listentWebSocket();
+
+  //   this.timelineOfRequestsService.calcCountdown('2020-01-06T11:30:41.924895+07:00').subscribe(res=>console.log(res));
   }
 }

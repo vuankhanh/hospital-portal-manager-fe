@@ -7,6 +7,7 @@ import { TabPageService } from 'src/app/service/tab-page.service';
 import { DirectbillingTheRequirementService } from '../../service/directbilling-the-requirement.service';
 
 import { Observable } from 'rxjs';
+import { TheRequirementService } from '../../service/the-requirement.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +22,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     public tabPageService: TabPageService,
-    public directbillingTheRequirementService: DirectbillingTheRequirementService
+    public directbillingTheRequirementService: DirectbillingTheRequirementService,
+    public theRequirementService: TheRequirementService
   ) {
     this.initSideMenu();
   }

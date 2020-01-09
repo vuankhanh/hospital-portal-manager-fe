@@ -8,6 +8,8 @@ import { LocalStorageService } from '../../service/local-storage.service';
 import { TheRequirementService } from '../../service/the-requirement.service';
 import { TraTuService } from '../../service/tra-tu.service';
 
+import { interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-the-requirements',
   templateUrl: './the-requirements.component.html',
@@ -18,7 +20,7 @@ export class TheRequirementsComponent implements OnInit {
   countDownTimer: Timer;
   constructor(
     private router: Router,
-    private timelineOfRequestsService: TimelineOfRequestsService,
+    public timelineOfRequestsService: TimelineOfRequestsService,
     private hospitalCheckService: HospitalCheckService,
     private tabPageService: TabPageService,
     private localStorageService: LocalStorageService,
@@ -31,6 +33,7 @@ export class TheRequirementsComponent implements OnInit {
   ngOnInit() {
     this.theRequirementService.listenTheRequestments.subscribe(res=>{
       this.theRequestments = res;
+      // this.timelineOfRequestsService.calcCountdown(this.theRequestments[0].created_at).subscribe(res213123=>console.log(res213123))
     })
   }
 

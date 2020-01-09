@@ -78,7 +78,7 @@
     
                         <ng-container matColumnDef="note">
                             <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                            <td mat-cell *matCellDef="let requestForRefund"> {{requestForRefund.note}} </td>
+                            <td mat-cell *matCellDef="let requestForRefund"> {{!element.note ? 'Không note gì' : element.note }} </td>
                             <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
     

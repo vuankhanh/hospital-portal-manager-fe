@@ -22,6 +22,7 @@
                 <span class="text-menu">{{ sideMenu.name }}</span>
                 <span class="icon-menu">
                     <span *ngIf="sideMenu.badge$ | async as badge" matBadge="{{badge}}" atBadgePosition="above before" [matBadgeHidden]="!badge || badge === 0 "></span>
+                    <span class="notification-number" *ngIf="i===1 && theRequirementService.getBadgeTheRequestments() | async as badge">{{ '('+badge+')' }}</span>
                     <mat-icon *ngIf="rla.isActive">arrow_forward</mat-icon>
                 </span>
             </div>
