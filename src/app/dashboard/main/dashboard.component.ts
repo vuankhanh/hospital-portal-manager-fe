@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   initSideMenu(){
     this.sideMenus = [
       { id: 0, routerLink:'/dashboard/directbilling', name:'Bảo Lãnh', badge$: this.directbillingTheRequirementService.getBadgeTheRequestments() },
-      { id: 1, routerLink:'/dashboard/therequirements' , name:'Không tìm thấy tự động' },
+      { id: 1, routerLink:'/dashboard/therequirements' , name:'Kiểm tra Quyền Lợi' },
       { id: 2, routerLink:'/dashboard/requestarefund', name:'Yêu cầu Hoàn trả' },
     ]
   }

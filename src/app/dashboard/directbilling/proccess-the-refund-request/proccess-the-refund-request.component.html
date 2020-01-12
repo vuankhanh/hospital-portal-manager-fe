@@ -54,6 +54,22 @@
                         </p>
                         
                     </div>
+
+                    <div class="width-container"></div>
+        
+                    <div class="text-container">
+                        <button *ngIf="!element.caseNumber; else inputCaseNumber" (click)="element.caseNumber=''">Thêm số Case Number</button>
+
+                        <ng-template #inputCaseNumber>
+                            <input type="text" placeholder="Case Number trên Mims">
+                        </ng-template>
+
+                        <!-- <p>
+                            <span class="primary-key">- Số Case Number: </span>
+                            <span class="secondary-key">{{ element.cmnd }}</span>
+                        </p> -->
+                        
+                    </div>
                     
                 </div>
         
