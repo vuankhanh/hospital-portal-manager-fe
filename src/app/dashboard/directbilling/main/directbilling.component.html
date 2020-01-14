@@ -1,7 +1,7 @@
 <mat-tab-group [selectedIndex]="tabPageService.getPageNumber()" (selectedTabChange)="tabPageService.setPageNumber($event.index)">
     <mat-tab>
         <ng-template matTabLabel>
-            Không tìm thấy tự động<span *ngIf="directbillingTheRequirementService.getBadgeTheRequestments() | async as badge" matBadge="{{badge}}" matBadgeOverlap="false"></span>
+            Kiểm tra quyền lợi<span *ngIf="directbillingTheRequirementService.getBadgeTheRequestments() | async as badge" matBadge="{{badge}}" matBadgeOverlap="false"></span>
         </ng-template>
 
         <app-proccess-the-requrements></app-proccess-the-requrements>

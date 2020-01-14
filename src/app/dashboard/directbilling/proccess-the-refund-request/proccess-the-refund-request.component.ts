@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MatDialog, MatMenuTrigger } from '@angular/material';
 
 import { ConfirmActionComponent } from '../../../modal/confirm-action/confirm-action.component';
 
@@ -7,24 +7,31 @@ import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-r
 import { TabPageService } from 'src/app/service/tab-page.service';
 import { TraTuService } from '../../../service/tra-tu.service';
 import { FakeRequestARefundService } from '../../../service/fake-request-a-refund.service';
+import { CopyService } from '../../../service/copy.service';
 @Component({
   selector: 'app-proccess-the-refund-request',
   templateUrl: './proccess-the-refund-request.component.html',
   styleUrls: ['./proccess-the-refund-request.component.scss']
 })
 export class ProccessTheRefundRequestComponent implements OnInit {
+  @ViewChild('inputCaseNumber',{static:false}) inputCaseNumber: ElementRef;
+  @ViewChild(MatMenuTrigger,{static:false}) contextMenu: MatMenuTrigger;
   requestForRefunds:any;
   countDownTimer: Timer;
   displayedColumns: string[] = ['category', 'money', 'note'];
   displayedColumnsFix: string[] = ['money', 'note'];
 
   messageConversation:string='';
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  setCaseNumberFocus: number;
   constructor(
     private dialog: MatDialog,
     private timelineOfRequestsService: TimelineOfRequestsService,
     private tabPageService: TabPageService,
     public traTuService: TraTuService,
-    private fakeRequestARefundService: FakeRequestARefundService
+    private fakeRequestARefundService: FakeRequestARefundService,
+    public copyService: CopyService
   ) {
     this.requestForRefunds = this.fakeRequestARefundService.refundRequests;
   }
@@ -46,6 +53,33 @@ export class ProccessTheRefundRequestComponent implements OnInit {
       total += parseInt(element.value);
     });
     return total;
+  }
+
+  onBlurSetCaseNo(value, id){
+    console.log(event)
+    this.setCaseNumberFocus = null;
+  }
+  // onFocusSetCaseNo(event, id){
+  //   this.setCaseNumberFocus = id;
+  // }
+
+  onRightClick(event: MouseEvent, element: any){
+    event.preventDefault();
+    console.log(element);
+    
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'id': element.id };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }
+
+  setCaseNumber(id){
+    console.log(id);
+    this.setCaseNumberFocus = id;
+    setTimeout(() => {
+      this.inputCaseNumber.nativeElement.focus()
+    }, 150);
   }
 
   sendMessage(event, id){
@@ -87,7 +121,6 @@ export class ProccessTheRefundRequestComponent implements OnInit {
 
   startProccess(requestForRefund){
     console.log(requestForRefund);
-    
   }
 }
 

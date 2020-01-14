@@ -63,7 +63,7 @@
                 <div class="conversation-container" *ngIf="element.conversation">
                     <div class="content-container" [ngStyle]="{'padding.px': element.conversation.length === 0 ? '0' : '15' }">
 
-                        <div class="itemListContent" *ngFor="let message of element.conversation" [style.flex-direction]="message.from === 1 ? 'row-reverse' : 'row'">
+                        <div #contentContainer class="itemListContent" *ngFor="let message of element.conversation" [style.flex-direction]="message.from === 1 ? 'row-reverse' : 'row'">
                             <div class="textContent" [style.background]="message.from === 1 ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
                                 <p [style.color]="message.from === 1 ? 'white' : '#333333'">
                                     {{ message.content }}

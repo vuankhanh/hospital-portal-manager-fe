@@ -56,10 +56,19 @@
                     </div>
                     
                 </div>
-        
+
+                <div class="width-container"></div>
+
+                <div class="coordion-container">
+                    <button (click)="element.accordion = !element.accordion">
+                        <mat-icon>assignment</mat-icon>
+                        <span>{{ element.accordion ? 'Ẩn Bảng':'Bảng Chi Phí' }}</span>
+                        <mat-icon [ngStyle]="{ 'transform': element.accordion ? 'rotate(0deg)' : 'rotate(180deg)' }">arrow_drop_up</mat-icon>
+                    </button>
+                </div>
             </div>
             
-            <div class="refund-request-container">
+            <div class="refund-request-container" *ngIf="element.accordion">
                 <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8">
                     <ng-container matColumnDef="category">
                         <th mat-header-cell *matHeaderCellDef>Danh mục</th>
@@ -75,7 +84,11 @@
 
                     <ng-container matColumnDef="note">
                         <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                        <td mat-cell *matCellDef="let element"> {{!element.note ? 'Không note gì' : element.note }} </td>
+                        <td mat-cell *matCellDef="let element">
+                            <span matTooltip="{{!element.note ? 'Không note gì' : element.note }}">
+                                {{!element.note ? 'Không note gì' : element.note }}
+                            </span>
+                        </td>
                         <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
 

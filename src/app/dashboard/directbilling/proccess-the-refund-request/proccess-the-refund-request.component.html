@@ -12,15 +12,15 @@
                     <div class="width-container"></div>
             
                     <div class="text-container">
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
                             <span class="primary-key">- Nội hay Ngoại trú: </span>
                             <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
                             <span class="primary-key">- Loại hình điều trị: </span>
                             <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
                         </p>
-                        <p>
+                        <p  matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
                             <span class="primary-key">- Nhà Bảo Hiểm: </span>
                             <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
                         </p>
@@ -36,19 +36,19 @@
                     <div class="width-container"></div>
         
                     <div class="text-container">
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
                             <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
                             <span class="secondary-key">{{ element.cmnd }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
                             <span class="primary-key">- Tên Khách Hàng: </span>
                             <span class="secondary-key">{{ element.fullname }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Ngày Sinh', element.dob)">
                             <span class="primary-key">- Ngày Sinh: </span>
                             <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.contract_no)">
                             <span class="primary-key">- Số Hợp Đồng: </span>
                             <span class="secondary-key">{{ element.contract_no }}</span>
                         </p>
@@ -57,20 +57,22 @@
 
                     <div class="width-container"></div>
         
-                    <div class="text-container">
-                        <button *ngIf="!element.caseNumber; else inputCaseNumber" (click)="element.caseNumber=''">Thêm số Case Number</button>
-
-                        <ng-template #inputCaseNumber>
-                            <input type="text" placeholder="Case Number trên Mims">
-                        </ng-template>
-
-                        <!-- <p>
-                            <span class="primary-key">- Số Case Number: </span>
-                            <span class="secondary-key">{{ element.cmnd }}</span>
-                        </p> -->
-                        
+                    <div class="setcaseno-container">
+                        <p matRipple (click)="copyService.createCopy('Case Number', element.caseNumber)">
+                            <span class="primary-key" (contextmenu)="onRightClick($event, element)">- Case Number: </span>
+                            <input
+                                #inputCaseNumber
+                                type="text"
+                                placeholder="Case Number"
+                                class="primary-key"
+                                [(ngModel)]="element.caseNumber"
+                                (blur)="onBlurSetCaseNo($event.target.value, element.id)"
+                                
+                                [ngClass]="{ 'caseNoFocus': setCaseNumberFocus===element.id }"
+                                [disabled]="setCaseNumberFocus != element.id"
+                            >
+                        </p>
                     </div>
-                    
                 </div>
         
             </div>
@@ -94,7 +96,14 @@
     
                         <ng-container matColumnDef="note">
                             <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                            <td mat-cell *matCellDef="let requestForRefund"> {{!element.note ? 'Không note gì' : element.note }} </td>
+                            <td mat-cell *matCellDef="let requestForRefund">
+                                <span
+                                    matTooltip="{{!requestForRefund.note ? 'Không note gì' : requestForRefund.note }}"
+                                    (click)="copyService.createCopy(requestForRefund.name, requestForRefund.note)"
+                                >
+                                    {{!requestForRefund.note ? 'Không note gì' : requestForRefund.note }}
+                                </span>
+                            </td>
                             <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
     
@@ -103,87 +112,88 @@
                         <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
                     </table>
 
-                    <div class="height-container"></div>
+                    <div class="width-container"></div>
 
-                    <div class="conversation-container" *ngIf="element.conversation">
-                        <div class="itemListContent" *ngFor="let message of element.conversation" [style.flex-direction]="message.from === 1 ? 'row-reverse' : 'row'">
-                            <div class="textContent" [style.background]="message.from === 1 ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
-                                <p [style.color]="message.from === 1 ? 'white' : '#333333'">
-                                    {{ message.content }}
-                                </p>
-                            </div>
-        
-                            <div class="dateTime" [style.flex-direction]="message.from === 1 ? 'row-reverse' : 'row'">
-                                <div class="space"></div>
-                                <p>
-                                    <span>{{ message.date | date:'dd/MM/yyyy' }} </span>
-                                    <span>{{ message.date | date:'HH:mm' }}</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="input-content-container">
-                            
-                            <textarea
-                            type="text"
-                            [(ngModel)]="messageConversation"
-                            class="soft-element"
-                            placeholder="Nội dung yêu cầu"
-                            matInput
-                            cdkTextareaAutosize
-                            #autosize="cdkTextareaAutosize"
-                            cdkAutosizeMinRows="1"
-                            cdkAutosizeMaxRows="5"
-                            ></textarea>
-                            <!-- <input type="text" [(ngModel)]="messageConversation" class="soft-element" placeholder="Nội dung yêu cầu"> -->
-                            <div class="width-container"></div>
-                            <button class="soft-element" (click)="sendMessage($event, element.id)">
-                                Gửi
-                            </button>
-                        </div>
-                    </div>
+                    <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8" *ngIf="element.editable">
+
+                        <ng-container matColumnDef="money">
+                            <th mat-header-cell *matHeaderCellDef>Số tiền</th>
+                            <td mat-cell *matCellDef="let requestForRefund; let i = index">
+                                <span *ngIf="!requestForRefund.checked" (click)="requestForRefund.checked = true">{{ requestForRefund.value | currency:"VND" }}</span>
+                                
+                                <div *ngIf="requestForRefund.checked" class="edit-container">
+                                    <input type="text" placeholder="Số tiền" value="{{ requestForRefund.value | number }}">
+                                    <button (click)="requestForRefund.checked = false">
+                                        <mat-icon>done</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest) | currency:"VND"}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="note">
+                            <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
+                            <td mat-cell *matCellDef="let requestForRefund">
+                                <input type="text" class="input-normal-note">
+                                <!-- {{requestForRefund.note}} -->
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef>
+                                <textarea
+                                matInput
+                                cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="5"
+                                class="input-normal-note input-total-note"
+                                ></textarea>
+                            </td>
+                        </ng-container>
+    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsFix"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsFix;"></tr>
+                        <tr mat-footer-row *matFooterRowDef="displayedColumnsFix"></tr>
+                    </table>
+
                 </div>
 
-                <div class="width-container"></div>
+                <div class="height-container"></div>
 
-                <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8" *ngIf="element.editable">
-
-                    <ng-container matColumnDef="money">
-                        <th mat-header-cell *matHeaderCellDef>Số tiền</th>
-                        <td mat-cell *matCellDef="let requestForRefund; let i = index">
-                            <span *ngIf="!requestForRefund.checked" (click)="requestForRefund.checked = true">{{ requestForRefund.value | currency:"VND" }}</span>
-                            
-                            <div *ngIf="requestForRefund.checked" class="edit-container">
-                                <input type="text" placeholder="Số tiền" value="{{ requestForRefund.value | number }}">
-                                <button (click)="requestForRefund.checked = false">
-                                    <mat-icon>done</mat-icon>
-                                </button>
-                            </div>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest) | currency:"VND"}} </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="note">
-                        <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                        <td mat-cell *matCellDef="let requestForRefund">
-                            <input type="text" class="input-normal-note">
-                            <!-- {{requestForRefund.note}} -->
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef>
-                            <textarea
-                            matInput
-                            cdkTextareaAutosize
-                            #autosize="cdkTextareaAutosize"
-                            cdkAutosizeMinRows="1"
-                            cdkAutosizeMaxRows="5"
-                            class="input-normal-note input-total-note"
-                            ></textarea>
-                        </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumnsFix"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsFix;"></tr>
-                    <tr mat-footer-row *matFooterRowDef="displayedColumnsFix"></tr>
-                </table>
+                <div class="conversation-container" *ngIf="element.conversation">
+                    <div class="itemListContent" *ngFor="let message of element.conversation" [style.flex-direction]="message.from === 1 ? 'row-reverse' : 'row'">
+                        <div class="textContent" [style.background]="message.from === 1 ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
+                            <p [style.color]="message.from === 1 ? 'white' : '#333333'">
+                                {{ message.content }}
+                            </p>
+                        </div>
+    
+                        <div class="dateTime" [style.flex-direction]="message.from === 1 ? 'row-reverse' : 'row'">
+                            <div class="space"></div>
+                            <p>
+                                <span>{{ message.date | date:'dd/MM/yyyy' }} </span>
+                                <span>{{ message.date | date:'HH:mm' }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="input-content-container">
+                        
+                        <textarea
+                        type="text"
+                        [(ngModel)]="messageConversation"
+                        class="soft-element"
+                        placeholder="Nội dung yêu cầu"
+                        matInput
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="5"
+                        ></textarea>
+                        <!-- <input type="text" [(ngModel)]="messageConversation" class="soft-element" placeholder="Nội dung yêu cầu"> -->
+                        <div class="width-container"></div>
+                        <button class="soft-element" (click)="sendMessage($event, element.id)">
+                            Gửi
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="last-container" [class.background-pending-status]="countDownTimer.minutes<=4"
@@ -204,7 +214,7 @@
                         <span>{{'Thêm thông tin'}}</span>
                     </button>
                     <div class="width-container"></div>
-                    <button (click)="element.editable=true">
+                    <button (click)="element.editable= !element.editable">
                         <span>{{ element.editable?'OK':'Sửa lại' }}</span>
                     </button>
                     <div class="width-container"></div>
@@ -218,3 +228,18 @@
 
     <div class="padding-for-the-list"></div>
 </div>
+
+<div style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu" class="setCaseNumberMnu">
+    <ng-template matMenuContent let-id="id">
+        <button mat-menu-item (click)="setCaseNumber(id)">
+            <mat-icon>edit</mat-icon>
+            <span>Sửa Case Number</span>
+        </button>
+    </ng-template>
+</mat-menu>

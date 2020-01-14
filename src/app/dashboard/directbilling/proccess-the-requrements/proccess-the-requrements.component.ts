@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { ConfirmActionComponent } from '../../../modal/confirm-action/confirm-action.component';
@@ -15,6 +15,7 @@ import { TraTuService } from '../../../service/tra-tu.service';
   styleUrls: ['./proccess-the-requrements.component.scss']
 })
 export class ProccessTheRequrementsComponent implements OnInit {
+  @ViewChild('contentContainer', {static:false}) private contentContainer: ElementRef
   countDownTimer: Timer;
   processCase:any = [];
   messageConversation:string='';
@@ -57,9 +58,13 @@ export class ProccessTheRequrementsComponent implements OnInit {
         if(result){
           this.addMessage(id, this.messageConversation);
           this.messageConversation='';
+          try {
+            this.contentContainer.nativeElement.scrollTop = this.contentContainer.nativeElement.scrollHeight;
+          } catch (error) {
+            console.log(error);
+          }
         }else{
           console.log('Huỷ Modal');
-          
         }
       })
     }

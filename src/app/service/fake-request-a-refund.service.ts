@@ -15,7 +15,7 @@ export class FakeRequestARefundService {
       dob: '09-09-1987',
       contract_no: 'PolicyNo1',
       refundRequest:[
-        { name: 'Tiền Giường Phòng', value: '250000', note:'' },
+        { name: 'Tiền Giường Phòng', value: '250000', note:' Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì  Không note gì ' },
         { name: 'Tiền Thuốc', value: '300000', note:'' },
         { name: 'Tiền Xét Nghiệm', value: '50000', note:'' },
         { name: 'Tiền Chi Phí Khác', value: '1000000', note:'' }

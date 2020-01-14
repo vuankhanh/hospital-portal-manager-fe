@@ -19,6 +19,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 //define khoảng cách ngang
 .width-container{
     width: 15px;
+    min-width: 15px;
 }
 
 //define khoảng cách dọc
@@ -40,6 +41,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     align-items: center;
     mat-icon{
         margin-right:2px;
+    }
+}
+
+.setCaseNumberMnu{
+    max-height: unset !important;
+    min-height: unset !important;
+    .mat-menu-content{
+        padding: 0;
+        .mat-menu-item{
+            padding: 10px 15px;
+            height: unset;
+            line-height: unset;
+        }
+    }
+    .mat-menu-content:not(:empty){
+        padding: 0;
     }
 }
 

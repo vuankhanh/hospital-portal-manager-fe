@@ -38,8 +38,8 @@
     
     .background-pending{
         display: flex;
+        flex-direction: column;
         padding: 15px;
-        align-items: center;
         justify-content: space-between;
         border-top: 10px solid #ededed;
         border-bottom: 1px solid #ededed;
@@ -67,6 +67,20 @@
                 flex-direction: column;
             }
         }
+        .coordion-container{
+            button{
+                padding: 5px;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                width: 150px;
+                justify-content: space-between;
+                outline: none;
+                mat-icon{
+                    transition: transform 0.45s;
+                }
+            }
+        }
     }
     
     .refund-request-container{
@@ -87,6 +101,7 @@
         padding: 5px 15px;
         display: flex;
         justify-content: space-between;
+        border-bottom: 1px solid #ededed;
         .clinic-information{
             display: flex;
             align-items: center;

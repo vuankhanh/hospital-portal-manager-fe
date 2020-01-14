@@ -17,6 +17,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatRippleModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ClipboardModule } from 'ngx-clipboard';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardRoutingModule } from '../app/dashboard/main/dashboard.module';
@@ -68,7 +73,17 @@ import { ConfirmActionComponent } from './modal/confirm-action/confirm-action.co
     MatCheckboxModule,
     MatBadgeModule,
     MatTabsModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTooltipModule,
+    
+    ClipboardModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      maxOpened: 1,
+      autoDismiss: true
+    })
   ],
   providers: [ 
     TimelineOfRequestsService
