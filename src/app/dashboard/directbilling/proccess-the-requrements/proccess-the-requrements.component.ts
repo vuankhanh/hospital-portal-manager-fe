@@ -8,6 +8,7 @@ import { HospitalCheckService } from '../../../service/hospital-check.service';
 import { LocalStorageService } from '../../../service/local-storage.service';
 import { DirectbillingTheRequirementService } from '../../../service/directbilling-the-requirement.service';
 import { TraTuService } from '../../../service/tra-tu.service';
+import { CopyService } from '../../../service/copy.service';
 
 @Component({
   selector: 'app-proccess-the-requrements',
@@ -25,7 +26,8 @@ export class ProccessTheRequrementsComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private directbillingTheRequirementService: DirectbillingTheRequirementService,
     public traTuService: TraTuService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public copyService: CopyService
   ) {
     this.countDownTime();
   }

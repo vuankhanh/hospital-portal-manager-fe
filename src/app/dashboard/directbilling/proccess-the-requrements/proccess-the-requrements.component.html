@@ -13,15 +13,15 @@
                     <div class="width-container"></div>
             
                     <div class="text-container">
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
                             <span class="primary-key">- Nội hay Ngoại trú: </span>
                             <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
                             <span class="primary-key">- Loại hình điều trị: </span>
                             <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
                             <span class="primary-key">- Nhà Bảo Hiểm: </span>
                             <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
                         </p>
@@ -37,19 +37,19 @@
                     <div class="width-container"></div>
         
                     <div class="text-container">
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
                             <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
                             <span class="secondary-key">{{ element.cmnd }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
                             <span class="primary-key">- Tên Khách Hàng: </span>
                             <span class="secondary-key">{{ element.fullname }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Ngày Sinh', element.dob)">
                             <span class="primary-key">- Ngày Sinh: </span>
                             <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
                         </p>
-                        <p>
+                        <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.contract_no)">
                             <span class="primary-key">- Số Hợp Đồng: </span>
                             <span class="secondary-key">{{ element.contract_no }}</span>
                         </p>
