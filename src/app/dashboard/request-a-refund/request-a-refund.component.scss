@@ -88,10 +88,24 @@
     .refund-request-container{
         border-bottom: 1px solid #ededed;
         padding:15px;
+        .refund-request-diagnose{
+            margin:0;
+            display: flex;
+            align-items: center;
+            .primary-key{
+                width: 100px;
+            }
+        }
         table{
             width: 100%;
             .mat-cell{
                 min-width: 150px;
+                max-width: 200px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .mat-footer-cell{
                 font-weight: bold;

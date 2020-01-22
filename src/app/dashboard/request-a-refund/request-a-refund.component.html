@@ -69,7 +69,15 @@
             </div>
             
             <div class="refund-request-container" *ngIf="element.accordion">
-                <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8">
+
+                <p class="refund-request-diagnose">
+                    <span class="primary-key">- Chẩn Đoán: </span>
+                    <span class="secondary-key">{{element.refundRequest.diagnose}}</span>
+                </p>
+
+                <div class="height-container"></div>
+
+                <table mat-table [dataSource]="element.refundRequest.cost" class="mat-elevation-z8">
                     <ng-container matColumnDef="category">
                         <th mat-header-cell *matHeaderCellDef>Danh mục</th>
                         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -79,13 +87,16 @@
                     <ng-container matColumnDef="money">
                         <th mat-header-cell *matHeaderCellDef>Số tiền</th>
                         <td mat-cell *matCellDef="let element"> {{element.value | currency:"VND"}} </td>
-                        <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest) | currency:"VND"}} </td>
+                        <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest.cost) | currency:"VND"}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="note">
                         <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
                         <td mat-cell *matCellDef="let element">
-                            <span matTooltip="{{!element.note ? 'Không note gì' : element.note }}">
+                            <span
+                                matTooltip="{{!element.note ? 'Không note gì' : element.note }}"
+                                matTooltipPosition="before"
+                            >
                                 {{!element.note ? 'Không note gì' : element.note }}
                             </span>
                         </td>

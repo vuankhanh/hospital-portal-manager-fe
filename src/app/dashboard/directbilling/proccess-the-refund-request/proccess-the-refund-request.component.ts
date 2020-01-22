@@ -16,6 +16,7 @@ import { CopyService } from '../../../service/copy.service';
 export class ProccessTheRefundRequestComponent implements OnInit {
   @ViewChild('inputCaseNumber',{static:false}) inputCaseNumber: ElementRef;
   @ViewChild(MatMenuTrigger,{static:false}) contextMenu: MatMenuTrigger;
+  @ViewChild('limitTheRemainingBenefits',{static:false} ) limitTheRemainingBenefits: ElementRef
   requestForRefunds:any;
   countDownTimer: Timer;
   displayedColumns: string[] = ['category', 'money', 'note'];
@@ -80,6 +81,15 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     setTimeout(() => {
       this.inputCaseNumber.nativeElement.focus()
     }, 150);
+  }
+
+  changeCheckBox(event, index){
+    this.requestForRefunds[0].benefitLimitExceeded = event.checked;
+    if(this.requestForRefunds[0].benefitLimitExceeded){
+      setTimeout(() => {
+        this.limitTheRemainingBenefits.nativeElement.focus();
+      }, 150);
+    }
   }
 
   sendMessage(event, id){

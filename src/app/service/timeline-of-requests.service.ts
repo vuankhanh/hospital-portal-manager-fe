@@ -74,33 +74,39 @@ export class TimelineOfRequestsService {
     })
   }
 
-  calcCountdown(createdCase){
-    let overTime = new Date(createdCase);
-    overTime.setMinutes(overTime.getMinutes()+5);
-    
-    let interval$ = interval(1000);
+  calcCountdown(duration: number, createdCases: string, serverTimes: string){
+    let createdCase = new Date(createdCases);
+    let serverTime = new Date(serverTimes);
+    let timeRemaining = this.pipeDurationToMinutes(duration) - (serverTime.getTime() - createdCase.getTime());
+    console.log(timeRemaining)
+    if((serverTime.getTime() - createdCase.getTime()) <= this.pipeDurationToMinutes(duration)){
+      timeRemaining = this.pipeDurationToMinutes(duration) - (serverTime.getTime() - createdCase.getTime());
+    }else{
+      timeRemaining = 0;
+    }
 
-    // return new Observable(observer=>{
-    //   let x = setInterval(()=>{
-  
-    //     // Find the distance between now and the count down date
-    //     var distance = overTime.getTime() - createCaseTime;
+    return new Observable(observer=>{
+      let x = setInterval(()=>{
+        timeRemaining -= 1000;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
+        let countDownTimer = { minutes: minutes, seconds: seconds }
         
-    //     // Time calculations for days, hours, minutes and seconds
-    //     var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    //     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    //     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    //     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if (timeRemaining <= 0) {
+          countDownTimer = { minutes: -1, seconds: -1 };
+          clearInterval(x);
+          observer.complete();
+        }
+        observer.next(countDownTimer)
+      },1000);
+    })
+  }
 
-    //     let countDownTimer = { minutes: minutes, seconds: seconds }
-        
-    //     if (distance < 0) {
-    //       countDownTimer = { minutes: -1, seconds: -1 };
-    //       clearInterval(x);
-    //     }
-    //     observer.next(countDownTimer)
-    //   },1000);
-    // })
+  pipeDurationToMinutes(duration: number){
+    return duration *60*1000;
   }
 }

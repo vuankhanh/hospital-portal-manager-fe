@@ -66,6 +66,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 }
 
+//Shadow for Mat Tab Header
+mat-tab-group{
+    mat-tab-header{
+        z-index: 10;
+        box-shadow: 10px 0 15px #999999;
+    }
+}
+
 //Dialog Modal
 app-confirm-action{
     .mat-dialog-actions{

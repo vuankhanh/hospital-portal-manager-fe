@@ -58,7 +58,7 @@
                     
                 </div>
 
-                <div class="height-container"></div>
+                <div class="height-container" *ngIf="element.conversation"></div>
 
                 <div class="conversation-container" *ngIf="element.conversation">
                     <div class="content-container" [ngStyle]="{'padding.px': element.conversation.length === 0 ? '0' : '15' }">

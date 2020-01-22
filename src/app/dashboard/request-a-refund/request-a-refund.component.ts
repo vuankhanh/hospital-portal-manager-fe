@@ -16,7 +16,7 @@ export class RequestARefundComponent implements OnInit {
   displayedColumns: string[] = ['category', 'money', 'note'];
   constructor(
     private router: Router,
-    private timelineOfRequestsService: TimelineOfRequestsService,
+    public timelineOfRequestsService: TimelineOfRequestsService,
     private tabPageService: TabPageService,
     public traTuService: TraTuService,
     private fakeRequestARefundService: FakeRequestARefundService
@@ -25,7 +25,11 @@ export class RequestARefundComponent implements OnInit {
     this.countDownTime();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.timelineOfRequestsService.calcCountdown(5, '2020-01-21T11:13:05.791256+07:00', '2020-01-21T11:13:05.791256+07:00').subscribe(res=>{
+      console.log(res);
+    })
+  }
 
   countDownTime(){
     this.timelineOfRequestsService.listenCountdown$.subscribe(timer=>{
@@ -34,7 +38,6 @@ export class RequestARefundComponent implements OnInit {
   }
 
   countTotal(arrayNumber:any){
-    
     let total = 0;
     arrayNumber.forEach(element=>{
       total += parseInt(element.value);

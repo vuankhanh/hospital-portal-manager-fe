@@ -1,6 +1,6 @@
 <div class="container">
 
-    <div *ngFor="let element of requestForRefunds" class="item-list">
+    <div *ngFor="let element of requestForRefunds; let requestIndex = index" class="item-list">
         <ng-container *ngIf="element.refundRequest && countDownTimer">
             <div class="background-pending">   
                 <div class="information-container">
@@ -78,8 +78,14 @@
             </div>
             
             <div class="refund-request-container">
+                <p class="refund-request-diagnose">
+                    <span class="primary-key">- Chẩn Đoán: </span>
+                    <span class="secondary-key">{{element.refundRequest.diagnose}}</span>
+                </p>
+                <div class="height-container"></div>
                 <div class="refund-request-left-container">
-                    <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8">
+                    
+                    <table mat-table [dataSource]="element.refundRequest.cost" class="mat-elevation-z8">
                         <ng-container matColumnDef="category">
                             <th mat-header-cell *matHeaderCellDef>Danh mục</th>
                             <td mat-cell *matCellDef="let requestForRefund"> {{requestForRefund.name}} </td>
@@ -91,7 +97,7 @@
                             <td mat-cell *matCellDef="let requestForRefund; let i = index">
                                 <span>{{ requestForRefund.value | currency:"VND" }}</span>
                             </td>
-                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest) | currency:"VND"}} </td>
+                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest.cost) | currency:"VND"}} </td>
                         </ng-container>
     
                         <ng-container matColumnDef="note">
@@ -99,6 +105,7 @@
                             <td mat-cell *matCellDef="let requestForRefund">
                                 <span
                                     matTooltip="{{!requestForRefund.note ? 'Không note gì' : requestForRefund.note }}"
+                                    matTooltipPosition="before"
                                     (click)="copyService.createCopy(requestForRefund.name, requestForRefund.note)"
                                 >
                                     {{!requestForRefund.note ? 'Không note gì' : requestForRefund.note }}
@@ -114,7 +121,7 @@
 
                     <div class="width-container"></div>
 
-                    <table mat-table [dataSource]="element.refundRequest" class="mat-elevation-z8" *ngIf="element.editable">
+                    <table mat-table [dataSource]="element.refundRequest.cost" class="mat-elevation-z8" *ngIf="element.editable">
 
                         <ng-container matColumnDef="money">
                             <th mat-header-cell *matHeaderCellDef>Số tiền</th>
@@ -128,7 +135,16 @@
                                     </button>
                                 </div>
                             </td>
-                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest) | currency:"VND"}} </td>
+                            <td mat-footer-cell *matFooterCellDef>
+                                <div class="totalEditContainer">
+                                    {{countTotal(element.refundRequest.cost) | currency:"VND"}}
+                                    <div class="width-container"></div>
+                                    <div class="benefitLimitExceededContainer">
+                                        <mat-checkbox *ngIf="!element.benefitLimitExceeded" (change)="changeCheckBox($event, requestIndex)">Quá Quyền Lợi</mat-checkbox>
+                                        <input #limitTheRemainingBenefits *ngIf="element.benefitLimitExceeded" (blur)="element.benefitLimitExceeded=false" type="text" placeholder="Hạn Mức Quyền Lợi">
+                                    </div>
+                                </div>
+                            </td>
                         </ng-container>
     
                         <ng-container matColumnDef="note">

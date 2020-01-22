@@ -61,7 +61,7 @@
                     align-items: center;
                     margin: 0;
                     .secondary-key{
-                        padding: 5px;
+                        padding: 2px;
                     }
                 }
             }
@@ -98,6 +98,14 @@
         .refund-request-left-container{
             width: 100%;
             display: flex;
+        }
+        .refund-request-diagnose{
+            margin:0;
+            display: flex;
+            align-items: center;
+            .primary-key{
+                width: 100px;
+            }
         }
         .conversation-container{
             .itemListContent{
@@ -166,6 +174,12 @@
             }
             .mat-cell{
                 min-width: 150px;
+                max-width: 200px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 .edit-container{
                     display: flex;
                     align-items: center;
@@ -200,6 +214,24 @@
                     width: 100%;
                     padding:5px;
                     max-height: unset !important;
+                }
+                .totalEditContainer{
+                    display: flex;
+                    align-items: center;
+                    font-size: 12px;
+                    .benefitLimitExceededContainer{
+                        mat-checkbox{
+                            font-weight: normal;
+                        }
+                        input{
+                            border: 1px solid #ededed;
+                            height: 24px;
+                            border-radius: 5px;
+                            outline: none;
+                            padding: 0 5px;
+                            font-family: Roboto,"Helvetica Neue",sans-serif;
+                        }
+                    }
                 }
             }
         }
