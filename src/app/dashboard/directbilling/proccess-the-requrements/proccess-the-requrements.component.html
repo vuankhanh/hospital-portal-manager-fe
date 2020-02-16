@@ -1,7 +1,14 @@
 <div class="container">
-
+    <!-- <div>
+        <mat-progress-spinner
+        class="example-margin"
+        [color]="color"
+        [mode]="mode"
+        [value]="value">
+    </mat-progress-spinner>
+    </div> -->
     <div *ngFor="let element of processCase;">
-        <ng-container *ngIf="element.check_benefit_status === 'IN PROCESS' && countDownTimer">
+        <ng-container *ngIf="countDownTimer">
     
             <div class="background-pending">   
                 <div class="information-container">
@@ -13,10 +20,18 @@
                     <div class="width-container"></div>
             
                     <div class="text-container">
-                        <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
+                        <p matRipple (click)="copyService.createCopy('Case Number', element.note)">
+                            <span class="primary-key" (contextmenu)="onRightClick($event, element)">- Case Number: </span>
+                            <span class="secondary-key">{{ element.note }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Mã định danh', element.ID)">
+                            <span class="primary-key">- Mã định danh: </span>
+                            <span class="secondary-key">{{ element.ID }}</span>
+                        </p>
+                        <!-- <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
                             <span class="primary-key">- Nội hay Ngoại trú: </span>
                             <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
-                        </p>
+                        </p> -->
                         <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
                             <span class="primary-key">- Loại hình điều trị: </span>
                             <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
@@ -51,7 +66,7 @@
                         </p>
                         <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.contract_no)">
                             <span class="primary-key">- Số Hợp Đồng: </span>
-                            <span class="secondary-key">{{ element.contract_no }}</span>
+                            <span class="secondary-key">{{ element.policy_no }}</span>
                         </p>
                         
                     </div>
@@ -132,3 +147,18 @@
         </ng-container>
     </div>
 </div>
+
+<div style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu" class="setCaseNumberMnu">
+    <ng-template matMenuContent let-id="id">
+        <button mat-menu-item (click)="setCaseNumber(id)">
+            <mat-icon>edit</mat-icon>
+            <span>Sửa Case Number</span>
+        </button>
+    </ng-template>
+</mat-menu>

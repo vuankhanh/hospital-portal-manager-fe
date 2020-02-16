@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { LoginService } from '../service/login.service';
+import { LoginService } from '../service/api/post/login.service';
 import { LocalStorageService } from '../service/local-storage.service';
-import { TimelineOfRequestsService } from '../service/timeline-of-requests.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private timeLineOfRequest: TimelineOfRequestsService,
     private loginService: LoginService,
     private localStorageService: LocalStorageService
   ) {
@@ -37,10 +35,12 @@ export class LoginComponent implements OnInit {
 
   doLogin(){
     if(this.loginForm.valid){
-      this.loginService.login(this.loginForm.value).subscribe(response=>{
-        let res:any = response;
-        this.localStorageService.setLocal('token', res.token)
-        this.router.navigateByUrl('/dashboard');
+      this.loginService.login(this.loginForm.value).toPromise().then(response=>{
+        if(response.code === 200 && response.message === 'OK'){
+          this.localStorageService.setLocalStorage('token', response.token);
+          this.loginService.thenLogin(response.token);
+          this.router.navigateByUrl('/dashboard');
+        };
       });
     }
   }

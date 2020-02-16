@@ -1,119 +1,113 @@
 <div class="container">
 
     <div *ngFor="let element of requestForRefunds; let requestIndex = index" class="item-list">
-        <ng-container *ngIf="element.refundRequest && countDownTimer">
+        <ng-container *ngIf="countDownTimer">
             <div class="background-pending">   
                 <div class="information-container">
-                    <div class="icon-container">
-                        <mat-icon>schedule</mat-icon>
-                        <span >{{ ('0'+countDownTimer.minutes).slice(-2) +':'+ ('0'+countDownTimer.seconds).slice(-2) }}</span>
-                    </div>
+                        <div class="icon-container">
+                            <mat-icon>schedule</mat-icon>
+                            <span >{{ ('0'+countDownTimer.minutes).slice(-2) +':'+ ('0'+countDownTimer.seconds).slice(-2) }}</span>
+                        </div>
+                
+                        <div class="width-container"></div>
+                
+                        <div class="text-container">
+                            <p matRipple (click)="copyService.createCopy('Case Number', element.note)">
+                                <span class="primary-key" (contextmenu)="onRightClick($event, element)">- Case Number: </span>
+                                <span class="secondary-key">{{ element.note }}</span>
+                            </p>
+                            <p matRipple (click)="copyService.createCopy('Mã định danh', element.ID)">
+                                <span class="primary-key">- Mã định danh: </span>
+                                <span class="secondary-key">{{ element.ID }}</span>
+                            </p>
+                            <!-- <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
+                                <span class="primary-key">- Nội hay Ngoại trú: </span>
+                                <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
+                            </p> -->
+                            <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
+                                <span class="primary-key">- Loại hình điều trị: </span>
+                                <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
+                            </p>
+                            <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
+                                <span class="primary-key">- Nhà Bảo Hiểm: </span>
+                                <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
+                            </p>
+                            <p *ngIf="element.card_no">
+                                <span class="primary-key">- Số thẻ: </span>
+                                <span class="secondary-key">{{ element.card_no }}</span>
+                            </p>
+                            
+                        </div>
             
-                    <div class="width-container"></div>
+                        <!-- Có thể không có thông tin này -->
             
-                    <div class="text-container">
-                        <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
-                            <span class="primary-key">- Nội hay Ngoại trú: </span>
-                            <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
-                        </p>
-                        <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
-                            <span class="primary-key">- Loại hình điều trị: </span>
-                            <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
-                        </p>
-                        <p  matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
-                            <span class="primary-key">- Nhà Bảo Hiểm: </span>
-                            <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
-                        </p>
-                        <!-- <p *ngIf="element.card_no">
-                            <span class="primary-key">- Số thẻ: </span>
-                            <span class="secondary-key">{{ element.card_no }}</span>
-                        </p> -->
-                        
-                    </div>
-        
-                    <!-- Có thể không có thông tin này -->
-        
-                    <div class="width-container"></div>
-        
-                    <div class="text-container">
-                        <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
-                            <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
-                            <span class="secondary-key">{{ element.cmnd }}</span>
-                        </p>
-                        <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
-                            <span class="primary-key">- Tên Khách Hàng: </span>
-                            <span class="secondary-key">{{ element.fullname }}</span>
-                        </p>
-                        <p matRipple (click)="copyService.createCopy('Ngày Sinh', element.dob)">
-                            <span class="primary-key">- Ngày Sinh: </span>
-                            <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
-                        </p>
-                        <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.contract_no)">
-                            <span class="primary-key">- Số Hợp Đồng: </span>
-                            <span class="secondary-key">{{ element.contract_no }}</span>
-                        </p>
-                        
-                    </div>
-
-                    <div class="width-container"></div>
-        
-                    <div class="setcaseno-container">
-                        <p matRipple (click)="copyService.createCopy('Case Number', element.caseNumber)">
-                            <span class="primary-key" (contextmenu)="onRightClick($event, element)">- Case Number: </span>
-                            <input
-                                #inputCaseNumber
-                                type="text"
-                                placeholder="Case Number"
-                                class="primary-key"
-                                [(ngModel)]="element.caseNumber"
-                                (blur)="onBlurSetCaseNo($event.target.value, element.id)"
-                                
-                                [ngClass]="{ 'caseNoFocus': setCaseNumberFocus===element.id }"
-                                [disabled]="setCaseNumberFocus != element.id"
-                            >
-                        </p>
-                    </div>
+                        <div class="width-container"></div>
+            
+                        <div class="text-container">
+                            <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
+                                <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
+                                <span class="secondary-key">{{ element.cmnd }}</span>
+                            </p>
+                            <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
+                                <span class="primary-key">- Tên Khách Hàng: </span>
+                                <span class="secondary-key">{{ element.fullname }}</span>
+                            </p>
+                            <p matRipple (click)="copyService.createCopy('Ngày Sinh', element.dob)">
+                                <span class="primary-key">- Ngày Sinh: </span>
+                                <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
+                            </p>
+                            <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.contract_no)">
+                                <span class="primary-key">- Số Hợp Đồng: </span>
+                                <span class="secondary-key">{{ element.policy_no }}</span>
+                            </p>
+                            
+                        </div>
                 </div>
         
             </div>
             
             <div class="refund-request-container">
-                <p class="refund-request-diagnose">
-                    <span class="primary-key">- Chẩn Đoán: </span>
-                    <span class="secondary-key">{{element.refundRequest.diagnose}}</span>
-                </p>
+                <div>
+                    <p class="refund-request-diagnose">
+                        <span class="primary-key">- Chẩn Đoán: </span>
+                        <span class="inputDiagnostic">{{ element.diag_note }}</span>
+                    </p>
+                    <p class="refund-request-diagnose" *ngIf="element.social_insurance_id">
+                        <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+                        <span>{{ element.social_insurance_id }}</span>
+                    </p>
+                </div>
+
                 <div class="height-container"></div>
+
                 <div class="refund-request-left-container">
                     
-                    <table mat-table [dataSource]="element.refundRequest.cost" class="mat-elevation-z8">
+                    <table mat-table [dataSource]="element.costs" class="mat-elevation-z8">
                         <ng-container matColumnDef="category">
                             <th mat-header-cell *matHeaderCellDef>Danh mục</th>
-                            <td mat-cell *matCellDef="let requestForRefund"> {{requestForRefund.name}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.cost_name}} </td>
                             <td mat-footer-cell *matFooterCellDef> Tổng </td>
                         </ng-container>
-    
+        
                         <ng-container matColumnDef="money">
                             <th mat-header-cell *matHeaderCellDef>Số tiền</th>
-                            <td mat-cell *matCellDef="let requestForRefund; let i = index">
-                                <span>{{ requestForRefund.value | currency:"VND" }}</span>
-                            </td>
-                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.refundRequest.cost) | currency:"VND"}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element.cost_amount | currency:"VND"}} </td>
+                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.costs) | currency:"VND"}} </td>
                         </ng-container>
-    
+        
                         <ng-container matColumnDef="note">
                             <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                            <td mat-cell *matCellDef="let requestForRefund">
+                            <td mat-cell *matCellDef="let element">
                                 <span
-                                    matTooltip="{{!requestForRefund.note ? 'Không note gì' : requestForRefund.note }}"
+                                    matTooltip="{{!element.cost_note ? 'Không note gì' : element.cost_note }}"
                                     matTooltipPosition="before"
-                                    (click)="copyService.createCopy(requestForRefund.name, requestForRefund.note)"
                                 >
-                                    {{!requestForRefund.note ? 'Không note gì' : requestForRefund.note }}
+                                    {{!element.cost_note ? 'Không note gì' : element.cost_note }}
                                 </span>
                             </td>
                             <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
-    
+        
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
@@ -121,7 +115,7 @@
 
                     <div class="width-container"></div>
 
-                    <table mat-table [dataSource]="element.refundRequest.cost" class="mat-elevation-z8" *ngIf="element.editable">
+                    <table mat-table [dataSource]="editCostTable" class="mat-elevation-z8" *ngIf="editCostTable">
 
                         <ng-container matColumnDef="money">
                             <th mat-header-cell *matHeaderCellDef>Số tiền</th>
@@ -151,7 +145,6 @@
                             <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
                             <td mat-cell *matCellDef="let requestForRefund">
                                 <input type="text" class="input-normal-note">
-                                <!-- {{requestForRefund.note}} -->
                             </td>
                             <td mat-footer-cell *matFooterCellDef>
                                 <textarea
@@ -230,7 +223,7 @@
                         <span>{{'Thêm thông tin'}}</span>
                     </button>
                     <div class="width-container"></div>
-                    <button (click)="element.editable= !element.editable">
+                    <button (click)="editTableCostDetail(element)">
                         <span>{{ element.editable?'OK':'Sửa lại' }}</span>
                     </button>
                     <div class="width-container"></div>

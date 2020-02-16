@@ -1,14 +1,21 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatMenuTrigger } from '@angular/material';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 import { ConfirmActionComponent } from '../../../modal/confirm-action/confirm-action.component';
+import { CaseNumberComponent } from '../../../modal/case-number/case-number.component';
+import { ReasonInputComponent } from '../../../modal/reason-input/reason-input.component';
 
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
-import { HospitalCheckService } from '../../../service/hospital-check.service';
+import { ConfirmService } from '../../../service/api/put/confirm.service';
+import { RejectService } from '../../../service/api/put/reject.service';
 import { LocalStorageService } from '../../../service/local-storage.service';
-import { DirectbillingTheRequirementService } from '../../../service/directbilling-the-requirement.service';
 import { TraTuService } from '../../../service/tra-tu.service';
 import { CopyService } from '../../../service/copy.service';
+import { DelayActionService } from '../../../service/delay-action.service';
+import { ListTicketsService } from '../../../service/list-tickets.service';
+import { UpdateCasenumberService } from '../../../service/api/put/update-casenumber.service';
 
 @Component({
   selector: 'app-proccess-the-requrements',
@@ -16,34 +23,75 @@ import { CopyService } from '../../../service/copy.service';
   styleUrls: ['./proccess-the-requrements.component.scss']
 })
 export class ProccessTheRequrementsComponent implements OnInit {
+  @ViewChild(MatMenuTrigger,{static:false}) contextMenu: MatMenuTrigger;
   @ViewChild('contentContainer', {static:false}) private contentContainer: ElementRef
   countDownTimer: Timer;
   processCase:any = [];
   messageConversation:string='';
+
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'determinate';
+  value: number = 100;
+  
+  contextMenuPosition = { x: '0px', y: '0px' };
+
   constructor(
     private timelineOfRequestsService: TimelineOfRequestsService,
-    private hospitalCheckService: HospitalCheckService,
+    private confirmService: ConfirmService,
+    private rejectService: RejectService,
     private localStorageService: LocalStorageService,
-    private directbillingTheRequirementService: DirectbillingTheRequirementService,
     public traTuService: TraTuService,
     private dialog: MatDialog,
-    public copyService: CopyService
+    public copyService: CopyService,
+    private delayActionService: DelayActionService,
+    private listTicketsService: ListTicketsService,
+    private updateCasenumberService: UpdateCasenumberService
   ) {
+    this.listTicketsService.listenListTicket.subscribe(resTickets=>{
+      if(resTickets){
+        // console.log(resTickets);
+        this.processCase = resTickets.filter(ticket=>{
+          return ticket.costs.length===0 && ticket.insmart_status === 'TAKEN';
+        });
+        console.log(this.processCase);
+      }
+    })
     this.countDownTime();
+    // this.delayActionService.countDown().subscribe(res=>{
+    //   this.value=res;
+    //   console.log(this.value);
+    // });
   }
 
   ngOnInit() {
-    this.directbillingTheRequirementService.listenDbTheRequestments.subscribe(res=>{
-      console.log(res);
-      
-      this.processCase = res;
-    })
   }
 
   countDownTime(){
     this.timelineOfRequestsService.listenCountdown$.subscribe(timer=>{
       this.countDownTimer = timer;
     });
+  }
+
+  onRightClick(event: MouseEvent, element: any){
+    event.preventDefault();
+    console.log(element);
+    
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'id': element };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }
+
+  setCaseNumber(element){
+    this.dialog.open(CaseNumberComponent,{data: element.note}).afterClosed().subscribe(caseNumber=>{
+      let token = this.localStorageService.getLocalStorage('token');
+      this.updateCasenumberService.insmartUpdateCaseNo(element.ID, caseNumber, token).subscribe(res=>{
+        if(res.code === 200 && res.message==='OK'){
+          this.listTicketsService.changePropertyTicket(res.data);
+        }
+      });
+    })
   }
 
   sendMessage(event, id){
@@ -88,21 +136,25 @@ export class ProccessTheRequrementsComponent implements OnInit {
   }
 
   confirm(element){
-    console.log(element.id);
-    let token = this.localStorageService.getLocal('token');
-    this.hospitalCheckService.getHospitalConfirm(element.id, token).subscribe(response=>{
-      console.log(response);
-      this.directbillingTheRequirementService.removeTheRequestments(element);
+    let token = this.localStorageService.getLocalStorage('token');
+    this.confirmService.insmartConfirm(element.ID, token).subscribe(response=>{
+      if(response.code === 200 && response.message==='OK'){
+        this.listTicketsService.changePropertyTicket(response.data);
+      }
     });
   }
 
   reject(element){
-    console.log(element.id);
-    let token = this.localStorageService.getLocal('token');
-    this.hospitalCheckService.getHospitalReject(element.id, token).subscribe(response=>{
-      console.log(response);
-      this.directbillingTheRequirementService.removeTheRequestments(element);
-    });
+    this.dialog.open(ReasonInputComponent).afterClosed().subscribe(reason=>{
+      if(reason.length >10){
+        let token = this.localStorageService.getLocalStorage('token');
+        this.rejectService.insmartReject(element.ID, reason,token).subscribe(response=>{
+          if(response.code === 200 && response.message==='OK'){
+            this.listTicketsService.changePropertyTicket(response.data);
+          }
+        });
+      }
+    })
   }
   
 }

@@ -1,0 +1,14 @@
+.warning-container{
+    display: flex;
+    align-items: center;
+    mat-icon{
+        color: orange;
+        padding: 5px;
+    }
+    span{
+        padding: 5px;
+        font-style: italic;
+        color: #999999;
+        font-size: 12px;
+    }
+}

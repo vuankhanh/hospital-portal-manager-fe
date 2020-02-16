@@ -1,7 +1,7 @@
 <div class="container">
 
     <div *ngFor="let element of theRequestments;">
-        <ng-container *ngIf="element.check_benefit_status === 'WAITING' && countDownTimer">
+        <ng-container>
     
             <div class="background-pending">   
                 <div class="information-container">
@@ -14,9 +14,13 @@
             
                     <div class="text-container">
                         <p>
-                            <span class="primary-key">- Nội hay Ngoại trú: </span>
-                            <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
+                            <span class="primary-key">- Mã định danh: </span>
+                            <span class="secondary-key">{{ element.ID }}</span>
                         </p>
+                        <!-- <p>
+                            <span class="primary-key">- Nội hay Ngoại trú: </span>
+                            <span class="secondary-key">{{ element.request_type === 2 ? 'Ngoại trú' : 'Nội trú' }}</span>
+                        </p> -->
                         <p>
                             <span class="primary-key">- Loại hình điều trị: </span>
                             <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
@@ -51,7 +55,7 @@
                         </p>
                         <p>
                             <span class="primary-key">- Số Hợp Đồng: </span>
-                            <span class="secondary-key">{{ element.contract_no }}</span>
+                            <span class="secondary-key">{{ element.policy_no }}</span>
                         </p>
                         
                     </div>
@@ -64,11 +68,20 @@
             [class.background-pending-status-overtime]="countDownTimer.minutes == -1 && countDownTimer.seconds == -1">
         
                 <div class="clinic-information">
-                    <img src="https://www.vinmec.com/static/img/vinmec-facebook.f6895e5f77a5.jpg" height="30">
+                    <span class="secondary-key">
+                        <mat-icon>local_hospital</mat-icon>
+                        {{ element.hospital_user_id }}
+                    </span>
                     <div class="width-container"></div>
-                    <span class="secondary-key">{{ 'Vinmec' }}</span>
+                    <span class="secondary-key">
+                        <mat-icon>person</mat-icon>
+                        {{ element.hospital_employee_name }}
+                    </span>
                     <div class="width-container"></div>
-                    <span class="secondary-key"><mat-icon>phone</mat-icon>{{'042.666.888.999'}}</span>
+                    <span class="secondary-key">
+                        <mat-icon>phone</mat-icon>
+                        {{ element.hospital_phone_number }}
+                    </span>
                 </div>
         
                 <div class="width-container"></div>
@@ -81,4 +94,5 @@
             </div>
         </ng-container>
     </div>
+    <div class="padding-for-the-list"></div>
 </div>

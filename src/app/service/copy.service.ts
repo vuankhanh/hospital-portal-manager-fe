@@ -18,7 +18,7 @@ export class CopyService {
       let check:boolean = this.clipboardService.copyFromContent(content);
       check ? resolve('Đã sao chép') : reject('Đã có lỗi xảy ra');
     }).then(success=>{
-      this.toastService.showShortToast(success+' '+key, 'Tiêu đề');
-    }).catch(err=>this.toastService.showShortToast('Lỗi Cmnr', 'Tiêu đề'))
+      this.toastService.showShortToast(success+' '+key, 'Sao Chép');
+    }).catch(err=>this.toastService.showShortToast('Đã có lỗi xảy ra!!!...', 'Sao Chép'))
   }
 }

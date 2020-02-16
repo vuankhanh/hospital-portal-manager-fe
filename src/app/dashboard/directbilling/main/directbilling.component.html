@@ -1,7 +1,7 @@
 <mat-tab-group [selectedIndex]="tabPageService.getPageNumber()" (selectedTabChange)="tabPageService.setPageNumber($event.index)">
     <mat-tab>
         <ng-template matTabLabel>
-            Kiểm tra quyền lợi<span *ngIf="directbillingTheRequirementService.getBadgeTheRequestments() | async as badge" matBadge="{{badge}}" matBadgeOverlap="false"></span>
+            <span>Kiểm tra quyền lợi <span *ngIf="opdRequestProcessingBadge | async as badge">{{ '('+badge+')' }}</span></span>
         </ng-template>
 
         <app-proccess-the-requrements></app-proccess-the-requrements>
@@ -9,7 +9,7 @@
     </mat-tab>
     <mat-tab>
         <ng-template matTabLabel>
-            Yêu cầu hoàn trả<span matBadge="{{badgeRefundRequest}}" matBadgeOverlap="false" [matBadgeHidden]="badgeRefundRequest === 0"></span>
+            <span>Yêu cầu hoàn trả <span *ngIf="opdRequestForRefundProcessingBadge | async as badge">{{ '('+badge+')' }}</span></span>
         </ng-template>
 
         <app-proccess-the-refund-request></app-proccess-the-refund-request>

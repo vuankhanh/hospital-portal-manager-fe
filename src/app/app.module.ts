@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule, MatCardModule, MatToolbarModule, MatButtonToggleModule } from '@angular/material';
 import { MdePopoverModule } from '@material-extended/mde';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -33,12 +34,16 @@ import { TheRequirementsComponent } from './dashboard/the-requirements/the-requi
 import { RequestARefundComponent } from './dashboard/request-a-refund/request-a-refund.component';
 import { DirectbillingComponent } from './dashboard/directbilling/main/directbilling.component';
 
-import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { ProccessTheRequrementsComponent } from './dashboard/directbilling/proccess-the-requrements/proccess-the-requrements.component';
 import { ProccessTheRefundRequestComponent } from './dashboard/directbilling/proccess-the-refund-request/proccess-the-refund-request.component';
 import { ConfirmActionComponent } from './modal/confirm-action/confirm-action.component';
+import { DiaryComponent } from './dashboard/directbilling/diary/diary.component';
+import { CaseNumberComponent } from './modal/case-number/case-number.component';
+import { ReasonInputComponent } from './modal/reason-input/reason-input.component';
+
+import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 @NgModule({
-  entryComponents:[ConfirmActionComponent],
+  entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -48,7 +53,10 @@ import { ConfirmActionComponent } from './modal/confirm-action/confirm-action.co
     DirectbillingComponent,
     ProccessTheRequrementsComponent,
     ProccessTheRefundRequestComponent,
-    ConfirmActionComponent
+    ConfirmActionComponent,
+    DiaryComponent,
+    CaseNumberComponent,
+    ReasonInputComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +73,7 @@ import { ConfirmActionComponent } from './modal/confirm-action/confirm-action.co
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,

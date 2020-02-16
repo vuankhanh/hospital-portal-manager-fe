@@ -1,0 +1,16 @@
+<div mat-dialog-content>
+    <p>Hành động này là "Từ Chối"</p>
+    <p>Bạn hãy chắc chắn với hành động của mình và nhập lý do.</p>
+    <mat-form-field>
+        <mat-label>Lý do từ chối</mat-label>
+        <input matInput [(ngModel)]="reason" (change)="typingChange($event)">
+    </mat-form-field>
+</div>
+<div class="warning-container" *ngIf="showWarning">
+    <mat-icon>warning</mat-icon>
+    <span>Lý do phải có nhiều hơn 10 ký tự</span>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Huỷ</button>
+    <button mat-button (click)="validData()" cdkFocusInitial>Chắc chắn</button>
+</div>

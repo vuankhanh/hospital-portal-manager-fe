@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiHost: 'http://118.27.192.15:7777/',
+  socketHost: 'ws://118.27.192.15:7777/wsi'
 };
 
 /*

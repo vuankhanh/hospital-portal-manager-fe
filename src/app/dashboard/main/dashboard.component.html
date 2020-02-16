@@ -19,10 +19,14 @@
     <div class="leftPage">
         <div class="list-menu">
             <div class="item-menu" *ngFor="let sideMenu of sideMenus; let i = index" [routerLink]="[sideMenu.routerLink]" routerLinkActive="active" #rla="routerLinkActive">
-                <span class="text-menu">{{ sideMenu.name }}</span>
+                <span class="text-menu">
+                    {{ sideMenu.name }}
+                    <span *ngIf="i === 0 && sideMenu.badge$ | async as badge" matBadge="{{badge}}" atBadgePosition="above before" [matBadgeHidden]="!badge || badge === 0 "></span>
+                    <span *ngIf="i != 0 && sideMenu.badge$ | async as badge">{{'('+badge+')'}}</span>
+                </span>
+                
                 <span class="icon-menu">
-                    <span *ngIf="sideMenu.badge$ | async as badge" matBadge="{{badge}}" atBadgePosition="above before" [matBadgeHidden]="!badge || badge === 0 "></span>
-                    <span class="notification-number" *ngIf="i===1 && theRequirementService.getBadgeTheRequestments() | async as badge">{{ '('+badge+')' }}</span>
+                    <!-- <span *ngIf="sideMenu.badge$ | async as badge" matBadge="{{badge}}" atBadgePosition="above before" [matBadgeHidden]="!badge || badge === 0 "></span> -->
                     <mat-icon *ngIf="rla.isActive">arrow_forward</mat-icon>
                 </span>
             </div>

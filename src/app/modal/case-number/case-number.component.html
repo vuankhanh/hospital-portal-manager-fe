@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <p>Nhập Case Number của Hệ Thống.</p>
+  <mat-form-field>
+    <mat-label>Case Number</mat-label>
+    <input matInput [(ngModel)]="data">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Huỷ</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Xong</button>
+</div>

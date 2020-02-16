@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { WebsocketService } from './websocket.service';
+import { WebsocketService } from './api/websocket.service';
 
-import { TheRequirementService } from './the-requirement.service';
-import { DirectbillingTheRequirementService } from './directbilling-the-requirement.service';
+import { ListTicketsService } from './list-tickets.service';
 
 import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators'
@@ -25,8 +24,7 @@ export class TimelineOfRequestsService {
   listenCountdown$: BehaviorSubject<Timer> = new BehaviorSubject<Timer>(null);
   constructor(
     private webSocketService: WebsocketService,
-    private theRequirementService: TheRequirementService,
-    private directbillingTheRequirementService: DirectbillingTheRequirementService
+    private listTicketsService: ListTicketsService
   ) {
     this.fakeCountdown().subscribe(timer=>{
       this.listenCountdown$.next(timer);
@@ -35,7 +33,7 @@ export class TimelineOfRequestsService {
 
   fakeCountdown():Observable<Timer>{
     let countdown = new Date();
-    countdown.setMinutes(countdown.getMinutes()+6);
+    countdown.setMinutes(countdown.getMinutes()+20);
     // countdown.setSeconds(countdown.getSeconds()+10);
 
     return new Observable(observer=>{
@@ -66,12 +64,12 @@ export class TimelineOfRequestsService {
     this.webSocketService.listenWebSocket().subscribe(res=>{
       let response = JSON.parse(res);
       console.log(response);
-      if(response.data.check_benefit_status==='WAITING'){
-        this.theRequirementService.setTheRequestments(response.data);
-      }else if(response.data.check_benefit_status==='IN PROCESS'){
-        this.directbillingTheRequirementService.setTheRequestments(response.data);
-      }
+      this.listTicketsService.changePropertyTicket(response.data);
     })
+  }
+
+  getListTicket(){
+
   }
 
   calcCountdown(duration: number, createdCases: string, serverTimes: string){

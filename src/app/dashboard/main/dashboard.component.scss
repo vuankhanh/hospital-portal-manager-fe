@@ -61,12 +61,6 @@
                 color:#999999;
                 outline: none;
                 .text-menu{
-
-                }
-                .icon-menu{
-                    display: flex;
-                    align-items: center;
-                    height: 24px;
                     .mat-badge{
                         height: 22px;
                         .mat-badge-content{
@@ -74,6 +68,12 @@
                             background: #154897;
                         }
                     }
+                }
+                .icon-menu{
+                    display: flex;
+                    align-items: center;
+                    height: 24px;
+                    
                 }
             }
             .item-menu:hover{

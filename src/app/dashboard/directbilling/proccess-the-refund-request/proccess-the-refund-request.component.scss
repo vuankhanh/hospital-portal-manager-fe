@@ -54,7 +54,7 @@
                 }
             }
             .text-container{
-                width: 300px;
+                width: 400px;
                 p{
                     display: flex;
                     justify-content: space-between;
@@ -69,22 +69,6 @@
             .text-container, .icon-container{
                 display: flex;
                 flex-direction: column;
-            }
-
-            .setcaseno-container{
-                p{
-                    margin: 0;
-                    input{
-                        padding: 5px;
-                        border: none;
-                        outline: none;
-                    }
-                    .caseNoFocus{
-                        padding: 5px;
-                        border: 1px solid #999999;
-                        border-radius: 5px;
-                    }
-                }
             }
             
         }
