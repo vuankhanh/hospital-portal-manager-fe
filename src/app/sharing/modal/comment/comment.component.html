@@ -1,0 +1,53 @@
+
+<div class="conversation-container" *ngIf="detailTickets && detailTickets.comments" >
+
+    <div class="content-container" [ngStyle]="{'padding.px':detailTickets.comments.length === 0 ? '0' : '15' }">
+
+        <div class="itemListContent" *ngFor="let comment of detailTickets.comments" [style.flex-direction]="comment.insmart_user_id === 1 ? 'row-reverse' : 'row'">
+            <div class="textContent" [style.background]="comment.insmart_user_id === 1 ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
+                <p [style.color]="comment.insmart_user_id === 1 ? 'white' : '#333333'">
+                    {{ comment.content.message }}
+                </p>
+                <div>
+                    <img src="{{url | urlAttachment}}" alt="" *ngFor="let url of comment.content.Files">
+                </div>
+            </div>
+
+            <div class="dateTime" [style.flex-direction]="comment.insmart_user_id === 1 ? 'row-reverse' : 'row'">
+                <div class="space"></div>
+                <p>
+                    <span>{{ comment.created_at | date:'dd/MM/yyyy' }} </span>
+                    <span>{{ comment.created_at | date:'HH:mm' }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-content-container">
+
+        <mat-icon (click)="file.click()">attach_file</mat-icon>
+
+        <div class="width-container"></div>
+        
+        <textarea
+            type="text"
+            [(ngModel)]="messageConversation"
+            class="soft-element"
+            placeholder="Nội dung yêu cầu"
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+        >
+        <!-- <div style="posit">asdasd</div> -->
+        </textarea>
+
+        <div class="width-container"></div>
+        <button class="soft-element" (click)="sendMessage($event, ticket.ID)">
+            Gửi
+        </button>
+    </div>
+</div>
+
+<input type="file" accept="image/*" #file (change)="onAttachmentSelect($event)" multiple style="display:none;">

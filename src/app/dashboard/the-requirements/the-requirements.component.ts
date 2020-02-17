@@ -58,7 +58,6 @@ export class TheRequirementsComponent implements OnInit {
       if(res.code === 200){
         this.router.navigate(['/dashboard/directbilling']).then(_=>{
           this.listTicketsService.changePropertyTicket(res.data);
-          // this.theRequirementService.removeTheRequestments(element);
         });
       }
     });

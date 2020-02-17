@@ -3,9 +3,10 @@ import { MatDialog, MatMenuTrigger } from '@angular/material';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
-import { ConfirmActionComponent } from '../../../modal/confirm-action/confirm-action.component';
-import { CaseNumberComponent } from '../../../modal/case-number/case-number.component';
-import { ReasonInputComponent } from '../../../modal/reason-input/reason-input.component';
+import { ConfirmActionComponent } from '../../../sharing/modal/confirm-action/confirm-action.component';
+import { CaseNumberComponent } from '../../../sharing/modal/case-number/case-number.component';
+import { ReasonInputComponent } from '../../../sharing/modal/reason-input/reason-input.component';
+import { CommentComponent } from '../../../sharing/modal/comment/comment.component';
 
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
 import { ConfirmService } from '../../../service/api/put/confirm.service';
@@ -27,7 +28,6 @@ export class ProccessTheRequrementsComponent implements OnInit {
   @ViewChild('contentContainer', {static:false}) private contentContainer: ElementRef
   countDownTimer: Timer;
   processCase:any = [];
-  messageConversation:string='';
 
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
@@ -94,45 +94,12 @@ export class ProccessTheRequrementsComponent implements OnInit {
     })
   }
 
-  sendMessage(event, id){
-    if(this.messageConversation){
-      this.dialog.open(ConfirmActionComponent, {
-        width: '500px',
-        data: {
-          title: 'Xác nhận',
-          question: 'Bạn chắc chắn sẽ gửi Yêu Cầu Bổ Sung Thông Tin chứ ?',
-          btnReject: 'Huỷ',
-          btnConfirm: 'Chắc chắn!'
-        }
-      }).afterClosed().subscribe(result=>{
-        if(result){
-          this.addMessage(id, this.messageConversation);
-          this.messageConversation='';
-          try {
-            this.contentContainer.nativeElement.scrollTop = this.contentContainer.nativeElement.scrollHeight;
-          } catch (error) {
-            console.log(error);
-          }
-        }else{
-          console.log('Huỷ Modal');
-        }
-      })
-    }
-  }
-
-  addMessage(id, messageConversation){
-    let message: Message;
-    message = {
-      from:1,
-      content:messageConversation,
-      date: new Date()
-    };
-    
-    for(let requestForRefund of this.processCase){
-      if(requestForRefund.id === id){
-        requestForRefund.conversation.push(message);
-      }
-    }
+  addComment(ticket){
+    this.dialog.open(CommentComponent,{
+      data: ticket
+    }).afterOpen().subscribe(status=>{
+      console.log(status);
+    })
   }
 
   confirm(element){

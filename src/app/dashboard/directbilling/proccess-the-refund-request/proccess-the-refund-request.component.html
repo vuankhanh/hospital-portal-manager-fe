@@ -209,11 +209,20 @@
             [class.background-pending-status-overtime]="countDownTimer.minutes == -1 && countDownTimer.seconds == -1">
         
                 <div class="clinic-information">
-                    <img src="https://www.vinmec.com/static/img/vinmec-facebook.f6895e5f77a5.jpg" height="30">
+                    <span class="secondary-key">
+                        <mat-icon>local_hospital</mat-icon>
+                        {{ element.hospital_user_id }}
+                    </span>
                     <div class="width-container"></div>
-                    <span class="secondary-key">{{ 'Vinmec' }}</span>
+                    <span class="secondary-key">
+                        <mat-icon>person</mat-icon>
+                        {{ element.hospital_employee_name }}
+                    </span>
                     <div class="width-container"></div>
-                    <span class="secondary-key"><mat-icon>phone</mat-icon>{{'042.666.888.999'}}</span>
+                    <span class="secondary-key">
+                        <mat-icon>phone</mat-icon>
+                        {{ element.hospital_phone_number }}
+                    </span>
                 </div>
         
                 <div class="width-container"></div>

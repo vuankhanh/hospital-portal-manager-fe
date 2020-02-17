@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatMenuTrigger } from '@angular/material';
 
-import { ConfirmActionComponent } from '../../../modal/confirm-action/confirm-action.component';
-import { CaseNumberComponent } from '../../../modal/case-number/case-number.component';
+import { ConfirmActionComponent } from '../../../sharing/modal/confirm-action/confirm-action.component';
+import { CaseNumberComponent } from '../../../sharing/modal/case-number/case-number.component';
 
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
 import { TabPageService } from 'src/app/service/tab-page.service';
 import { TraTuService } from '../../../service/tra-tu.service';
-import { FakeRequestARefundService } from '../../../service/fake-request-a-refund.service';
 import { CopyService } from '../../../service/copy.service';
 import { ListTicketsService } from '../../../service/list-tickets.service';
 import { LocalStorageService } from '../../../service/local-storage.service';

@@ -36,14 +36,16 @@ import { DirectbillingComponent } from './dashboard/directbilling/main/directbil
 
 import { ProccessTheRequrementsComponent } from './dashboard/directbilling/proccess-the-requrements/proccess-the-requrements.component';
 import { ProccessTheRefundRequestComponent } from './dashboard/directbilling/proccess-the-refund-request/proccess-the-refund-request.component';
-import { ConfirmActionComponent } from './modal/confirm-action/confirm-action.component';
+import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
 import { DiaryComponent } from './dashboard/directbilling/diary/diary.component';
-import { CaseNumberComponent } from './modal/case-number/case-number.component';
-import { ReasonInputComponent } from './modal/reason-input/reason-input.component';
+import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
+import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.component';
+import { CommentComponent } from './sharing/modal/comment/comment.component';
 
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
+import { UrlAttachmentPipe } from './pipes/url-attachment.pipe';
 @NgModule({
-  entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent],
+  entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent, CommentComponent],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -56,7 +58,9 @@ import { TimelineOfRequestsService } from './service/timeline-of-requests.servic
     ConfirmActionComponent,
     DiaryComponent,
     CaseNumberComponent,
-    ReasonInputComponent
+    ReasonInputComponent,
+    CommentComponent,
+    UrlAttachmentPipe
   ],
   imports: [
     BrowserModule,

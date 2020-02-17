@@ -18,7 +18,7 @@ export class ListTicketService {
     });
 
     let params = new HttpParams();
-    params = params.append('from', '2020-02-16');
+    // params = params.append('from', '2020-02-16');
     if(parameters){
       if(parameters.status){
         params = params.append('status', parameters.status);

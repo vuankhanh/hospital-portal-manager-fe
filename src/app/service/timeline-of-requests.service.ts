@@ -64,6 +64,7 @@ export class TimelineOfRequestsService {
     this.webSocketService.listenWebSocket().subscribe(res=>{
       let response = JSON.parse(res);
       console.log(response);
+      
       this.listTicketsService.changePropertyTicket(response.data);
     })
   }

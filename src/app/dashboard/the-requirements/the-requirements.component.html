@@ -1,7 +1,7 @@
 <div class="container">
 
     <div *ngFor="let element of theRequestments;">
-        <ng-container>
+        <ng-container *ngIf="countDownTimer">
     
             <div class="background-pending">   
                 <div class="information-container">
@@ -87,8 +87,8 @@
                 <div class="width-container"></div>
         
                 <div class="button-container">
-                    <button (click)="startProccess(element)" [disabled]="element.checked">
-                        <span>{{ !element.checked ? 'Bắt đầu xử lý': 'Đã có người xử lý' }}</span>
+                    <button (click)="startProccess(element)">
+                        <span >Bắt đầu xử lý</span>
                     </button>
                 </div>
             </div>

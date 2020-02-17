@@ -30,22 +30,38 @@ export class ListTicketsService {
   }
 
   changePropertyTicket(ticket){
-    let checkExistTicket: boolean;
-
-    ticket.files = JSON.parse(ticket.files);
-    ticket.costs = JSON.parse(ticket.costs);
-
-    for(let i=0; i<this.listTickets.length;i++){
-      if(this.listTickets[i].ID === ticket.ID){
-        checkExistTicket=true;
-        this.listTickets[i] = ticket;
+    if(ticket){
+      if(ticket.type){
+        for(let i=0; i<this.listTickets.length;i++){
+          if(this.listTickets[i].ID === ticket.ticket_id){
+            if(!this.listTickets[i].comment){
+              this.listTickets[i].comment=[];
+            }
+            this.listTickets[i].comment.push(ticket);
+            this.listTickets[i].unread = true;
+          }
+        }
+      }else{
+        let checkExistTicket: boolean;
+    
+        ticket.files = JSON.parse(ticket.files);
+        ticket.costs = JSON.parse(ticket.costs);
+    
+        for(let i=0; i<this.listTickets.length;i++){
+          if(this.listTickets[i].ID === ticket.ID){
+            checkExistTicket=true;
+            this.listTickets[i] = ticket;
+          }
+        }
+    
+        if(!checkExistTicket){
+          this.listTickets.push(ticket);
+        }
       }
+      this.listTicket$.next(this.listTickets);
+    }else{
+      return 'Có gì đó bị lỗi rồi';
     }
 
-    if(!checkExistTicket){
-      this.listTickets.push(ticket);
-    }
-
-    this.listTicket$.next(this.listTickets);
   }
 }

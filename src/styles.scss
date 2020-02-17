@@ -80,3 +80,23 @@ app-confirm-action{
         justify-content: flex-end;
     }
 }
+
+.blink{
+    background: red;
+    animation: blink 2s linear infinite;
+    span{
+        animation: textBlink 2s linear infinite;
+    }
+}
+
+@keyframes blink{
+    0%{background: orange;}
+    50%{background: white;}
+    100%{background: orange;}
+}
+
+@keyframes textBlink{
+    0%{color: #ededed;}
+    50%{color: #333333;}
+    100%{color: #ededed;}
+}
