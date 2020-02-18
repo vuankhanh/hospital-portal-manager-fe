@@ -23,6 +23,11 @@
                 p{
                     overflow-wrap: break-word;
                 }
+                .attachments{
+                    img{
+                        width: 30px;
+                    }
+                }
             }
             .dateTime{
                 align-items: center;

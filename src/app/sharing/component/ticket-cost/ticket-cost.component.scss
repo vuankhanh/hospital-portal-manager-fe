@@ -1,0 +1,50 @@
+form{
+    table{
+        width: 100%;
+        .editContainer{
+            display: flex;
+            input{
+                padding: 5px 10px;
+                border: none;
+                border-bottom: 1px solid #999999;
+                border-radius: 5px;
+            }
+            .input-normal-note{
+                width: 100%;
+            }
+        }
+        .mat-cell{
+            padding-right: 24px;
+        }
+        .mat-footer-cell{
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 24px;
+            .totalEditContainer{
+                display: flex;
+                flex-direction: column;
+                
+            }
+            textarea{
+                width: 100%;
+                border-radius: 5px;
+                padding: 10px;
+            }
+        }
+    }
+
+    .overBenefit{
+        display: flex;
+        align-items: center;
+        mat-checkbox{
+            font-size: 12px;
+        }
+        input{
+            padding: 5px 10px;
+            border: none;
+            border-bottom: 1px solid #999999;
+            border-radius: 5px;
+        }
+    }
+}

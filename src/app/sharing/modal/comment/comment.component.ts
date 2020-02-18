@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ConfirmActionComponent } from '../confirm-action/confirm-action.component';
@@ -6,13 +6,15 @@ import { ConfirmActionComponent } from '../confirm-action/confirm-action.compone
 import { LocalStorageService } from '../../../service/local-storage.service';
 import { UpdateChatService } from '../../../service/api/put/update-chat.service';
 import { DetailTicketService } from '../../../service/api/get/detail-ticket.service';
-
+import { ListTicketsService } from '../../../service/list-tickets.service';
 @Component({
   selector: 'app-comment',
-  templateUrl: './comment.component.html',
+  templateUrl: './comment.component.html',  
   styleUrls: ['./comment.component.scss']
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit, AfterViewInit {
+  @ViewChild('scrollMe', { static: false }) private contentContainer: ElementRef;
+  @ViewChildren("messageContainer") messageContainers: QueryList<ElementRef>;
   messageConversation:string = '';
   attachments:any = [];
 
@@ -23,7 +25,8 @@ export class CommentComponent implements OnInit {
     private dialog: MatDialog,
     private localStorageService: LocalStorageService,
     private updateChatService: UpdateChatService,
-    private detailTicketService: DetailTicketService
+    private detailTicketService: DetailTicketService,
+    private listTicketsService: ListTicketsService
   ) {
     console.log(this.ticket);
   }
@@ -37,11 +40,31 @@ export class CommentComponent implements OnInit {
       if(comments.code === 200 && comments.message === 'OK'){
         this.detailTickets = comments.data;
         for(let detailTicket of this.detailTickets.comments ){
-          detailTicket.content = JSON.parse(detailTicket.content)
+          detailTicket.content = JSON.parse(detailTicket.content);
         }
         console.log(this.detailTickets);
+        this.scrollToBottom();
       }
-    })
+    });
+
+    this.listTicketsService.listenCommentTicket.subscribe(comment=>{
+      let comments: any = comment;
+      if(comments){
+        console.log(comments);
+        
+        comments.content = JSON.parse(comments.content);
+        if(comment.ticket_id === this.detailTickets.ID){
+          this.detailTickets.comments.push(comment);
+        }
+      }
+    });
+  }
+
+  ngAfterViewInit(){
+    this.scrollToBottom(); // For messsages already present
+    this.messageContainers.changes.subscribe((list: QueryList<ElementRef>) => {
+      this.scrollToBottom(); // For messages added later
+    });
   }
 
   sendMessage(event, ticketId){
@@ -53,16 +76,18 @@ export class CommentComponent implements OnInit {
         files: this.attachments
       }
 
-      console.log(comment);
       if(comment.content.length > 0 || comment.files.length > 0){
         this.updateChatService.uploadComments(ticketId, token, comment).then(res=>{
           let response:any = res;
           if(response.code === 200 && response.message==='OK'){
+            response.data.content = JSON.parse(response.data.content);
+            this.detailTickets.comments.push(response.data);
             console.log(response.data);
           }
         },err=>console.log(err));
       }
       this.messageConversation='';
+      this.attachments = [];
 
       // this.dialog.open(ConfirmActionComponent, {
       //   width: '500px',
@@ -97,7 +122,6 @@ export class CommentComponent implements OnInit {
   }
 
   onAttachmentSelect(event){
-    console.log(event);
     let files = event.target.files;
     for(let file of files){
       let reader = new FileReader();
@@ -108,6 +132,12 @@ export class CommentComponent implements OnInit {
         );
       }
     }
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.contentContainer.nativeElement.scrollTop = this.contentContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 
 }

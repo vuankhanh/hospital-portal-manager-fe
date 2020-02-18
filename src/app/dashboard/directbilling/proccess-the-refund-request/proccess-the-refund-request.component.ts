@@ -3,6 +3,8 @@ import { MatDialog, MatMenuTrigger } from '@angular/material';
 
 import { ConfirmActionComponent } from '../../../sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from '../../../sharing/modal/case-number/case-number.component';
+import { CommentComponent } from '../../../sharing/modal/comment/comment.component';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
 import { TabPageService } from 'src/app/service/tab-page.service';
@@ -11,7 +13,8 @@ import { CopyService } from '../../../service/copy.service';
 import { ListTicketsService } from '../../../service/list-tickets.service';
 import { LocalStorageService } from '../../../service/local-storage.service';
 import { UpdateCasenumberService } from '../../../service/api/put/update-casenumber.service';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { UpdateTicketCostService } from '../../../service/api/put/update-ticket-cost.service';
+import { ConfirmService } from '../../../service/api/put/confirm.service';
 @Component({
   selector: 'app-proccess-the-refund-request',
   templateUrl: './proccess-the-refund-request.component.html',
@@ -19,17 +22,15 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 })
 export class ProccessTheRefundRequestComponent implements OnInit {
   @ViewChild(MatMenuTrigger,{static:false}) contextMenu: MatMenuTrigger;
-  @ViewChild('limitTheRemainingBenefits',{static:false} ) limitTheRemainingBenefits: ElementRef
+  costForm: FormGroup;
   requestForRefunds:any;
   countDownTimer: Timer;
   displayedColumns: string[] = ['category', 'money', 'note'];
   displayedColumnsFix: string[] = ['money', 'note'];
 
-  messageConversation:string='';
   contextMenuPosition = { x: '0px', y: '0px' };
 
-  editCostTable: any;
-
+  editCostTable:any = [];
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
@@ -39,13 +40,14 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     private listTicketsService: ListTicketsService,
     public copyService: CopyService,
     private localStorageService: LocalStorageService,
-    private updateCasenumberService: UpdateCasenumberService
+    private updateCasenumberService: UpdateCasenumberService,
+    private updateTicketCostService: UpdateTicketCostService,
+    private confirmService: ConfirmService
   ) {}
 
   ngOnInit() {
     this.listTicketsService.listenListTicket.subscribe(resTickets=>{
       if(resTickets){
-        // console.log(resTickets);
         this.requestForRefunds = resTickets.filter(ticket=>ticket.costs.length>0 && ticket.insmart_status === 'TAKEN');
         console.log(this.requestForRefunds);
       }
@@ -90,56 +92,49 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     })
   }
 
-  changeCheckBox(event, index){
-    this.requestForRefunds[0].benefitLimitExceeded = event.checked;
-    if(this.requestForRefunds[0].benefitLimitExceeded){
-      setTimeout(() => {
-        this.limitTheRemainingBenefits.nativeElement.focus();
-      }, 150);
-    }
+  addComment(ticket){
+    this.dialog.open(CommentComponent,{
+      data: ticket
+    }).afterOpen().subscribe(status=>{
+      console.log(status);
+    })
   }
 
-  sendMessage(event, id){
-    if(this.messageConversation){
-      this.dialog.open(ConfirmActionComponent, {
-        width: '500px',
-        data: {
-          title: 'Xác nhận',
-          question: 'Bạn chắc chắn sẽ gửi Yêu Cầu Bổ Sung Thông Tin chứ ?',
-          btnReject: 'Huỷ',
-          btnConfirm: 'Chắc chắn!'
+  editTableCostDetail(ticket){
+    console.log(ticket);
+    this.editCostTable = ticket.costs;
+  }
+
+  costFormChange(event){
+    console.log('Change');
+    
+    this.costForm = <FormGroup>event;
+  }
+
+  startProccess(requestForRefund){
+    console.log(this.costForm.valid);
+    console.log(this.costForm.value);
+    let token = this.localStorageService.getLocalStorage('token');
+    if(this.costForm && this.costForm.valid){
+      this.updateTicketCostService.insmartUpdateCosts(requestForRefund.ID, this.costForm.value, token).subscribe(res=>{
+        let response: any = res;
+        console.log(response);
+        
+        if(response.code === 200 && response.message==='OK'){
+          alert('Đã xong');
         }
-      }).afterClosed().subscribe(result=>{
-        if(result){
-          this.addMessage(id, this.messageConversation);
-          this.messageConversation='';
-        }else{
-          console.log('Huỷ Modal');
-          
+      })
+    }else{
+      this.confirmService.insmartConfirm(requestForRefund, token).subscribe(res=>{
+        let response: any = res;
+        console.log(response);
+        
+        if(response.code === 200 && response.message==='OK'){
+          alert('Đã Đồng Ý xong');
         }
       })
     }
-  }
-
-  addMessage(id, messageConversation){
-    let message: Message;
-    message = {
-      from:1,
-      content:messageConversation,
-      date: new Date()
-    };
     
-    for(let requestForRefund of this.requestForRefunds){
-      if(requestForRefund.id === id){
-        requestForRefund.conversation.push(message);
-      }
-    }
-  }
-
-  
-
-  startProccess(requestForRefund){
-    console.log(requestForRefund);
   }
 }
 

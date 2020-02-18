@@ -41,9 +41,11 @@ import { DiaryComponent } from './dashboard/directbilling/diary/diary.component'
 import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
 import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.component';
 import { CommentComponent } from './sharing/modal/comment/comment.component';
+import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
 
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { UrlAttachmentPipe } from './pipes/url-attachment.pipe';
+import { CurrencyDirective } from './directives/currency.directive';
 @NgModule({
   entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent, CommentComponent],
   declarations: [
@@ -60,7 +62,9 @@ import { UrlAttachmentPipe } from './pipes/url-attachment.pipe';
     CaseNumberComponent,
     ReasonInputComponent,
     CommentComponent,
-    UrlAttachmentPipe
+    UrlAttachmentPipe,
+    TicketCostComponent,
+    CurrencyDirective
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,7 @@
 .item-list{
-
+    .primary-key{
+        min-width: 200px;
+    }
     .background-pending-status-overtime{
         background: #b71111 !important;
         mat-icon{
@@ -38,8 +40,8 @@
     
     .background-pending{
         display: flex;
+        flex-direction: column;
         padding: 15px;
-        align-items: center;
         justify-content: space-between;
         border-top: 10px solid #ededed;
         border-bottom: 1px solid #ededed;
@@ -58,11 +60,7 @@
                 p{
                     display: flex;
                     justify-content: space-between;
-                    align-items: center;
                     margin: 0;
-                    .secondary-key{
-                        padding: 2px;
-                    }
                 }
             }
     
@@ -70,19 +68,26 @@
                 display: flex;
                 flex-direction: column;
             }
-            
+        }
+        .coordion-container{
+            button{
+                padding: 5px;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                width: 150px;
+                justify-content: space-between;
+                outline: none;
+                mat-icon{
+                    transition: transform 0.45s;
+                }
+            }
         }
     }
     
     .refund-request-container{
         border-bottom: 1px solid #ededed;
         padding:15px;
-        display: flex;
-        flex-direction: column;
-        .refund-request-left-container{
-            width: 100%;
-            display: flex;
-        }
         .refund-request-diagnose{
             margin:0;
             display: flex;
@@ -90,133 +95,33 @@
             .primary-key{
                 width: 100px;
             }
-        }
-        .conversation-container{
-            .itemListContent{
-                display: flex;
-                flex-direction: row;
-                margin-bottom: 5px;
-                .textContent{
-                    color: #333333;
-                    font-size: 14px;
-                    background: #ededed;
-                    border-radius: 5px;
-                    max-width: 60%;
-                    padding:5px;
-                }
-                .dateTime{
-                    align-items: center;
-                    display: flex;
-                    color: #999999;
-                    font-size: 12px;
-                    .space{
-                        width: 15px;
-                    }
-                    .p{
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                    }
-                }
-                p{
-                    margin: 0;
-                }
-            }
-            .input-content-container{
-                display: flex;
-                min-height: 30px;
-                padding: 5px 0;
-                align-items: center;
-                .soft-element{ 
-                    border-radius: 5px;
-                    border: 0.5px solid #ededed;
-                }
-                input, textarea{
-                    width: 100%;
-                    padding: 0 5px;
-                }
-                textarea{
-                    min-height: 30px !important;
-                    max-height: unset !important;
-                }
-                button{
-                    padding: 0 15px;
-                    height: 30px;
-                    color: #154897;
-                    border: 1px solid #154897 !important;
-                }
-            }
-        }
-        table{
-            width: 100%;
-            .input-normal-note{
-                border: 1px solid #ededed;
-                height: 24px;
-                border-radius: 5px;
-                outline: none;
-                padding: 0 5px;
-            }
-            .mat-cell{
-                min-width: 150px;
-                max-width: 200px;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                .edit-container{
-                    display: flex;
-                    align-items: center;
-                    padding: 5px 0;
-                    input{
-                        height: 24px;
-                        width: 100px;
-                        border: 1px solid #ededed;
-                        padding-left: 5px;
-                        font-family: Roboto,"Helvetica Neue",sans-serif;
-                        font-size:14px;
-                    }
-                    button{
-                        padding: 4px;
-                        display: flex;
-                        background: #ededed;
-                        color: green;
-                        border: none;
-                        mat-icon{
-                            height: 20px;
-                            width: 20px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        }
-                    }
-                }
-            }
-            .mat-footer-cell{
+
+            .inputDiagnostic{
+                color: #ff7522;
+                font-size: 16px;
+                text-transform: uppercase;
                 font-weight: bold;
-                .input-total-note{
-                    width: 100%;
-                    padding:5px;
-                    max-height: unset !important;
+            }
+        }
+        .refund-request-left-container{
+            display: flex;
+            table{
+                width: 100%;
+                .mat-cell{
+                    min-width: 150px;
+                    max-width: 200px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
-                .totalEditContainer{
-                    display: flex;
-                    align-items: center;
-                    font-size: 12px;
-                    .benefitLimitExceededContainer{
-                        mat-checkbox{
-                            font-weight: normal;
-                        }
-                        input{
-                            border: 1px solid #ededed;
-                            height: 24px;
-                            border-radius: 5px;
-                            outline: none;
-                            padding: 0 5px;
-                            font-family: Roboto,"Helvetica Neue",sans-serif;
-                        }
-                    }
+                .mat-footer-cell{
+                    font-weight: bold;
                 }
+            }
+            app-ticket-cost{
+                width: 100%;
             }
         }
     }
@@ -225,7 +130,7 @@
         padding: 5px 15px;
         display: flex;
         justify-content: space-between;
-        border-bottom:1px solid #ededed;
+        border-bottom: 1px solid #ededed;
         .clinic-information{
             display: flex;
             align-items: center;
@@ -243,7 +148,6 @@
             display: flex;
             align-items: center;
             button{
-                width: 100px;
                 height: 30px;
                 padding: 5px;
                 border-radius: 5px;

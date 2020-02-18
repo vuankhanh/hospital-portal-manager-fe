@@ -12,6 +12,9 @@ export class ListTicketsService {
   listTicket$:BehaviorSubject<any> = new BehaviorSubject<any>(this.listTickets);
   listenListTicket: Observable<any> = this.listTicket$.asObservable();
 
+  listenCommentTicket$:BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  listenCommentTicket: Observable<any> = this.listenCommentTicket$.asObservable();
+  
   constructor(
   ) {}
 
@@ -31,15 +34,18 @@ export class ListTicketsService {
 
   changePropertyTicket(ticket){
     if(ticket){
-      if(ticket.type){
-        for(let i=0; i<this.listTickets.length;i++){
-          if(this.listTickets[i].ID === ticket.ticket_id){
-            if(!this.listTickets[i].comment){
-              this.listTickets[i].comment=[];
+      if(ticket.type === 'COMMENT'){
+        if(ticket.hospital_user_id === 1){
+          for(let i=0; i<this.listTickets.length;i++){
+            if(this.listTickets[i].ID === ticket.ticket_id){
+              if(!this.listTickets[i].comment){
+                this.listTickets[i].comment=[];
+              }
+              this.listTickets[i].comment.push(ticket);
+              this.listTickets[i].unread = true;
             }
-            this.listTickets[i].comment.push(ticket);
-            this.listTickets[i].unread = true;
           }
+          this.listenCommentTicket$.next(ticket);
         }
       }else{
         let checkExistTicket: boolean;

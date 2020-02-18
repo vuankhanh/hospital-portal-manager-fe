@@ -1,0 +1,52 @@
+<form #pushRequest="ngForm" [formGroup]="costTableForm" class="request-for-refund">
+    <div formArrayName="costs">
+        <table mat-table [dataSource]="costTableForm.get('costs').controls" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="money">
+                <th mat-header-cell *matHeaderCellDef>Số tiền</th>
+                <td mat-cell *matCellDef="let requestForRefund; let i = index">
+                    <div [formGroupName]="i" class="editContainer">
+                        <input type="number" placeholder="Số tiền" formControlName="cost_amount">
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <div class="totalEditContainer">
+                        {{ total | currency:"VND"}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
+                <td mat-cell *matCellDef="let requestForRefund; let i=index">
+                    <div [formGroupName]="i" class="editContainer">
+                        <input type="text" class="input-normal-note" formControlName="cost_note">
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <div class="editContainer">
+                        <textarea
+                            matInput
+                            cdkTextareaAutosize
+                            #autosize="cdkTextareaAutosize"
+                            cdkAutosizeMinRows="1"
+                            cdkAutosizeMaxRows="5"
+                        ></textarea>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsFix"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsFix;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumnsFix"></tr>
+        </table>
+    </div>
+
+    <div class="height-container"></div>
+
+    <div class="overBenefit" formGroupName="opd_cost_details">
+        <mat-checkbox [(ngModel)]="overBenefit" [ngModelOptions]="{standalone: true}">Quá Quyền Lợi</mat-checkbox>
+        <div class="width-container"></div>
+        <input #limitTheRemainingBenefits formControlName="maximum_claim_value" *ngIf="overBenefit" type="number" placeholder="Hạn Mức Quyền Lợi">
+    </div>
+</form>
