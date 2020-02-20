@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -44,7 +45,7 @@ import { CommentComponent } from './sharing/modal/comment/comment.component';
 import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
 
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
-import { UrlAttachmentPipe } from './pipes/url-attachment.pipe';
+import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
 @NgModule({
   entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent, CommentComponent],
@@ -62,7 +63,6 @@ import { CurrencyDirective } from './directives/currency.directive';
     CaseNumberComponent,
     ReasonInputComponent,
     CommentComponent,
-    UrlAttachmentPipe,
     TicketCostComponent,
     CurrencyDirective
   ],
@@ -71,6 +71,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     AppRoutingModule,
     DashboardRoutingModule,
     HttpClientModule,
+    HttpModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -94,6 +95,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     MatMenuModule,
     MatRippleModule,
     MatTooltipModule,
+    SharedModule,
     
     ClipboardModule,
     ToastrModule.forRoot({

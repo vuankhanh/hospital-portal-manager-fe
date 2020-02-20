@@ -117,54 +117,6 @@
 
                     <app-ticket-cost [ticket]="element" (costFormChange)="costFormChange($event)"></app-ticket-cost>
 
-                    <!-- <table mat-table [dataSource]="editCostTable" class="mat-elevation-z8" *ngIf="editCostTable">
-
-                        <ng-container matColumnDef="money">
-                            <th mat-header-cell *matHeaderCellDef>Số tiền</th>
-                            <td mat-cell *matCellDef="let requestForRefund; let i = index">
-                                <span *ngIf="!requestForRefund.checked" (click)="requestForRefund.checked = true">{{ requestForRefund.cost_amount | currency:"VND" }}</span>
-                                
-                                <div *ngIf="requestForRefund.checked" class="edit-container">
-                                    <input type="text" placeholder="Số tiền" value="{{ requestForRefund.value | number }}">
-                                    <button (click)="requestForRefund.checked = false">
-                                        <mat-icon>done</mat-icon>
-                                    </button>
-                                </div>
-                            </td>
-                            <td mat-footer-cell *matFooterCellDef>
-                                <div class="totalEditContainer">
-                                    {{countTotal(element.costs) | currency:"VND"}}
-                                    <div class="width-container"></div>
-                                    <div class="benefitLimitExceededContainer">
-                                        <mat-checkbox *ngIf="!element.benefitLimitExceeded" (change)="changeCheckBox($event, requestIndex)">Quá Quyền Lợi</mat-checkbox>
-                                        <input #limitTheRemainingBenefits *ngIf="element.benefitLimitExceeded" (blur)="element.benefitLimitExceeded=false" type="text" placeholder="Hạn Mức Quyền Lợi">
-                                    </div>
-                                </div>
-                            </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="note">
-                            <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                            <td mat-cell *matCellDef="let requestForRefund">
-                                <input type="text" class="input-normal-note">
-                            </td>
-                            <td mat-footer-cell *matFooterCellDef>
-                                <textarea
-                                matInput
-                                cdkTextareaAutosize
-                                #autosize="cdkTextareaAutosize"
-                                cdkAutosizeMinRows="1"
-                                cdkAutosizeMaxRows="5"
-                                class="input-normal-note input-total-note"
-                                ></textarea>
-                            </td>
-                        </ng-container>
-    
-                        <tr mat-header-row *matHeaderRowDef="displayedColumnsFix"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumnsFix;"></tr>
-                        <tr mat-footer-row *matFooterRowDef="displayedColumnsFix"></tr>
-                    </table> -->
-
                 </div>
 
                 <div class="height-container"></div>

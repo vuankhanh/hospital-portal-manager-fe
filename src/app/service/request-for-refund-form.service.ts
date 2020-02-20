@@ -28,6 +28,7 @@ export class RequestForRefundFormService {
     const control = <FormArray>this.costForm.get('costs');
 
     tickets.costs.forEach(x=>{
+      x.cost_amount = x.cost_amount.toString().replace(/\D+/g, "").replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       control.push(this.createCostGroup(x.cost_name, x.cost_amount, x.cost_note));
     })
 
@@ -38,7 +39,7 @@ export class RequestForRefundFormService {
     return this.formBuilder.group({
       cost_name: [cost_name, Validators.required],
       cost_amount: [cost_amount],
-      cost_note: [cost_note],
+      cost_note: [''],
     });
   }
 

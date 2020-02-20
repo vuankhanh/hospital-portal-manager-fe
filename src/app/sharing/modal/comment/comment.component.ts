@@ -3,10 +3,15 @@ import { Component, OnInit, Inject, ViewChild, ElementRef, ViewChildren, QueryLi
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ConfirmActionComponent } from '../confirm-action/confirm-action.component';
 
+import { UrlAttachmentPipe } from '../../../pipes/url-attachment.pipe';
+
 import { LocalStorageService } from '../../../service/local-storage.service';
 import { UpdateChatService } from '../../../service/api/put/update-chat.service';
 import { DetailTicketService } from '../../../service/api/get/detail-ticket.service';
 import { ListTicketsService } from '../../../service/list-tickets.service';
+import { DownloadService } from '../../../service/download.service';
+
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',  
@@ -19,21 +24,27 @@ export class CommentComponent implements OnInit, AfterViewInit {
   attachments:any = [];
 
   detailTickets:any =[];
+
+  listenData$: Subscription;
+  listenSocket$: Subscription;
+  listentContainerChange$: Subscription;
   constructor(
     public dialogRef: MatDialogRef<CommentComponent>,
     @Inject(MAT_DIALOG_DATA) public ticket: any,
     private dialog: MatDialog,
+    private urlAttachmentPipe: UrlAttachmentPipe,
     private localStorageService: LocalStorageService,
     private updateChatService: UpdateChatService,
     private detailTicketService: DetailTicketService,
-    private listTicketsService: ListTicketsService
+    private listTicketsService: ListTicketsService,
+    private downloadService: DownloadService
   ) {
     console.log(this.ticket);
   }
 
   ngOnInit() {
     let token = this.localStorageService.getLocalStorage('token');
-    this.detailTicketService.getDetailTicket(token, this.ticket.ID).subscribe(comment=>{
+    this.listenData$ = this.detailTicketService.getDetailTicket(token, this.ticket.ID).subscribe(comment=>{
       let comments:any = comment;
       console.log(comment);
       
@@ -47,9 +58,9 @@ export class CommentComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.listTicketsService.listenCommentTicket.subscribe(comment=>{
+    this.listenSocket$ = this.listTicketsService.listenCommentTicket.subscribe(comment=>{
       let comments: any = comment;
-      if(comments){
+      if(comments && comments.id){
         console.log(comments);
         
         comments.content = JSON.parse(comments.content);
@@ -62,7 +73,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(){
     this.scrollToBottom(); // For messsages already present
-    this.messageContainers.changes.subscribe((list: QueryList<ElementRef>) => {
+    this.listentContainerChange$ = this.messageContainers.changes.subscribe((list: QueryList<ElementRef>) => {
       this.scrollToBottom(); // For messages added later
     });
   }
@@ -134,10 +145,26 @@ export class CommentComponent implements OnInit, AfterViewInit {
     }
   }
 
+  async downloadAttachments(urlsAttachmen){
+    if(urlsAttachmen && urlsAttachmen.length>0){
+      for(let urlAttachmen of urlsAttachmen){
+        let url = this.urlAttachmentPipe.transform(urlAttachmen);
+        console.log(url);
+        await this.downloadService.downloadFile(url);
+      }
+    }
+  }
+
   scrollToBottom(): void {
     try {
       this.contentContainer.nativeElement.scrollTop = this.contentContainer.nativeElement.scrollHeight;
     } catch(err) { }
+  }
+
+  ngOnDestroy(){
+    this.listenData$.unsubscribe();
+    this.listenSocket$.unsubscribe();
+    this.listentContainerChange$.unsubscribe();
   }
 
 }

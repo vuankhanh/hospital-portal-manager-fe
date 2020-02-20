@@ -113,29 +113,40 @@ export class ProccessTheRefundRequestComponent implements OnInit {
   }
 
   startProccess(requestForRefund){
-    console.log(this.costForm.valid);
-    console.log(this.costForm.value);
-    // let token = this.localStorageService.getLocalStorage('token');
-    // if(this.costForm && this.costForm.valid){
-    //   this.updateTicketCostService.insmartUpdateCosts(requestForRefund.ID, this.costForm.value, token).subscribe(res=>{
-    //     let response: any = res;
-    //     console.log(response);
+    let token = this.localStorageService.getLocalStorage('token');
+    if(this.costForm && this.costForm.valid){
+      this.updateTicketCostService.insmartUpdateCosts(requestForRefund.ID, this.parseToNumber(this.costForm.value), token).subscribe(res=>{
+        let response: any = res;
+        console.log(response);
         
-    //     if(response.code === 200 && response.message==='OK'){
-    //       alert('Đã xong');
-    //     }
-    //   })
-    // }else{
-    //   this.confirmService.insmartConfirm(requestForRefund, token).subscribe(res=>{
-    //     let response: any = res;
-    //     console.log(response);
+        if(response.code === 200 && response.message==='OK'){
+          alert('Đã xong');
+        }
+      })
+    }else{
+      this.confirmService.insmartConfirm(requestForRefund, token).subscribe(res=>{
+        let response: any = res;
+        console.log(response);
         
-    //     if(response.code === 200 && response.message==='OK'){
-    //       alert('Đã Đồng Ý xong');
-    //     }
-    //   })
-    // }
+        if(response.code === 200 && response.message==='OK'){
+          alert('Đã Đồng Ý xong');
+        }
+      })
+    }
     
+  }
+
+  parseToNumber(body: any){
+    if(body){
+      let arrayCosts = [];
+      for(let cost of body.costs ){
+        let cost_amount = cost.cost_amount.toString().replace(/,/gi, '');
+        cost.cost_amount = parseInt(cost_amount);
+        arrayCosts.push(cost);
+      }
+      body.costs = arrayCosts;
+      return body;
+    }
   }
 }
 

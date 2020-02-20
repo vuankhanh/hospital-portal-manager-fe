@@ -6,7 +6,7 @@
                 <th mat-header-cell *matHeaderCellDef>Số tiền</th>
                 <td mat-cell *matCellDef="let requestForRefund; let i = index">
                     <div [formGroupName]="i" class="editContainer">
-                        <input type="number" placeholder="Số tiền" formControlName="cost_amount">
+                        <input placeholder="$" formControlName="cost_amount" (keyup)="onInputCurrency($event, i)" (click)="$event.target.select()" required>
                     </div>
                 </td>
                 <td mat-footer-cell *matFooterCellDef>

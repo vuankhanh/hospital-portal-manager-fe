@@ -8,8 +8,9 @@
                     <p [style.color]="comment.insmart_user_id === 1 ? 'white' : '#333333'">
                         {{ comment.content.message }}
                     </p>
-                    <div class="attachments">
+                    <div class="attachments" *ngIf="comment.content.Files">
                         <img src="{{url | urlAttachment}}" alt="" *ngFor="let url of comment.content.Files">
+                        <button (click)="downloadAttachments(comment.content.Files)">Tải hết</button>
                     </div>
                 </div>
     
