@@ -1,6 +1,6 @@
 <form #pushRequest="ngForm" [formGroup]="costTableForm" class="request-for-refund">
     <div formArrayName="costs">
-        <table mat-table [dataSource]="costTableForm.get('costs').controls" class="mat-elevation-z8">
+        <table mat-table [dataSource]="costTableForm.get('costs')['controls']" class="mat-elevation-z8">
 
             <ng-container matColumnDef="money">
                 <th mat-header-cell *matHeaderCellDef>Số tiền</th>

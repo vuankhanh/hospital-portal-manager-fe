@@ -27,7 +27,7 @@ export class ProccessTheRequrementsComponent implements OnInit {
   @ViewChild(MatMenuTrigger,{static:false}) contextMenu: MatMenuTrigger;
   @ViewChild('contentContainer', {static:false}) private contentContainer: ElementRef
   countDownTimer: Timer;
-  processCase:any = [];
+  processCases:any = [];
 
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
@@ -50,27 +50,18 @@ export class ProccessTheRequrementsComponent implements OnInit {
     this.listTicketsService.listenListTicket.subscribe(resTickets=>{
       if(resTickets){
         // console.log(resTickets);
-        this.processCase = resTickets.filter(ticket=>{
+        this.processCases = resTickets.filter(ticket=>{
           return ticket.costs.length===0 && ticket.insmart_status === 'TAKEN';
         });
-        console.log(this.processCase);
+        for(let processCase of this.processCases){
+          processCase.countDown = this.timelineOfRequestsService.calcCountdown(15, processCase.created_at);
+        }
+        console.log(this.processCases);
       }
     })
-    this.countDownTime();
-    // this.delayActionService.countDown().subscribe(res=>{
-    //   this.value=res;
-    //   console.log(this.value);
-    // });
   }
 
-  ngOnInit() {
-  }
-
-  countDownTime(){
-    this.timelineOfRequestsService.listenCountdown$.subscribe(timer=>{
-      this.countDownTimer = timer;
-    });
-  }
+  ngOnInit() {}
 
   onRightClick(event: MouseEvent, element: any){
     event.preventDefault();

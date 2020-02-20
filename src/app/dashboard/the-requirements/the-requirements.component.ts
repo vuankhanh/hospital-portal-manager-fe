@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { TimelineOfRequestsService, Timer } from '../../service/timeline-of-requests.service';
+import { TimelineOfRequestsService, Timer, IInterval } from '../../service/timeline-of-requests.service';
 import { TakeService } from '../../service/api/put/take.service';
 import { TabPageService } from '../../service/tab-page.service';
 import { LocalStorageService } from '../../service/local-storage.service';
 import { TraTuService } from '../../service/tra-tu.service';
 import { ListTicketsService } from '../../service/list-tickets.service';
 
-import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { interval, Observable,  } from 'rxjs';
+import { map, } from 'rxjs/operators';
 @Component({
   selector: 'app-the-requirements',
   templateUrl: './the-requirements.component.html',
@@ -21,7 +21,7 @@ export class TheRequirementsComponent implements OnInit {
   constructor(
     private takeService: TakeService,
     private router: Router,
-    public timelineOfRequestsService: TimelineOfRequestsService,
+    private timelineOfRequestsService: TimelineOfRequestsService,
     private tabPageService: TabPageService,
     private localStorageService: LocalStorageService,
     public traTuService: TraTuService,
@@ -34,21 +34,17 @@ export class TheRequirementsComponent implements OnInit {
         this.theRequestments = resTickets.filter(ticket=>{
           return ticket.costs.length===0 && ticket.insmart_status === 'OPEN';
         });
+        for(let theRequestment of this.theRequestments){
+          theRequestment.countDown = this.timelineOfRequestsService.calcCountdown(15, theRequestment.created_at);
+        }
         console.log(this.theRequestments);
       }
-    })
-    this.countDownTime();
+    });
     
   }
 
   ngOnInit() {
     
-  }
-
-  countDownTime(){
-    this.timelineOfRequestsService.listenCountdown$.subscribe(timer=>{
-      this.countDownTimer = timer;
-    });
   }
 
   startProccess(element){

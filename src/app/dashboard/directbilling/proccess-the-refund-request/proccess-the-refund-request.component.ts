@@ -49,16 +49,13 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     this.listTicketsService.listenListTicket.subscribe(resTickets=>{
       if(resTickets){
         this.requestForRefunds = resTickets.filter(ticket=>ticket.costs.length>0 && ticket.insmart_status === 'TAKEN');
+        for(let requestForRefund of this.requestForRefunds){
+          requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.created_at);
+        }
         console.log(this.requestForRefunds);
       }
     });
-    this.countDownTime();
-  }
 
-  countDownTime(){
-    this.timelineOfRequestsService.listenCountdown$.subscribe(timer=>{
-      this.countDownTimer = timer;
-    });
   }
 
   countTotal(arrayNumber:any){
@@ -111,29 +108,33 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     this.costForm = <FormGroup>event;
   }
 
+  reject(ticket){
+
+  }
+
   startProccess(requestForRefund){
     console.log(this.costForm.valid);
     console.log(this.costForm.value);
-    let token = this.localStorageService.getLocalStorage('token');
-    if(this.costForm && this.costForm.valid){
-      this.updateTicketCostService.insmartUpdateCosts(requestForRefund.ID, this.costForm.value, token).subscribe(res=>{
-        let response: any = res;
-        console.log(response);
+    // let token = this.localStorageService.getLocalStorage('token');
+    // if(this.costForm && this.costForm.valid){
+    //   this.updateTicketCostService.insmartUpdateCosts(requestForRefund.ID, this.costForm.value, token).subscribe(res=>{
+    //     let response: any = res;
+    //     console.log(response);
         
-        if(response.code === 200 && response.message==='OK'){
-          alert('Đã xong');
-        }
-      })
-    }else{
-      this.confirmService.insmartConfirm(requestForRefund, token).subscribe(res=>{
-        let response: any = res;
-        console.log(response);
+    //     if(response.code === 200 && response.message==='OK'){
+    //       alert('Đã xong');
+    //     }
+    //   })
+    // }else{
+    //   this.confirmService.insmartConfirm(requestForRefund, token).subscribe(res=>{
+    //     let response: any = res;
+    //     console.log(response);
         
-        if(response.code === 200 && response.message==='OK'){
-          alert('Đã Đồng Ý xong');
-        }
-      })
-    }
+    //     if(response.code === 200 && response.message==='OK'){
+    //       alert('Đã Đồng Ý xong');
+    //     }
+    //   })
+    // }
     
   }
 }

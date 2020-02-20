@@ -36,15 +36,11 @@ export class RequestARefundComponent implements OnInit {
         this.refundRequests = resTickets.filter(ticket=>{
           return ticket.costs.length>0 && ticket.insmart_status === 'OPEN';
         });
+        for(let theRequestment of this.refundRequests){
+          theRequestment.countDown = this.timelineOfRequestsService.calcCountdown(15, theRequestment.created_at);
+        }
         console.log(this.refundRequests);
       }
-    });
-    this.countDownTime();
-  }
-
-  countDownTime(){
-    this.timelineOfRequestsService.listenCountdown$.subscribe(timer=>{
-      this.countDownTimer = timer;
     });
   }
 

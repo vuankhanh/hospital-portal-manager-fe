@@ -7,14 +7,14 @@
         [value]="value">
     </mat-progress-spinner>
     </div> -->
-    <div *ngFor="let element of processCase;">
-        <ng-container *ngIf="countDownTimer">
+    <div *ngFor="let element of processCases;">
+        <ng-container *ngIf="element.countDown | async as countDown">
     
             <div class="background-pending">   
                 <div class="information-container">
                     <div class="icon-container">
                         <mat-icon>schedule</mat-icon>
-                        <span >{{ ('0'+countDownTimer.minutes).slice(-2) +':'+ ('0'+countDownTimer.seconds).slice(-2) }}</span>
+                        <span >{{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}</span>
                     </div>
             
                     <div class="width-container"></div>
@@ -77,8 +77,8 @@
         
             </div>
     
-            <div class="last-container" [class.background-pending-status]="countDownTimer.minutes<=4"
-            [class.background-pending-status-overtime]="countDownTimer.minutes == -1 && countDownTimer.seconds == -1">
+            <div class="last-container" [class.background-pending-status]="countDown.minutes<=10"
+            [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1">
         
                 <div class="clinic-information">
                     <span class="secondary-key">
