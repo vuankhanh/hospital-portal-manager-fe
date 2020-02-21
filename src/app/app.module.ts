@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PushNotificationsModule } from 'ng-push';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -74,6 +75,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
+    PushNotificationsModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatListModule,

@@ -30,7 +30,13 @@ export class TicketCostComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.total = this.countTotal(this.ticket.costs);
     this.costTableForm = this.requestForRefundFormService.setForm(this.ticket);
-    console.log(this.costTableForm);
+    let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
+    for(let i = 0; i< formArray.controls.length; i++){
+      let value = formArray.controls[i];
+      let c = value as FormGroup;
+      let d = c.controls.cost_amount;
+      this.setFormat(formArray.controls, d.value, i  );
+    }
 
     this.costFormChange.next(this.costTableForm);
 
@@ -42,7 +48,6 @@ export class TicketCostComponent implements OnInit, OnDestroy {
 
   countTotal(arrayNumber:any){
     let total = 0;
-    console.log(this.parseToNumber(arrayNumber));
     this.parseToNumber(arrayNumber).forEach(element=>{
       total += parseInt(element.cost_amount);
     });
@@ -50,15 +55,15 @@ export class TicketCostComponent implements OnInit, OnDestroy {
   }
 
   onInputCurrency(event, i){
-    console.log(event);
-    console.log(i);
     let value = event.target.value;
+    let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
+    this.setFormat(formArray.controls, value, i);
+  }
 
-    let array: FormArray = this.costTableForm.controls['costs'] as FormArray;
-    let c = array.controls[i] as FormGroup;
+  setFormat(formArray ,value, i){
+    let c = formArray[i] as FormGroup;
     let d = c.controls.cost_amount;
     d.setValue(value.toString().replace(/\D+/g, "").replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-    console.log(d);
   }
 
   parseToNumber(costs: any){
@@ -68,9 +73,7 @@ export class TicketCostComponent implements OnInit, OnDestroy {
         let cost_amount = cost.cost_amount.toString().replace(/,/gi, '');
         cost.cost_amount = parseInt(cost_amount);
         arrayCosts.push(cost);
-        console.log(cost.cost_amount);
       }
-      console.log(arrayCosts);
       return arrayCosts;
     }
   }

@@ -56,7 +56,6 @@ export class ProccessTheRequrementsComponent implements OnInit {
         for(let processCase of this.processCases){
           processCase.countDown = this.timelineOfRequestsService.calcCountdown(15, processCase.created_at);
         }
-        console.log(this.processCases);
       }
     })
   }

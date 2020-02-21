@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { WebsocketService } from './api/websocket.service';
 
 import { ListTicketsService } from './list-tickets.service';
+import { PushNotificationsService} from 'ng-push';
 
 import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { map } from 'rxjs/operators'
@@ -29,15 +30,17 @@ export interface RefundRequest{
 export class TimelineOfRequestsService {
   constructor(
     private webSocketService: WebsocketService,
-    private listTicketsService: ListTicketsService
+    private listTicketsService: ListTicketsService,
+    private _pushNotifications: PushNotificationsService
   ) {
+    this._pushNotifications.requestPermission();
   }
 
   listentWebSocket(){
     this.webSocketService.listenWebSocket().subscribe(res=>{
       let response = JSON.parse(res);
       console.log(response);
-      
+      this.showNotification();
       this.listTicketsService.changePropertyTicket(response.data);
     })
   }
@@ -68,5 +71,16 @@ export class TimelineOfRequestsService {
 
   pipeDurationToMinutes(duration: number){
     return duration *60*1000;
+  }
+
+  showNotification(){
+    let options = { //set options
+      body: "Ticket thứ 69. Trạng thái 'PENDING' sang 'CHỜ ĐỢI'",
+      icon: "assets/imgs/sheild.png" //adding an icon
+    }
+     this._pushNotifications.create('Insmart xử lý rồi này', options).subscribe( //creates a notification
+      res => console.log(res),
+      err => console.log(err)
+    );
   }
 }

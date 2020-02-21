@@ -52,7 +52,6 @@ export class ProccessTheRefundRequestComponent implements OnInit {
         for(let requestForRefund of this.requestForRefunds){
           requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.created_at);
         }
-        console.log(this.requestForRefunds);
       }
     });
 
@@ -69,7 +68,6 @@ export class ProccessTheRefundRequestComponent implements OnInit {
 
   onRightClick(event: MouseEvent, element: any){
     event.preventDefault();
-    console.log(element);
     
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
@@ -92,19 +90,14 @@ export class ProccessTheRefundRequestComponent implements OnInit {
   addComment(ticket){
     this.dialog.open(CommentComponent,{
       data: ticket
-    }).afterOpen().subscribe(status=>{
-      console.log(status);
     })
   }
 
   editTableCostDetail(ticket){
-    console.log(ticket);
     this.editCostTable = ticket.costs;
   }
 
   costFormChange(event){
-    console.log('Change');
-    
     this.costForm = <FormGroup>event;
   }
 
