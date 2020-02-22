@@ -1,8 +1,8 @@
 <div class="container">
 
     <div *ngFor="let element of theRequestments;">
-        <ng-container *ngIf="element.countDown | async as countDown">
-    
+        <div *ngIf="element.countDown | async as countDown; else loading">
+
             <div class="background-pending">   
                 <div class="information-container">
                     <div class="icon-container">
@@ -66,8 +66,11 @@
         
             </div>
     
-            <div class="last-container" [class.background-pending-status]="countDown.minutes<=10"
-            [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1">
+            <div
+                class="last-container"
+                [class.background-pending-status]="countDown.minutes<=10"
+                [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1"
+            >
         
                 <div class="clinic-information">
                     <span class="secondary-key">
@@ -94,7 +97,13 @@
                     </button>
                 </div>
             </div>
-        </ng-container>
+        </div>
+
+        <ng-template #loading>
+            <div class="loadding-container">
+                <mat-spinner [diameter]="24"></mat-spinner>
+            </div>
+        </ng-template>
     </div>
     <div class="padding-for-the-list"></div>
 </div>

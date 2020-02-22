@@ -60,6 +60,13 @@ export class TicketCostComponent implements OnInit, OnDestroy {
     this.setFormat(formArray.controls, value, i);
   }
 
+  onMaximumChange(event){
+    let value = event.target.value;
+    let formArray: FormGroup = this.costTableForm.controls['opd_cost_details'] as FormGroup;
+    let control = formArray.controls.maximum_claim_value;
+    control.setValue(value.toString().replace(/\D+/g, "").replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  }
+
   setFormat(formArray ,value, i){
     let c = formArray[i] as FormGroup;
     let d = c.controls.cost_amount;

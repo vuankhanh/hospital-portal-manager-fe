@@ -4,8 +4,8 @@
 
             <ng-container matColumnDef="money">
                 <th mat-header-cell *matHeaderCellDef>Số tiền</th>
-                <td mat-cell *matCellDef="let requestForRefund; let i = index">
-                    <div [formGroupName]="i" class="editContainer">
+                <td mat-cell *matCellDef="let requestForRefund; let i = index; let last=last">
+                    <div [formGroupName]="i" class="editContainer" *ngIf="!last">
                         <input placeholder="$" formControlName="cost_amount" (keyup)="onInputCurrency($event, i)" (focus)="$event.target.select()" required>
                     </div>
                 </td>
@@ -18,21 +18,23 @@
 
             <ng-container matColumnDef="note">
                 <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                <td mat-cell *matCellDef="let requestForRefund; let i=index">
+                <td mat-cell *matCellDef="let requestForRefund; let i=index; let last=last">
                     <div [formGroupName]="i" class="editContainer">
-                        <input type="text" class="input-normal-note" formControlName="cost_note">
+                        <input type="text" class="input-normal-note" formControlName="cost_note" *ngIf="!last">
+                        <div class="editContainer" *ngIf="last">
+                            <textarea
+                                matInput
+                                cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="5"
+                                placeholder="Ghi chú tổng"
+                            ></textarea>
+                        </div>
                     </div>
                 </td>
                 <td mat-footer-cell *matFooterCellDef>
-                    <div class="editContainer">
-                        <textarea
-                            matInput
-                            cdkTextareaAutosize
-                            #autosize="cdkTextareaAutosize"
-                            cdkAutosizeMinRows="1"
-                            cdkAutosizeMaxRows="5"
-                        ></textarea>
-                    </div>
+                    
                 </td>
             </ng-container>
 
@@ -47,6 +49,13 @@
     <div class="overBenefit" formGroupName="opd_cost_details">
         <mat-checkbox [(ngModel)]="overBenefit" [ngModelOptions]="{standalone: true}">Quá Quyền Lợi</mat-checkbox>
         <div class="width-container"></div>
-        <input #limitTheRemainingBenefits formControlName="maximum_claim_value" *ngIf="overBenefit" type="number" placeholder="Hạn Mức Quyền Lợi">
+        <input
+            #limitTheRemainingBenefits
+            (keyup)="onMaximumChange($event)"
+            formControlName="maximum_claim_value"
+            *ngIf="overBenefit"
+            placeholder="Hạn Mức Quyền Lợi"
+            (focus)="$event.target.select()"
+        >
     </div>
 </form>

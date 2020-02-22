@@ -3,14 +3,18 @@ form{
         width: 100%;
         .editContainer{
             display: flex;
+            width: 100%;
             input{
                 padding: 5px 10px;
                 border: none;
                 border-bottom: 1px solid #999999;
                 border-radius: 5px;
             }
-            .input-normal-note{
+            textarea{
                 width: 100%;
+                border-radius: 5px;
+                padding: 10px;
+                border: 1px solid #999999;
             }
         }
         .mat-cell{
@@ -24,13 +28,8 @@ form{
             .totalEditContainer{
                 display: flex;
                 flex-direction: column;
-                
             }
-            textarea{
-                width: 100%;
-                border-radius: 5px;
-                padding: 10px;
-            }
+            
         }
     }
 

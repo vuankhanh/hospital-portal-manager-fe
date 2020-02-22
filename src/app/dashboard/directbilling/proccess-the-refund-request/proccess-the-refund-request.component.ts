@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatMenuTrigger } from '@angular/material';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { ConfirmActionComponent } from '../../../sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from '../../../sharing/modal/case-number/case-number.component';
 import { CommentComponent } from '../../../sharing/modal/comment/comment.component';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { ReasonInputComponent } from '../../../sharing/modal/reason-input/reason-input.component';
 
 import { TimelineOfRequestsService, Timer } from '../../../service/timeline-of-requests.service';
 import { TabPageService } from 'src/app/service/tab-page.service';
@@ -15,6 +16,7 @@ import { LocalStorageService } from '../../../service/local-storage.service';
 import { UpdateCasenumberService } from '../../../service/api/put/update-casenumber.service';
 import { UpdateTicketCostService } from '../../../service/api/put/update-ticket-cost.service';
 import { ConfirmService } from '../../../service/api/put/confirm.service';
+import { RejectService } from '../../../service/api/put/reject.service';
 @Component({
   selector: 'app-proccess-the-refund-request',
   templateUrl: './proccess-the-refund-request.component.html',
@@ -42,7 +44,8 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private updateCasenumberService: UpdateCasenumberService,
     private updateTicketCostService: UpdateTicketCostService,
-    private confirmService: ConfirmService
+    private confirmService: ConfirmService,
+    private rejectService: RejectService
   ) {}
 
   ngOnInit() {
@@ -93,20 +96,27 @@ export class ProccessTheRefundRequestComponent implements OnInit {
     })
   }
 
-  editTableCostDetail(ticket){
-    this.editCostTable = ticket.costs;
-  }
-
   costFormChange(event){
     this.costForm = <FormGroup>event;
   }
 
   reject(ticket){
-
+    let token = this.localStorageService.getLocalStorage('token');
+    this.dialog.open(ReasonInputComponent).afterClosed().subscribe(reason=>{
+      if(reason && reason.length >10){
+        this.rejectService.insmartReject(ticket.ID, reason, token).subscribe(response=>{
+          if(response.code === 200 && response.message==='OK'){
+            this.listTicketsService.changePropertyTicket(response.data);
+          }
+        })
+      }
+    })
   }
 
   startProccess(requestForRefund){
     let token = this.localStorageService.getLocalStorage('token');
+    console.log(this.costForm);
+    console.log(this.costForm.valid);
     if(this.costForm && this.costForm.valid){
       this.updateTicketCostService.insmartUpdateCosts(requestForRefund.ID, this.parseToNumber(this.costForm.value), token).subscribe(res=>{
         let response: any = res;
@@ -114,15 +124,6 @@ export class ProccessTheRefundRequestComponent implements OnInit {
         
         if(response.code === 200 && response.message==='OK'){
           alert('Đã xong');
-        }
-      })
-    }else{
-      this.confirmService.insmartConfirm(requestForRefund, token).subscribe(res=>{
-        let response: any = res;
-        console.log(response);
-        
-        if(response.code === 200 && response.message==='OK'){
-          alert('Đã Đồng Ý xong');
         }
       })
     }
@@ -137,6 +138,8 @@ export class ProccessTheRefundRequestComponent implements OnInit {
         cost.cost_amount = parseInt(cost_amount);
         arrayCosts.push(cost);
       }
+      let maximum_claim_value = body.opd_cost_details.maximum_claim_value.toString().replace(/,/gi, '');
+      body.opd_cost_details.maximum_claim_value = parseInt(maximum_claim_value);
       body.costs = arrayCosts;
       return body;
     }
