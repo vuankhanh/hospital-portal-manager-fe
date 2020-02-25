@@ -44,6 +44,7 @@ import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.
 import { CommentComponent } from './sharing/modal/comment/comment.component';
 import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
 
+import { TitleService } from './service/title.service';
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
@@ -104,7 +105,8 @@ import { CurrencyDirective } from './directives/currency.directive';
       autoDismiss: true
     })
   ],
-  providers: [ 
+  providers: [
+    TitleService,
     TimelineOfRequestsService
   ],
   bootstrap: [AppComponent]

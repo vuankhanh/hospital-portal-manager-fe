@@ -27,7 +27,7 @@ const dashboardModuleRoutes: Routes = [
                 path: 'therequirements',
                 component: TheRequirementsComponent,
                 data: { 
-                    title: 'Không Tìm Thấy Tự Động',
+                    title: 'Kiểm tra Quyền Lợi',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }
@@ -35,7 +35,7 @@ const dashboardModuleRoutes: Routes = [
                 path: 'requestarefund',
                 component: RequestARefundComponent,
                 data: { 
-                    title: 'Yêu Cầu Hoàn Trả',
+                    title: 'Yêu cầu Hoàn Trả',
                     shouldReuse: true,
                     animation: 'RefundRequest'
                 }

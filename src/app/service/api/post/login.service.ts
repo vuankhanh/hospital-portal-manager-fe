@@ -52,12 +52,6 @@ export class LoginService {
     let getServerConfig = this.systemConfigurationService.getSystemConfiguration(token).toPromise();
     let getListTicket = this.listTicketService.getListTicket(token, { pageSize: 5000 }).toPromise();
 
-    Promise.all([getServerConfig, getListTicket]).then(data=>{
-      console.log(data);
-      let datas: any = data;
-      if(datas[1].code === 200 && datas[1].message==='OK'){
-        this.listTicketsService.getAll(datas[1].data);
-      }
-    }).catch(err=>console.log(err));
+    return Promise.all([getServerConfig, getListTicket]);
   }
 }

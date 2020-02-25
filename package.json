@@ -28,6 +28,7 @@
     "ng-push": "^0.2.2",
     "ngx-clipboard": "^12.3.0",
     "ngx-toastr": "^11.3.0",
+    "ngx-webstorage-service": "^4.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

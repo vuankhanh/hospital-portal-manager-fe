@@ -3,6 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 
 import { slideInAnimation } from '../../animations/usually-use';
 
+import { AuthenticationService } from '../../service/authentication.service';
 import { TabPageService } from 'src/app/service/tab-page.service';
 import { ListTicketsService } from '../../service/list-tickets.service';
 
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
   opdRequestForRefundBadge: Observable<number> = this.opdRequestForRefundBadge$.asObservable();
   constructor(
     private router: Router,
+    private authenticationService: AuthenticationService,
     public tabPageService: TabPageService,
     private listTicketsService: ListTicketsService
   ) {
@@ -67,6 +69,7 @@ export class DashboardComponent implements OnInit {
 
   logout(){
     console.log('Logout');
+    this.authenticationService.logout();
   }
 }
 export interface SideMenu{
