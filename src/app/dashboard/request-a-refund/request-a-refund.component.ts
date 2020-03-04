@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { TimelineOfRequestsService, Timer, RefundRequest } from '../../service/timeline-of-requests.service';
-import { TabPageService } from 'src/app/service/tab-page.service';
 import { TraTuService } from '../../service/tra-tu.service';
 import { ListTicketsService } from '../../service/list-tickets.service';
 import { TakeService } from '../../service/api/put/take.service';
@@ -20,7 +19,6 @@ export class RequestARefundComponent implements OnInit {
   constructor(
     private router: Router,
     public timelineOfRequestsService: TimelineOfRequestsService,
-    private tabPageService: TabPageService,
     public traTuService: TraTuService,
     private listTicketsService: ListTicketsService,
     private takeService: TakeService,
@@ -30,18 +28,18 @@ export class RequestARefundComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listTicketsService.listenListTicket.subscribe(resTickets=>{
-      if(resTickets){
+    // this.listTicketsService.listenNoneCostsOpen.subscribe(resTickets=>{
+    //   if(resTickets){
         
-        this.refundRequests = resTickets.filter(ticket=>{
-          return ticket.costs.length>0 && ticket.insmart_status === 'OPEN';
-        });
-        for(let theRequestment of this.refundRequests){
-          theRequestment.countDown = this.timelineOfRequestsService.calcCountdown(15, theRequestment.created_at);
-        }
-        console.log(this.refundRequests);
-      }
-    });
+    //     this.refundRequests = resTickets.data.filter(ticket=>{
+    //       return ticket.costs.length>0 && ticket.insmart_status === 'OPEN';
+    //     });
+    //     for(let theRequestment of this.refundRequests){
+    //       theRequestment.countDown = this.timelineOfRequestsService.calcCountdown(15, theRequestment.created_at);
+    //     }
+    //     console.log(this.refundRequests);
+    //   }
+    // });
   }
 
   countTotal(arrayNumber:any){
@@ -57,14 +55,13 @@ export class RequestARefundComponent implements OnInit {
   }
 
   startProccess(element){
-    let token = this.localStorageService.getLocalStorage('token');
-    this.takeService.insmartTake(element.ID ,token).subscribe(res=>{
+    let userData = this.localStorageService.getLocalStorage('token');
+    this.takeService.insmartTake(element.ID ,userData.token).subscribe(res=>{
       if(res.code === 200){
         console.log(res);
         
         this.router.navigate(['/dashboard/directbilling']).then(_=>{
-          this.listTicketsService.changePropertyTicket(res.data);
-          this.tabPageService.setPageNumber(1);
+          // this.listTicketsService.changePropertyTicket(res.data);
         });
       }
     });

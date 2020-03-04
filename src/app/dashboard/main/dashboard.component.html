@@ -21,8 +21,8 @@
             <div class="item-menu" *ngFor="let sideMenu of sideMenus; let i = index" [routerLink]="[sideMenu.routerLink]" routerLinkActive="active" #rla="routerLinkActive">
                 <span class="text-menu">
                     {{ sideMenu.name }}
-                    <span *ngIf="i === 0 && sideMenu.badge$ | async as badge" matBadge="{{badge}}" atBadgePosition="above before" [matBadgeHidden]="!badge || badge === 0 "></span>
-                    <span *ngIf="i != 0 && sideMenu.badge$ | async as badge">{{'('+badge+')'}}</span>
+                    <span *ngIf="i === 0 && sideMenu.badge$ | async as response" matBadge="{{response.data.length}}" atBadgePosition="above before" [matBadgeHidden]="!response.data || response.data.length === 0 "></span>
+                    <span *ngIf="i != 0 && sideMenu.badge$ | async as response">{{response.data.length>0 ? '('+response.data.length+')' : ''}}</span>
                 </span>
                 
                 <span class="icon-menu">

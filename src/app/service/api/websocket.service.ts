@@ -32,6 +32,7 @@ export class WebsocketService {
           }
         };
       } catch (error) {
+        console.log(error);
         observer.error(error);
       }
     });

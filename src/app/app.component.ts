@@ -25,16 +25,21 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(){
-    let token = this.localStorageService.getLocalStorage('token');
-    this.loginService.thenLogin(token).then(data=>{
-      console.log(data);
-      let datas: any = data;
-      if(datas[1].code === 200 && datas[1].message==='OK'){
-        this.listTicketsService.getAll(datas[1].data);
-      }
-    }).catch(err=>{
-      this.router.navigate(['/login']);
-      console.log(err);
-    });
+    let userData = this.localStorageService.getLocalStorage('token');
+    if(userData && userData.token){
+      this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
+        console.log(data);
+        let datas: any = data;
+        if(datas[1].code === 200 && datas[1].message==='OK'){
+          this.listTicketsService.getDirectBillingTaken(datas[1]);
+        }
+        if(datas[2].code === 200 && datas[2].message==='OK'){
+          this.listTicketsService.getTicketsOpen(datas[2]);
+        }
+      }).catch(err=>{
+        this.router.navigate(['/login']);
+        console.log(err);
+      });
+    }
   }
 }

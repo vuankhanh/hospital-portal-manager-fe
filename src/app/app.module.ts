@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PushNotificationsModule } from 'ng-push';
@@ -20,6 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -34,22 +36,24 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/main/dashboard.component';
 import { TheRequirementsComponent } from './dashboard/the-requirements/the-requirements.component';
 import { RequestARefundComponent } from './dashboard/request-a-refund/request-a-refund.component';
-import { DirectbillingComponent } from './dashboard/directbilling/main/directbilling.component';
+import { DirectbillingComponent } from './dashboard/directbilling/directbilling.component';
+import { PendingComponent } from './dashboard/pending/pending.component';
 
-import { ProccessTheRequrementsComponent } from './dashboard/directbilling/proccess-the-requrements/proccess-the-requrements.component';
-import { ProccessTheRefundRequestComponent } from './dashboard/directbilling/proccess-the-refund-request/proccess-the-refund-request.component';
 import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
 import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.component';
 import { CommentComponent } from './sharing/modal/comment/comment.component';
 import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
+import { ImageShowComponent } from './sharing/modal/image-show/image-show.component';
 
 import { TitleService } from './service/title.service';
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
+
+
 @NgModule({
-  entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent, CommentComponent],
+  entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent, CommentComponent, ImageShowComponent],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -57,14 +61,14 @@ import { CurrencyDirective } from './directives/currency.directive';
     TheRequirementsComponent,
     RequestARefundComponent,
     DirectbillingComponent,
-    ProccessTheRequrementsComponent,
-    ProccessTheRefundRequestComponent,
+    PendingComponent,
     ConfirmActionComponent,
     CaseNumberComponent,
     ReasonInputComponent,
     CommentComponent,
     TicketCostComponent,
-    CurrencyDirective
+    CurrencyDirective,
+    ImageShowComponent
   ],
   imports: [
     BrowserModule,
@@ -93,6 +97,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     MatBadgeModule,
     MatTabsModule,
     MatTableModule,
+    MatPaginatorModule,
     MatMenuModule,
     MatRippleModule,
     MatTooltipModule,
@@ -107,7 +112,8 @@ import { CurrencyDirective } from './directives/currency.directive';
   ],
   providers: [
     TitleService,
-    TimelineOfRequestsService
+    TimelineOfRequestsService,
+    { provide : LocationStrategy , useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,63 @@
+<div class="container" *ngIf="response && response.data?.length>0">
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="response.data" matSort class="mat-elevation-z8">
+            
+            <!-- Count Down -->
+            <ng-container matColumnDef="countdown">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Giờ đếm ngược </th>
+                <td mat-cell *matCellDef="let element" class="countdownCell">
+                    <ng-container *ngIf="element.countDown | async as countDown">
+                        <p>
+                            <mat-icon>schedule</mat-icon>
+                            {{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}
+                        </p>
+                    </ng-container>
+                    
+                </td>
+            </ng-container>
+
+            <!-- Id Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Trường hợp số </th>
+                <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+            </ng-container>
+            
+            <!-- Loại hình điều trị -->
+            <ng-container matColumnDef="ill_cause">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Loại hình điều trị </th>
+                <td mat-cell *matCellDef="let element">{{traTuService.illCauses[element.ill_cause-1].name}}</td>
+            </ng-container>
+            
+            <!-- Họ và Tên -->
+            <ng-container matColumnDef="fullname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ và Tên </th>
+                <td mat-cell *matCellDef="let element"> {{element.fullname}} </td>
+            </ng-container>
+            
+            <!-- Ngày sinh -->
+            <ng-container matColumnDef="dob">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày sinh </th>
+                <td mat-cell *matCellDef="let element"> {{element.dob}} </td>
+            </ng-container>
+
+            <!-- Nút Chọn Xử Lý -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                <td mat-cell *matCellDef="let element" class="actionCell">
+                    <button (click)="startProccess(element)">Bắt đầu xử lý</button>
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator
+            [length]="length"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="pageChangeEvent($event)"
+            showFirstLastButtons
+        ></mat-paginator>
+    </div>
+</div>

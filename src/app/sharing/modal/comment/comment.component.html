@@ -1,20 +1,23 @@
-
 <div class="conversation-container" *ngIf="detailTickets && detailTickets.comments">
 
     <div #scrollMe class="content-container" [ngStyle]="{'padding.px':detailTickets.comments.length === 0 ? '0' : '15' }">
         <ng-container #messageContainer *ngFor="let comment of detailTickets.comments">
-            <div class="itemListContent" [style.flex-direction]="comment.insmart_user_id === 1 ? 'row-reverse' : 'row'">
-                <div class="textContent" [style.background]="comment.insmart_user_id === 1 ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
-                    <p [style.color]="comment.insmart_user_id === 1 ? 'white' : '#333333'">
+            <div class="itemListContent" [style.flex-direction]="comment.insmart_user_id === userData.data.id ? 'row-reverse' : 'row'">
+                <div class="textContent" [style.background]="comment.insmart_user_id === userData.data.id ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
+                    <p [style.color]="comment.insmart_user_id === userData.data.id ? 'white' : '#333333'">
                         {{ comment.content.message }}
                     </p>
                     <div class="attachments" *ngIf="comment.content.Files">
-                        <img src="{{url | urlAttachment}}" alt="" *ngFor="let url of comment.content.Files">
+                        <img
+                            src="{{url | urlAttachment}}"
+                            *ngFor="let url of comment.content.Files; let index = index"
+                            (click)="showImage(comment.content.Files, index)"
+                        >
                         <button (click)="downloadAttachments(comment.content.Files)">Tải hết</button>
                     </div>
                 </div>
     
-                <div class="dateTime" [style.flex-direction]="comment.insmart_user_id === 1 ? 'row-reverse' : 'row'">
+                <div class="dateTime" [style.flex-direction]="comment.insmart_user_id === userData.data.id ? 'row-reverse' : 'row'">
                     <div class="space"></div>
                     <p>
                         <span>{{ comment.created_at | date:'dd/MM/yyyy' }} </span>
@@ -26,11 +29,9 @@
     </div>
 
     <div class="input-content-container">
-
         <mat-icon (click)="file.click()">attach_file</mat-icon>
 
         <div class="width-container"></div>
-        
         <textarea
             type="text"
             [(ngModel)]="messageConversation"
@@ -42,13 +43,18 @@
             cdkAutosizeMinRows="1"
             cdkAutosizeMaxRows="5"
         >
-        <!-- <div style="posit">asdasd</div> -->
         </textarea>
 
         <div class="width-container"></div>
-        <button class="soft-element" (click)="sendMessage($event, ticket.ID)">
+        <button class="soft-element" (click)="sendMessage($event, IDticket)">
             Gửi
         </button>
+    </div>
+
+    <div class="attachment-container" *ngIf="attachments.length>0">
+        <ng-container *ngFor="let attachment of attachments">
+            <img src="{{attachment.urlShow}}">
+        </ng-container>
     </div>
 </div>
 

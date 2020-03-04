@@ -1,7 +1,9 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
 import { ConfirmActionComponent } from '../confirm-action/confirm-action.component';
+import { ImageShowComponent } from '../image-show/image-show.component';
 
 import { UrlAttachmentPipe } from '../../../pipes/url-attachment.pipe';
 
@@ -20,6 +22,7 @@ import { Subscription } from 'rxjs';
 export class CommentComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollMe', { static: false }) private contentContainer: ElementRef;
   @ViewChildren("messageContainer") messageContainers: QueryList<ElementRef>;
+  userData:any;
   messageConversation:string = '';
   attachments:any = [];
 
@@ -30,7 +33,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
   listentContainerChange$: Subscription;
   constructor(
     public dialogRef: MatDialogRef<CommentComponent>,
-    @Inject(MAT_DIALOG_DATA) public ticket: any,
+    @Inject(MAT_DIALOG_DATA) public IDticket: any,
     private dialog: MatDialog,
     private urlAttachmentPipe: UrlAttachmentPipe,
     private localStorageService: LocalStorageService,
@@ -39,14 +42,13 @@ export class CommentComponent implements OnInit, AfterViewInit {
     private listTicketsService: ListTicketsService,
     private downloadService: DownloadService
   ) {
-    console.log(this.ticket);
+    console.log(this.IDticket);
   }
 
   ngOnInit() {
-    let token = this.localStorageService.getLocalStorage('token');
-    this.listenData$ = this.detailTicketService.getDetailTicket(token, this.ticket.ID).subscribe(comment=>{
+    this.userData = this.localStorageService.getLocalStorage('token');
+    this.listenData$ = this.detailTicketService.getDetailTicket(this.userData.token, this.IDticket).subscribe(comment=>{
       let comments:any = comment;
-      console.log(comment);
       
       if(comments.code === 200 && comments.message === 'OK'){
         this.detailTickets = comments.data;
@@ -78,22 +80,31 @@ export class CommentComponent implements OnInit, AfterViewInit {
     });
   }
 
+  showImage(imageList, index){
+    let data = {
+      mainImage: index,
+      images: imageList
+    }
+    this.dialog.open(ImageShowComponent, {
+      data: data
+    });
+  }
+
   sendMessage(event, ticketId){
 
     if(this.messageConversation){
-      let token = this.localStorageService.getLocalStorage('token');
+      this.userData = this.localStorageService.getLocalStorage('token');
       let comment = {
         content: this.messageConversation,
         files: this.attachments
       }
 
       if(comment.content.length > 0 || comment.files.length > 0){
-        this.updateChatService.uploadComments(ticketId, token, comment).then(res=>{
+        this.updateChatService.uploadComments(ticketId, this.userData.token, comment).then(res=>{
           let response:any = res;
           if(response.code === 200 && response.message==='OK'){
             response.data.content = JSON.parse(response.data.content);
             this.detailTickets.comments.push(response.data);
-            console.log(response.data);
           }
         },err=>console.log(err));
       }

@@ -25,7 +25,12 @@ export class ListTicketService {
       }
 
       if(parameters.from){
+        
         params = params.append('from', parameters.from);
+      }
+
+      if(parameters.cost){
+        params = params.append('cost', parameters.cost);
       }
 
       if(parameters.page){

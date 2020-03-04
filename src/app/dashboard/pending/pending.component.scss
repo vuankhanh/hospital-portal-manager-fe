@@ -1,0 +1,20 @@
+.container{
+    padding: 15px;
+    table{
+        width: 100%;
+        .countdownCell{
+            p{
+                display: flex;
+                align-items: center;
+            }
+        }
+        .actionCell{
+            text-align:right;
+            button{
+                height: 35px;
+                border-radius: 5px;
+                background: #ededed;
+            }
+        }
+    }
+}

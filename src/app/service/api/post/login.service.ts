@@ -47,11 +47,18 @@ export class LoginService {
     return this.httpClient.post<ResponseLogin>(this.urlLogin, account, { headers: headers });
   }
 
-  thenLogin(token){
+  thenLogin(token, userId){
     
     let getServerConfig = this.systemConfigurationService.getSystemConfiguration(token).toPromise();
-    let getListTicket = this.listTicketService.getListTicket(token, { pageSize: 5000 }).toPromise();
+    let getDirectBillingTaken = this.listTicketService.getListTicket(token, { status: 'TAKEN' }).toPromise();
+    let getTicketsOpen = this.listTicketService.getListTicket(token, { status: 'OPEN' }).toPromise();
 
-    return Promise.all([getServerConfig, getListTicket]);
+    return Promise.all([getServerConfig, getDirectBillingTaken, getTicketsOpen]);
   }
+
+  // filterListTaken(userId, tickets){
+  //   if(tickets){
+  //     tickets.filter(ticket=>ticket.)
+  //   }
+  // }
 }

@@ -104,11 +104,11 @@ THE SOFTWARE.
 
 @angular/material/menu
 
-@angular/material/progress-spinner
+@angular/material/paginator
+
+@angular/material/select
 
 @angular/material/table
-
-@angular/material/tabs
 
 @angular/material/tooltip
 
