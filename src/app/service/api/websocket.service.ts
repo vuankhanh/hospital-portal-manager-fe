@@ -19,7 +19,7 @@ export class WebsocketService {
       console.log('Ping server nè');
       
       this.emitMessage('ping');
-    },10000)
+    },45000)
   }
 
   listenWebSocket(){

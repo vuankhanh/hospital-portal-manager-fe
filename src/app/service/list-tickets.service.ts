@@ -1,12 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 
-import { CommentComponent } from '../sharing/modal/comment/comment.component';
 
 import { LocalStorageService } from './local-storage.service';
-import { PushNotificationsService} from 'ng-push';
 import { ListTicketService } from './api/get/list-ticket.service';
-import { MatDialog } from '@angular/material';
+import { NotificationService } from './notification.service';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
@@ -26,14 +23,11 @@ export class ListTicketsService {
   listenTicketsOpen$:BehaviorSubject<any> = new BehaviorSubject<any>(null);
   listenTicketsOpen: Observable<any> = this.listenTicketsOpen$.asObservable();
   constructor(
-    private router: Router,
-    private ngZone: NgZone,
     private localStorageService: LocalStorageService,
-    private _pushNotifications: PushNotificationsService,
     private listTicketService: ListTicketService,
-    private dialog: MatDialog
+    private notificationService: NotificationService
   ) {
-    this._pushNotifications.requestPermission();
+    
   }
 
   getDirectBillingTaken(response){
@@ -61,14 +55,13 @@ export class ListTicketsService {
     let userData = this.localStorageService.getLocalStorage('token');
     console.log(socketData);
     if(socketData){
-      
       if(socketData.data.type){
         if(socketData.meta.sender_type==='hospital'){
           if(socketData.data.type === 'COMMENT'){
             if(this.takenTickets.data && this.takenTickets.data.length>0){
               this.takenTickets.data.forEach(ticket => {
                 if(ticket.ID === socketData.data.ticket_id){
-                  this.showNotification(socketData);
+                  this.notificationService.showNotificationComment(socketData);
                 }
               });
             }
@@ -114,34 +107,5 @@ export class ListTicketsService {
 
   }
 
-  showNotification(socketData){
-    let types = ['TICKET', 'COMMENT', 'CHANGE_STATUS', ''];
-    
-    let body:string = '';
-    if(socketData.data.type=== types[1]){
-      let content = JSON.parse(socketData.data.content);
-      body = content.message;
-    }
-    let options = { //set options
-      body: body,
-      icon: "assets/imgs/sheild.png" //adding an icon
-    }
-     this._pushNotifications.create(socketData.meta.sender_id+' đã trả lời ticket số '+socketData.data.ticket_id, options).subscribe( //creates a notification
-      res =>{
-        if(res.event.type === 'click'){
-          console.log(res);
-          this.ngZone.run(()=>{
-            this.router.navigateByUrl('/dashboard/directbilling').then(_=>{
-              window.focus();
-              this.dialog.open(CommentComponent,{
-                data: socketData.data.ticket_id
-              })
-            });
-          })
-          res.notification.close();
-        }
-      },
-      err => console.log(err)
-    );
-  }
+  
 }

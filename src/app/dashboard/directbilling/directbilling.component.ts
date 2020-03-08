@@ -23,6 +23,7 @@ import { DetailTicketService } from '../../service/api/get/detail-ticket.service
 import { map, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { PushSmsService } from '../../service/api/post/push-sms.service';
 @Component({
   selector: 'app-directbilling',
   templateUrl: './directbilling.component.html',
@@ -55,7 +56,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     private updateTicketCostService: UpdateTicketCostService,
     private confirmService: ConfirmService,
     private rejectService: RejectService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private pushSmsService: PushSmsService
   ) { }
 
   ngOnInit() {
@@ -136,7 +138,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
 
   addComment(ticket){
     this.dialog.open(CommentComponent,{
-      data: ticket.ID
+      data: ticket.ID,
+      id: 'commentBox'
     })
   }
 
@@ -162,7 +165,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     let userData = this.localStorageService.getLocalStorage('token');
     
     if(ticket.costs.length>0){
-      console.log(ticket.accordion);
       if(ticket.accordion){
         if(this.costForm && this.costForm.valid){
           this.updateTicketCostService.insmartUpdateCosts(ticket.ID, this.parseToNumber(this.costForm.value), userData.token).subscribe(res=>{
@@ -171,9 +173,17 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
             
             if(response.code === 200 && response.message==='OK'){
               alert('Đã xong');
+
+              if(response.isurance_id < 4){
+                // this.pushSmsService.lifeOpdSms(response.column:patient_phone_numb, )
+                console.log('Bắn SMS');
+                
+              }
             }
           })
         }
+      }else{
+        alert('Bạn chưa xem Bảng Chi Phí của Ticket số '+ticket.ID);
       }
     }else{
       this.confirmService.insmartConfirm(ticket.ID, userData.token).subscribe(res=>{

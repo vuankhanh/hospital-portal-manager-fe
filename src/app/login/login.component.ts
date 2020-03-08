@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { LoginService } from '../service/api/post/login.service';
 import { LocalStorageService } from '../service/local-storage.service';
 import { ListTicketsService } from '../service/list-tickets.service';
+import { ToastService } from '../service/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private loginService: LoginService,
     private localStorageService: LocalStorageService,
-    private listTicketsService: ListTicketsService
+    private listTicketsService: ListTicketsService,
+    private toastService: ToastService
   ) {
 
   }
@@ -58,6 +60,11 @@ export class LoginComponent implements OnInit {
 
           this.router.navigateByUrl('/dashboard');
         };
+      }).catch(err=>{
+        console.log(err);
+        if(err.error.code === 421 && err.error.message === 'Co loi xay ra: record not found: Co loi xay ra: record not found'){
+          this.toastService.showShortToast('Sai tài khoản hoặc mật khẩu', 'Có lỗi xảy ra');
+        }
       });
     }
   }

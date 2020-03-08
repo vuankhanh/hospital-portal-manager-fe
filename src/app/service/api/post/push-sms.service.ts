@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../../environments/environment'
 
+import { TraTuService } from '../../tra-tu.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +12,8 @@ export class PushSmsService {
   urlAuthentication: string = environment.smsFpt+'oauth2/token';
   urlPushSms:string = environment.smsFpt+'api/push-brandname-otp';
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private tratuService: TraTuService
   ) { }
 
   authentication(message:string, phoneNumber:string){
@@ -37,6 +40,17 @@ export class PushSmsService {
       }
       return this.httpClient.post<ResPushSms>(this.urlPushSms, body, { headers: headers }).toPromise()
     });
+  }
+
+  lifeOpdSms(insurer: number, fee, phoneNumber):Promise<any>{
+    let message = this.tratuService.insurers[insurer-1] + "/Insmart da bao lanh chi phi bang "+
+    fee+" dong. Chuc Quy khach that nhieu suc khoe";
+    return this.authentication(message, phoneNumber);
+  }
+
+  noneLifeSms(fee, phoneNumber:string):Promise<any>{
+    let message = "CTBH/Insmart da bao lanh chi phi bang "+fee+" dong. Chuc Quy khach that nhieu suc khoe";
+    return this.authentication(message, phoneNumber);
   }
 
   // pushSms(){
