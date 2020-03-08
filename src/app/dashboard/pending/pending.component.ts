@@ -19,7 +19,7 @@ export class PendingComponent implements OnInit, OnDestroy {
   response: any;
   numbersOfPages: Array<number> = [];
 
-  displayedColumns: string[] = ['countdown', 'id', 'ill_cause', 'fullname', 'dob', 'action'];
+  displayedColumns: string[] = ['countdown', 'id', 'ill_cause', 'fullname', 'dob', 'type', 'action'];
 
   length = 0;
   pageSize = 0;
@@ -40,6 +40,7 @@ export class PendingComponent implements OnInit, OnDestroy {
     this.listenTicketsOpenSubscription = this.listTicketsService.listenTicketsOpen.subscribe(res=>{
       if(res){
         this.response = res;
+        console.log(this.response);
         for(let directBilling of this.response.data){
           directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling.created_at);
         }

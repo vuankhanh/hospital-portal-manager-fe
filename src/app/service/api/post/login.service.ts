@@ -41,8 +41,7 @@ export class LoginService {
 
   login(account:Account){
     let headers = new HttpHeaders({
-      'Content-Type':'application/json',
-      'X-Requested-With':'XMLHttpRequest'
+      'Content-Type':'application/json'
     });
     return this.httpClient.post<ResponseLogin>(this.urlLogin, account, { headers: headers });
   }

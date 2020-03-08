@@ -7,14 +7,15 @@ import { environment } from '../../../../environments/environment.prod';
   providedIn: 'root'
 })
 export class ListTicketService {
-  url: string = environment.apiHost + 'opd';
+  url: string = environment.apiHost + 'opd/';
   constructor(
     private httpClient: HttpClient
   ) { }
 
   getListTicket(token, parameters: any){
     let headers = new HttpHeaders({
-      'Authorization': token
+      'Content-Type': 'application/json',
+      'Authorization':token
     });
 
     let params = new HttpParams();

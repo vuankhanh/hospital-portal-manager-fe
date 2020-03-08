@@ -5,6 +5,7 @@ import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PushNotificationsModule } from 'ng-push';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,6 +46,7 @@ import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.
 import { CommentComponent } from './sharing/modal/comment/comment.component';
 import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
 import { ImageShowComponent } from './sharing/modal/image-show/image-show.component';
+import { PushSmsComponent } from './sharing/modal/push-sms/push-sms.component';
 
 import { TitleService } from './service/title.service';
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
@@ -53,7 +55,13 @@ import { CurrencyDirective } from './directives/currency.directive';
 
 
 @NgModule({
-  entryComponents:[ConfirmActionComponent, CaseNumberComponent, ReasonInputComponent, CommentComponent, ImageShowComponent],
+  entryComponents:[
+    ConfirmActionComponent,
+    CaseNumberComponent, ReasonInputComponent,
+    CommentComponent,
+    ImageShowComponent,
+    PushSmsComponent
+  ],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -68,7 +76,8 @@ import { CurrencyDirective } from './directives/currency.directive';
     CommentComponent,
     TicketCostComponent,
     CurrencyDirective,
-    ImageShowComponent
+    ImageShowComponent,
+    PushSmsComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +88,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     FormsModule,
     ReactiveFormsModule,
     PushNotificationsModule,
+    NgxSpinnerModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatListModule,

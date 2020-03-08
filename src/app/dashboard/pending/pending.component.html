@@ -5,13 +5,23 @@
             <!-- Count Down -->
             <ng-container matColumnDef="countdown">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Giờ đếm ngược </th>
-                <td mat-cell *matCellDef="let element" class="countdownCell">
-                    <ng-container *ngIf="element.countDown | async as countDown">
+                <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="countdownCell"
+                >
+                    <div
+                        *ngIf="element.countDown | async as countDown"
+                        [class.background-pending-status]="countDown.minutes<=10"
+                        [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1"
+                    >
                         <p>
                             <mat-icon>schedule</mat-icon>
-                            {{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}
+                            <span class="primary-key">
+                                {{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}
+                            </span>
                         </p>
-                    </ng-container>
+                    </div>
                     
                 </td>
             </ng-container>
@@ -38,6 +48,12 @@
             <ng-container matColumnDef="dob">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày sinh </th>
                 <td mat-cell *matCellDef="let element"> {{element.dob}} </td>
+            </ng-container>
+
+            <!-- Loại yêu cầu -->
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Kiểu yêu cầu </th>
+                <td mat-cell *matCellDef="let element"> {{element.costs.length > 0 ? 'Kiểm tra quyền lợi' : 'Yêu cầu Bảo Lãnh'}} </td>
             </ng-container>
 
             <!-- Nút Chọn Xử Lý -->

@@ -1,12 +1,42 @@
+.background-pending-status-overtime{
+    background: #b71111 !important;
+    mat-icon{
+        color:white !important;
+    }
+    .primary-key, .secondary-key{
+        color: white !important;
+    }
+}
+
+.background-pending-status{
+    background:#ffee00;
+
+    mat-icon{
+        color:#2d442a;
+    }
+
+    .primary-key{
+        color: black;
+    }
+}
+
 .container{
     padding: 15px;
     table{
         width: 100%;
         .countdownCell{
-            p{
-                display: flex;
-                align-items: center;
+            padding-right: 24px;
+            padding-left: 0;
+            div{
+                text-align: center;
+                padding: 1px;
+                p{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
             }
+
         }
         .actionCell{
             text-align:right;

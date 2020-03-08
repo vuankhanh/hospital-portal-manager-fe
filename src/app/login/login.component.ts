@@ -52,8 +52,8 @@ export class LoginComponent implements OnInit {
               this.listTicketsService.getTicketsOpen(datas[2]);
             }
           }).catch(err=>{
-            this.router.navigate(['/login']);
-            console.log(err);
+            // this.router.navigate(['/login']);
+            // console.log(err);
           });
 
           this.router.navigateByUrl('/dashboard');

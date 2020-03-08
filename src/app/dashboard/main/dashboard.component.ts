@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { slideInAnimation } from '../../animations/usually-use';
+import { MatDialog } from '@angular/material';
+
+import { PushSmsComponent } from '../../sharing/modal/push-sms/push-sms.component';
 
 import { AuthenticationService } from '../../service/authentication.service';
 import { ListTicketsService } from '../../service/list-tickets.service';
@@ -24,30 +27,14 @@ export class DashboardComponent implements OnInit {
   opdOpenBadge: Observable<number> = this.opdOpenBadge$.asObservable();
 
   constructor(
-    private router: Router,
+    private dialog: MatDialog,
     private authenticationService: AuthenticationService,
     private listTicketsService: ListTicketsService
   ) {
     this.initSideMenu();
   }
 
-  ngOnInit() {
-    this.listTicketsService.listenTicketsOpen.subscribe(res=>console.log(res));
-    this.listTicketsService.listenDirectBillingTaken
-    // this.listTicketsService.listenListTicket.subscribe(tickets=>{
-    //   if(tickets){
-    //     let opdProcessingBadge: number = tickets.filter(ticket=> ticket.insmart_status === 'TAKEN').length;
-    //     this.opdProcessingBadge$.next(opdProcessingBadge);
-
-    //     let opdRequestBadge: number = tickets.filter(ticket=> ticket.costs.length === 0 && ticket.insmart_status === 'OPEN').length;
-    //     this.opdRequestBadge$.next(opdRequestBadge);
-
-    //     let opdRequestForRefundBadge: number = tickets.filter(ticket=> ticket.costs.length > 0 && ticket.insmart_status === 'OPEN').length;
-    //     this.opdRequestForRefundBadge$.next(opdRequestForRefundBadge);
-
-    //   }
-    // })
-  }
+  ngOnInit() {}
 
   initSideMenu(){
     this.sideMenus = [
@@ -58,6 +45,10 @@ export class DashboardComponent implements OnInit {
 
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
+  }
+
+  testSms(){
+    this.dialog.open(PushSmsComponent);
   }
 
   btnAvatarSetting(){

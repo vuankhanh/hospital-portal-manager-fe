@@ -22,7 +22,7 @@ import { DetailTicketService } from '../../service/api/get/detail-ticket.service
 
 import { map, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { PushSmsService } from '../../service/api/post/push-sms.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-directbilling',
   templateUrl: './directbilling.component.html',
@@ -55,13 +55,13 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     private updateTicketCostService: UpdateTicketCostService,
     private confirmService: ConfirmService,
     private rejectService: RejectService,
-    private pushSmsService: PushSmsService
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
-    this.pushSmsService.pushSms().then(res=>{
-      console.log(res)}
-    ).catch(err=>console.error(err));
+    this.spinner.show('originSpinner', {
+      fullScreen: false
+    });
     
     let userData = this.localStorageService.getLocalStorage('token');
     this.listenDirectBillingTakenSubscription = this.listTicketsService.listenDirectBillingTaken.subscribe(resTickets=>{
@@ -69,6 +69,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
         resTickets.data = resTickets.data.filter(ticket=>ticket.insmart_user_id === userData.data.id);
         this.response = resTickets;
         console.log(this.response);
+        // this.spinner.hide();
         for(let requestForRefund of this.response.data){
           requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.created_at);
           this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
@@ -79,6 +80,10 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
                   
                   if(comment.hospital_user_id > 0){
                     requestForRefund.insmartCosts = JSON.parse(comment.content).costs;
+                    requestForRefund.diag_note = JSON.parse(comment.content).cost_details.diag_note;
+                    requestForRefund.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
+                    requestForRefund.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
+                    requestForRefund.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
                   }
                 }
               })

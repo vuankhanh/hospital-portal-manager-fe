@@ -116,10 +116,10 @@
                         <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
                         <td mat-cell *matCellDef="let element; let last=last">
                             <span
-                                matTooltip="{{!element.cost_note ? 'Không note gì' : element.cost_note }}"
+                                matTooltip="{{!element.cost_note ? 'null' : element.cost_note }}"
                                 matTooltipPosition="before"
                             >
-                                {{!element.cost_note ? 'Không note gì' : element.cost_note }}
+                                {{!element.cost_note ? 'null' : element.cost_note }}
                             </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef></td>
@@ -198,3 +198,4 @@
         </button>
     </ng-template>
 </mat-menu>
+

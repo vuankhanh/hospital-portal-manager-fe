@@ -14,7 +14,13 @@ const subject: WebSocketSubject<any> = webSocket(DEFAULT_WEBSOCKET_CONFIG);
 })
 export class WebsocketService {
 
-  constructor() {}
+  constructor() {
+    setInterval(()=>{
+      console.log('Ping server nè');
+      
+      this.emitMessage('ping');
+    },10000)
+  }
 
   listenWebSocket(){
     return Observable.create(observer => {

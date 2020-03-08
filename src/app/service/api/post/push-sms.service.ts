@@ -1,41 +1,64 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+import { environment } from '../../../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class PushSmsService {
-  urlAuthentication: string = 'http://sandbox.sms.fpt.net/oauth2/token';
-  urlPushSms:string = 'http://sandbox.sms.fpt.net/api/push-brandname-otp';
+  urlAuthentication: string = environment.smsFpt+'oauth2/token';
+  urlPushSms:string = environment.smsFpt+'api/push-brandname-otp';
   constructor(
     private httpClient: HttpClient
   ) { }
 
-  pushSms(){
+  authentication(message:string, phoneNumber:string){
+    let headers = new HttpHeaders({
+      'Content-Type':'application/json',
+      'X-Requested-With':'XMLHttpRequest'
+    });
 
-    let body = {
+    let authenticationBody = {
       grant_type: "client_credentials",
-      client_id: "cd56A79A25158c309eD55b59c116Ded65753841D",
-      client_secret: "91d66ccf1fe26A04b4455cba479d95dC7687817b58ce59Abcaf30a1Ac837Efd4e55bC981",
+      client_id: "275875e0948124652d8f17B0fE5B1072640b4922",
+      client_secret: "123c013aee2ac0190814582f914927f15713930eCaa42A643e1e20364dC77E3634777af7",
       scope: "send_brandname_otp",
       session_id: "123123"
     }
 
-    return this.httpClient.post<ResAuthentication>(this.urlAuthentication, body).toPromise().then(res=>{
-      console.log(res)
-      if(res.token_type){
-        
-        let a = {
-          access_token: res.token_type,
-          session_id: "123123",
-          BrandName: "FTI",
-          Phone: "0842415921",
-          Message: "dGVzdCB0aW4gbmjhuq9u"
-        }
-        // return this.httpClient.post<ResPushSms>(this.urlPushSms, a).toPromise();
+    return this.httpClient.post<ResAuthentication>(this.urlAuthentication, authenticationBody, { headers: headers }).toPromise().then(res=>{
+      let body = {
+        access_token:res.access_token,
+        session_id: authenticationBody.session_id,
+        BrandName: "FTI",
+        Phone: phoneNumber,
+        Message: message
       }
-    })
+      return this.httpClient.post<ResPushSms>(this.urlPushSms, body, { headers: headers }).toPromise()
+    });
   }
+
+  // pushSms(){
+  //   let headers = new HttpHeaders({
+  //     'Content-Type':'application/json',
+  //     'X-Requested-With':'XMLHttpRequest'
+  //   });
+
+  //   let body = {
+  //     access_token:"OVFtQWVNNXIxeUZyVFBHbm9CMERJeStBWmlkQkhYek9qeHNJbzhyNjM5WUdpaUxNczJoRUxQY3h3VW5UV09WcmFMbW9uVlVkL2wySlc3bnpVS2g0YTgxVy9ndVp6b21HVjBOcEFHc1VjSHI2dzJySlJPZnZPU2ZiTVAvaHREWTBiWm5MMmZVcUpIc3VyRUJRUmlmeDBmaXVaTXFXSDZadEM5SmZCSnRLaFUwPQ==",
+  //     session_id: "123123",
+  //     BrandName: "FTI",
+  //     Phone: "0842415921",
+  //     Message: "dGVzdCB0aW4gbmjhuq9u"
+  //   }
+
+  //   return this.httpClient.post<ResAuthentication>(this.urlPushSms, body, { headers: headers }).toPromise().then(res=>{
+  //     console.log(res)
+  //   })
+  // }
+
+  
 }
 
 export interface ResAuthentication{
@@ -47,10 +70,9 @@ export interface ResAuthentication{
 
 export interface ResPushSms{
   MessageId:string;
-  Phone:string;
-  BrandName:string;
-  Message:string;
   PartnerId:string;
+  BrandName:string;
   Telco:string;
-  IsSent:string;
+  Phone:string;
+  Message:string;
 }
