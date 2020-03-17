@@ -10,7 +10,21 @@
     <mat-icon>warning</mat-icon>
     <span>Lý do phải có nhiều hơn 10 ký tự</span>
 </div>
+
+
+
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Huỷ</button>
-    <button mat-button (click)="validData()" cdkFocusInitial>Chắc chắn</button>
+    <button mat-button (click)="confirmAction()" cdkFocusInitial>Chắc chắn</button>
+    <div class="spinner-container" *ngIf="value>0">
+        <div class="spinner-background">{{numberCountDown}}</div>
+        <mat-progress-spinner
+            class="example-margin"
+            diameter="30"
+            [color]="color"
+            [mode]="mode"
+            [value]="value"
+        >
+        </mat-progress-spinner>
+    </div>
 </div>

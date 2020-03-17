@@ -9,6 +9,7 @@ import { TakeService } from '../../service/api/put/take.service';
 import { TimelineOfRequestsService } from '../../service/timeline-of-requests.service';
 
 import { Observable, Subscription } from 'rxjs';
+import { ListTicketService } from '../../service/api/get/list-ticket.service';
 @Component({
   selector: 'app-peding',
   templateUrl: './pending.component.html',
@@ -23,7 +24,7 @@ export class PendingComponent implements OnInit, OnDestroy {
 
   length = 0;
   pageSize = 0;
-  pageSizeOptions: number[] = [5, 10, 25];
+  pageSizeOptions: number[] = [5, 10, 15, 20];
   // MatPaginator Output
   pageEvent: PageEvent;
   listenTicketsOpenSubscription: Subscription;
@@ -33,28 +34,33 @@ export class PendingComponent implements OnInit, OnDestroy {
     public traTuService: TraTuService,
     private localStorageService: LocalStorageService,
     private takeService: TakeService,
-    private timelineOfRequestsService: TimelineOfRequestsService
+    private timelineOfRequestsService: TimelineOfRequestsService,
+    private listTicketService: ListTicketService
   ) { }
 
   ngOnInit() {
     this.listenTicketsOpenSubscription = this.listTicketsService.listenTicketsOpen.subscribe(res=>{
-      if(res){
-        this.response = res;
-        console.log(this.response);
-        for(let directBilling of this.response.data){
-          directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling.created_at);
-        }
-
-        this.length = this.response.total;
-        this.pageSize = this.response.page_size;
-
-        
-        let numbersOfPage:number = Math.floor(this.response.total/this.response.page_size);
-        for(let i:number = 0; i<= numbersOfPage;i++){
-          this.numbersOfPages.push(i+1);
-        }
-      }
+      this.setList(res);
     });
+  }
+
+  setList(reponse){
+    if(reponse){
+      this.response = reponse;
+      console.log(this.response);
+      for(let directBilling of this.response.data){
+        directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling.created_at);
+      }
+
+      this.length = this.response.total;
+      this.pageSize = this.response.page_size;
+
+      
+      let numbersOfPage:number = Math.floor(this.response.total/this.response.page_size);
+      for(let i:number = 0; i<= numbersOfPage;i++){
+        this.numbersOfPages.push(i+1);
+      }
+    }
   }
 
   startProccess(element){
@@ -67,17 +73,18 @@ export class PendingComponent implements OnInit, OnDestroy {
     });
   }
 
-  setPageSizeOptions(setPageSizeOptionsInput: string) {
-    if (setPageSizeOptionsInput) {
-      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
-      console.log(this.pageSizeOptions);
-    }
-  }
-
   pageChangeEvent(event){
-    let params = {
-      
-    }
+    let userData = this.localStorageService.getLocalStorage('token');
+    this.listTicketService.getListTicket(userData.token, { status: 'OPEN', page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
+      let response: any = res;
+      if(response.code === 200 && response.message === 'OK'){
+        for(let ticket of response.data){
+          ticket.files = JSON.parse(ticket.files);
+          ticket.costs = JSON.parse(ticket.costs);
+        }
+        this.setList(response);
+      }
+    })
     console.log(event);
   }
 

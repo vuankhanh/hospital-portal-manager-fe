@@ -35,8 +35,6 @@ import { DashboardRoutingModule } from '../app/dashboard/main/dashboard.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/main/dashboard.component';
-import { TheRequirementsComponent } from './dashboard/the-requirements/the-requirements.component';
-import { RequestARefundComponent } from './dashboard/request-a-refund/request-a-refund.component';
 import { DirectbillingComponent } from './dashboard/directbilling/directbilling.component';
 import { PendingComponent } from './dashboard/pending/pending.component';
 
@@ -52,6 +50,7 @@ import { TitleService } from './service/title.service';
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
+import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
 
 
 @NgModule({
@@ -66,8 +65,6 @@ import { CurrencyDirective } from './directives/currency.directive';
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    TheRequirementsComponent,
-    RequestARefundComponent,
     DirectbillingComponent,
     PendingComponent,
     ConfirmActionComponent,
@@ -77,7 +74,8 @@ import { CurrencyDirective } from './directives/currency.directive';
     TicketCostComponent,
     CurrencyDirective,
     ImageShowComponent,
-    PushSmsComponent
+    PushSmsComponent,
+    EmptyPageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequestARefundComponent } from './request-a-refund.component';
+import { EmptyPageComponent } from './empty-page.component';
 
-describe('RequestARefundComponent', () => {
-  let component: RequestARefundComponent;
-  let fixture: ComponentFixture<RequestARefundComponent>;
+describe('EmptyPageComponent', () => {
+  let component: EmptyPageComponent;
+  let fixture: ComponentFixture<EmptyPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RequestARefundComponent ]
+      declarations: [ EmptyPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RequestARefundComponent);
+    fixture = TestBed.createComponent(EmptyPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

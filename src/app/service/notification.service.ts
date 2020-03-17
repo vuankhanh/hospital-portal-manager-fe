@@ -42,7 +42,7 @@ export class NotificationService {
                 this.dialog.open(CommentComponent,{
                   data: socketData.data.ticket_id,
                   id: 'commentBox'
-                })
+                });
               }
             });
           })

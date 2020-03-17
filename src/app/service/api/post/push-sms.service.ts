@@ -43,14 +43,27 @@ export class PushSmsService {
   }
 
   lifeOpdSms(insurer: number, fee, phoneNumber):Promise<any>{
-    let message = this.tratuService.insurers[insurer-1] + "/Insmart da bao lanh chi phi bang "+
-    fee+" dong. Chuc Quy khach that nhieu suc khoe";
-    return this.authentication(message, phoneNumber);
+    try {
+      let message = this.tratuService.insurers[insurer-1] + "/Insmart da bao lanh chi phi bang "+
+      fee+" dong. Chuc Quy khach that nhieu suc khoe";
+      let encodeBase64:string = window.btoa(message);
+      return this.authentication(encodeBase64, phoneNumber);
+    } catch (error) {
+      console.log(error);
+      console.log('Lỗi encode64');
+    }
+    
   }
 
   noneLifeSms(fee, phoneNumber:string):Promise<any>{
-    let message = "CTBH/Insmart da bao lanh chi phi bang "+fee+" dong. Chuc Quy khach that nhieu suc khoe";
-    return this.authentication(message, phoneNumber);
+    try {
+      let message = "CTBH/Insmart da bao lanh chi phi bang "+fee+" dong. Chuc Quy khach that nhieu suc khoe";
+      let encodeBase64:string = window.btoa(message);
+      return this.authentication(encodeBase64, phoneNumber);
+    } catch (error) {
+      console.log(error);
+      console.log('Lỗi encode64');
+    }
   }
 
   // pushSms(){

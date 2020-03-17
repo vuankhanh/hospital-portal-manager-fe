@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiHost: 'https://hosapi.insmart.com.vn:7777/',
-  socketHost: 'wss://hosapi.insmart.com.vn:7777/wsi',
-  smsFpt: 'https://inshos.insmart.com.vn/smsfpt/'
+  apiHost: 'https://demoinshos.insmart.com.vn/hosapi/',
+  socketHost: 'wss://demohosapi.insmart.com.vn/wsi',
+  smsFpt: 'https://demoinshos.insmart.com.vn/smsfpt/'
 };

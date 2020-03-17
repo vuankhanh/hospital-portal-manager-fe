@@ -1,6 +1,6 @@
-<div class="container" *ngIf="response && response.data?.length>0">
+<div class="container" *ngIf="response && response.data?.length>0; else emptyPage">
 
-    <div *ngFor="let element of response.data; let requestIndex = index" class="item-list">
+    <div *ngFor="let element of response.data; let i = index" class="item-list">
         <div class="background-pending">   
             <div class="information-container">
                 <div class="icon-container">
@@ -14,7 +14,7 @@
         
                 <div class="text-container">
                     <p matRipple (click)="copyService.createCopy('Case Number', element.note)">
-                        <span class="primary-key" (contextmenu)="onRightClick($event, element)">- Case Number: </span>
+                        <span class="primary-key" (contextmenu)="onRightClick($event, element, 'caseNo')">- Case Number: </span>
                         <span class="secondary-key">{{ element.note }}</span>
                     </p>
                     <p matRipple (click)="copyService.createCopy('Mã định danh', element.ID)">
@@ -30,7 +30,7 @@
                         <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
                     </p>
                     <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
-                        <span class="primary-key">- Nhà Bảo Hiểm: </span>
+                        <span class="primary-key" (contextmenu)="onRightClick($event, element, 'insurerId')">- Nhà Bảo Hiểm: </span>
                         <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
                     </p>
                     <p *ngIf="element.card_no">
@@ -57,7 +57,7 @@
                         <span class="primary-key">- Ngày Sinh: </span>
                         <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
                     </p>
-                    <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.contract_no)">
+                    <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.policy_no)">
                         <span class="primary-key">- Số Hợp Đồng: </span>
                         <span class="secondary-key">{{ element.policy_no }}</span>
                     </p>
@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="coordion-container" *ngIf="element.costs && element.costs.length>0">
-                <button (click)="element.accordion = !element.accordion">
+                <button (click)="showAccordion(i)">
                     <mat-icon>assignment</mat-icon>
                     <span>{{ element.accordion ? 'Ẩn Bảng':'Bảng Chi Phí' }}</span>
                     <mat-icon [ngStyle]="{ 'transform': element.accordion ? 'rotate(0deg)' : 'rotate(180deg)' }">arrow_drop_up</mat-icon>
@@ -88,6 +88,11 @@
                 <p class="refund-request-diagnose" *ngIf="element.social_insurance_id">
                     <span class="primary-key">- Thẻ Bảo Hiểm: </span>
                     <span>{{ element.social_insurance_id }}</span>
+                    <span>-{{ element.social_insurance_id ? 'Có' : 'Không' }} áp dụng:</span>
+                    <mat-icon [ngStyle]="{ 'color' : element.social_insurance_id ? 'green': 'red' }">
+                        {{ element.social_insurance_id ? 'done': 'close' }}
+                    </mat-icon>
+                    <span></span>
                 </p>
             </div>
 
@@ -184,13 +189,28 @@
     <div class="padding-for-the-list"></div>
 </div>
 
+<ng-template #emptyPage>
+    <app-empty-page [warning]="'Hiện tại bạn đang không có Ticket nào!!!'"></app-empty-page>
+</ng-template>
+
+<mat-paginator
+    *ngIf="response && response.total>9"
+    class="paginatorCustom"
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="pageChangeEvent($event)"
+    hidePageSize
+    showFirstLastButtons
+></mat-paginator>
+
 <div style="visibility: hidden; position: fixed"
     [style.left]="contextMenuPosition.x"
     [style.top]="contextMenuPosition.y"
-    [matMenuTriggerFor]="contextMenu">
+    [matMenuTriggerFor]="typeContextMenu === 'caseNo' ? matMenuUpdateCaseNo : matMenuUpdateInsurerId">
 </div>
 
-<mat-menu #contextMenu="matMenu" class="setCaseNumberMnu">
+<mat-menu #matMenuUpdateCaseNo="matMenu" class="setCaseNumberMnu">
     <ng-template matMenuContent let-id="id">
         <button mat-menu-item (click)="setCaseNumber(id)">
             <mat-icon>edit</mat-icon>
@@ -199,3 +219,11 @@
     </ng-template>
 </mat-menu>
 
+<mat-menu #matMenuUpdateInsurerId="matMenu" class="setCaseNumberMnu">
+    <ng-template matMenuContent let-id="id">
+        <button mat-menu-item (click)="setCaseNumber(id)">
+            <mat-icon>edit</mat-icon>
+            <span>Sửa Nhà Bảo Hiểm</span>
+        </button>
+    </ng-template>
+</mat-menu>

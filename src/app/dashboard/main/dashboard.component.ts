@@ -34,7 +34,13 @@ export class DashboardComponent implements OnInit {
     this.initSideMenu();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.listTicketsService.listenDirectBillingTaken.subscribe(res=>{
+      if(res){
+        console.log('Badge Taken ',res.total)
+      }
+    });
+  }
 
   initSideMenu(){
     this.sideMenus = [

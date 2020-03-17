@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { MatDialog } from '@angular/material';
 
 import { LocalStorageService } from './local-storage.service';
 import { ListTicketService } from './api/get/list-ticket.service';
@@ -23,6 +24,7 @@ export class ListTicketsService {
   listenTicketsOpen$:BehaviorSubject<any> = new BehaviorSubject<any>(null);
   listenTicketsOpen: Observable<any> = this.listenTicketsOpen$.asObservable();
   constructor(
+    private dialog: MatDialog,
     private localStorageService: LocalStorageService,
     private listTicketService: ListTicketService,
     private notificationService: NotificationService
@@ -61,6 +63,8 @@ export class ListTicketsService {
             if(this.takenTickets.data && this.takenTickets.data.length>0){
               this.takenTickets.data.forEach(ticket => {
                 if(ticket.ID === socketData.data.ticket_id){
+                  this.listenCommentTicket$.next(socketData);
+                  this.dialog.getDialogById('commentBox').componentInstance.IDticket === socketData.data.ticket_id
                   this.notificationService.showNotificationComment(socketData);
                 }
               });
@@ -77,7 +81,7 @@ export class ListTicketsService {
         if(socketData.meta.sender_type==='insmart' && parseInt(socketData.meta.sender_id) === userData.data.id ){
           console.log(socketData.meta);
           
-          this.listTicketService.getListTicket(userData.token, { status: 'TAKEN' }).toPromise().then(res=>{
+          this.listTicketService.getListTicket(userData.token, { status: 'TAKEN', insID: userData.data.id }).toPromise().then(res=>{
             let listTicket:any = res;
             if(listTicket.code === 200 && listTicket.message==='OK'){
               this.getDirectBillingTaken(listTicket);

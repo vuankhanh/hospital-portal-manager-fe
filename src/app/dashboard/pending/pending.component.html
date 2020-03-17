@@ -1,4 +1,4 @@
-<div class="container" *ngIf="response && response.data?.length>0">
+<div class="container" *ngIf="response && response.data?.length>0; else emptyPage">
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="response.data" matSort class="mat-elevation-z8">
             
@@ -50,10 +50,12 @@
                 <td mat-cell *matCellDef="let element"> {{element.dob}} </td>
             </ng-container>
 
-            <!-- Loại yêu cầu -->
+            <!-- Kiểu yêu cầu -->
             <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Kiểu yêu cầu </th>
-                <td mat-cell *matCellDef="let element"> {{element.costs.length > 0 ? 'Kiểm tra quyền lợi' : 'Yêu cầu Bảo Lãnh'}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Kiểu yêu cầu</th>
+                <td mat-cell *matCellDef="let element">
+                    <span>{{ element.costs.length>0 ? 'Yêu cầu Bảo Lãnh' : 'Kiểm tra Quyền Lợi' }}</span>
+                </td>
             </ng-container>
 
             <!-- Nút Chọn Xử Lý -->
@@ -76,4 +78,9 @@
             showFirstLastButtons
         ></mat-paginator>
     </div>
+    <div class="padding-for-the-list"></div>
 </div>
+
+<ng-template #emptyPage>
+    <app-empty-page [warning]="'Không thấy Bệnh Viện gửi yêu cầu thông tin gì nhỉ!'"></app-empty-page>
+</ng-template>

@@ -41,6 +41,10 @@ export class ListTicketService {
       if(parameters.pageSize){
         params = params.append('pageSize', parameters.pageSize);
       }
+
+      if(parameters.insID){
+        params = params.append('insID', parameters.insID);
+      }
     }
 
     return this.httpClient.get(this.url, { headers: headers, params: params })

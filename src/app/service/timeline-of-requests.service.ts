@@ -38,12 +38,13 @@ export class TimelineOfRequestsService {
     this.webSocketService.listenWebSocket().subscribe(res=>{
       try {
         let socketData = JSON.parse(res);
-        console.log(socketData)
         this.listTicketsService.changePropertyTicket(socketData);
       } catch (error) {
-        console.log(error)
       }
-    })
+    },error=>{
+      console.log(error);
+      window.location.reload();
+    });
   }
 
   calcCountdown(duration: number, createdCases: string){

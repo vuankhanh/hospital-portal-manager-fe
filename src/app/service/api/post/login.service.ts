@@ -49,7 +49,7 @@ export class LoginService {
   thenLogin(token, userId){
     
     let getServerConfig = this.systemConfigurationService.getSystemConfiguration(token).toPromise();
-    let getDirectBillingTaken = this.listTicketService.getListTicket(token, { status: 'TAKEN' }).toPromise();
+    let getDirectBillingTaken = this.listTicketService.getListTicket(token, { status: 'TAKEN', insID: userId }).toPromise();
     let getTicketsOpen = this.listTicketService.getListTicket(token, { status: 'OPEN' }).toPromise();
 
     return Promise.all([getServerConfig, getDirectBillingTaken, getTicketsOpen]);
