@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { PushSmsService } from '../../service/api/post/push-sms.service';
 import { ListTicketService } from '../../service/api/get/list-ticket.service';
+import { ToastService } from '../../service/toast.service';
 @Component({
   selector: 'app-directbilling',
   templateUrl: './directbilling.component.html',
@@ -67,7 +68,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     private rejectService: RejectService,
     private spinner: NgxSpinnerService,
     private pushSmsService: PushSmsService,
-    private listTicketService: ListTicketService
+    private listTicketService: ListTicketService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -188,7 +190,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
 
   pageChangeEvent(event){
     let userData = this.localStorageService.getLocalStorage('token');
-    this.listTicketService.getListTicket(userData.token, { status: 'TAKEN', insID: userData.data.id, page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
+    this.listTicketService.getListTicket(userData.token, { status:['TAKEN', 'WAITING', 'REPLIED'], insID: userData.data.id, page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
       let response: any = res;
       if(response.code === 200 && response.message === 'OK'){
         for(let ticket of response.data){
@@ -249,14 +251,22 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
                               fee = this.countTotal(comment.content.costs);
                             }
     
-                            if(response.isurance_id < 4){
+                            if(response.data.isurance_id < 4){
                               // Phone Number response.patient_phone_numb
-                              this.pushSmsService.lifeOpdSms(response.isurance_id, fee, response.patient_phone_numb).then(resultPushSms=>{
+                              this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
                                 console.log(resultPushSms);
+                                this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
+                              }).catch(err=>{
+                                console.log(err);
+                                alert('Đã có lỗi xảy ra khi gửi SMS');
                               });
                             }else{
-                              this.pushSmsService.noneLifeSms(fee, response.patient_phone_numb).then(resultPushSms=>{
+                              this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
                                 console.log(resultPushSms);
+                                this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
+                              }).catch(err=>{
+                                console.log(err);
+                                alert('Đã có lỗi xảy ra khi gửi SMS');
                               });
                             }
                           }

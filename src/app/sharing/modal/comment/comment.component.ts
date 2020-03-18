@@ -58,6 +58,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.userData = this.localStorageService.getLocalStorage('token');
+    console.log(this.userData);
     this.setComment();
     this.listenSocket$ = this.listTicketsService.listenCommentTicket.subscribe(socketData=>{
       console.log(socketData);
@@ -81,7 +82,9 @@ export class CommentComponent implements OnInit, AfterViewInit {
         console.log(this.detailTickets);
         this.scrollToBottom();
       }
-    }).catch(err=>console.log(err));
+    }).catch(err=>{
+      console.log(err);
+    });
   }
 
   ngAfterViewInit(){
@@ -122,41 +125,15 @@ export class CommentComponent implements OnInit, AfterViewInit {
           }
         },err=>{
           console.log(err);
-          if(err.error.code === 421 && err.error.message === 'Incorrect extension in filename'){
-            alert('Lỗi đính kèm tệp! Tệp không đúng định dạng quy định');
+          if(err.error.code === 421){
+            if(err.error.message === 'Incorrect extension in filename'){
+              alert('Lỗi đính kèm tệp! Tệp không đúng định dạng quy định');
+            }else if(err.error.message === 'Not insmart turn to reply'){
+              alert('Bạn phải chờ phản hồi từ Bệnh Viện thì mới có thể tiếp tục yêu cầu thêm thông tin')
+            }
           }
         });
       }
-
-      // this.dialog.open(ConfirmActionComponent, {
-      //   width: '500px',
-      //   data: {
-      //     title: 'Xác nhận',
-      //     question: 'Bạn chắc chắn sẽ gửi Yêu Cầu Bổ Sung Thông Tin chứ ?',
-      //     btnReject: 'Huỷ',
-      //     btnConfirm: 'Chắc chắn!'
-      //   }
-      // }).afterClosed().subscribe(result=>{
-      //   if(result){
-      //     let token = this.localStorageService.getLocalStorage('token');
-      //     let comment = {
-      //       content: this.messageConversation='',
-      //       files: this.attachments
-      //     }
-      //     if(comment.content.length > 0 || comment.files.length > 0){
-      //       this.updateChatService.uploadComments(ticketId, token, comment).then(res=>{
-      //         let response:any = res;
-      //         if(response.code === 200 && response.message==='OK'){
-      //           console.log(response.data);
-      //         }
-      //       })
-      //     }
-      //     this.messageConversation='';
-      //   }else{
-      //     console.log('Huỷ Modal');
-          
-      //   }
-      // })
     }
   }
 

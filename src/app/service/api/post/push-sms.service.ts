@@ -17,6 +17,7 @@ export class PushSmsService {
   ) { }
 
   authentication(message:string, phoneNumber:string){
+    console.log(phoneNumber);
     let headers = new HttpHeaders({
       'Content-Type':'application/json',
       'X-Requested-With':'XMLHttpRequest'
@@ -38,11 +39,14 @@ export class PushSmsService {
         Phone: phoneNumber,
         Message: message
       }
+      console.log('Gửi đến số điện thoại '+phoneNumber);
+      
       return this.httpClient.post<ResPushSms>(this.urlPushSms, body, { headers: headers }).toPromise()
     });
   }
 
   lifeOpdSms(insurer: number, fee, phoneNumber):Promise<any>{
+    console.log(phoneNumber);
     try {
       let message = this.tratuService.insurers[insurer-1] + "/Insmart da bao lanh chi phi bang "+
       fee+" dong. Chuc Quy khach that nhieu suc khoe";
@@ -56,6 +60,7 @@ export class PushSmsService {
   }
 
   noneLifeSms(fee, phoneNumber:string):Promise<any>{
+    console.log(phoneNumber);
     try {
       let message = "CTBH/Insmart da bao lanh chi phi bang "+fee+" dong. Chuc Quy khach that nhieu suc khoe";
       let encodeBase64:string = window.btoa(message);

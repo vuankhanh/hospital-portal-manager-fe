@@ -72,7 +72,7 @@ export class ListTicketsService {
           }
         }
       }else{
-        this.listTicketService.getListTicket(userData.token, { status: 'OPEN' }).toPromise().then(res=>{
+        this.listTicketService.getListTicket(userData.token, { status: ['OPEN'] }).toPromise().then(res=>{
           let listTicket:any = res;
           if(listTicket.code === 200 && listTicket.message==='OK'){
             this.getTicketsOpen(listTicket);
@@ -81,7 +81,7 @@ export class ListTicketsService {
         if(socketData.meta.sender_type==='insmart' && parseInt(socketData.meta.sender_id) === userData.data.id ){
           console.log(socketData.meta);
           
-          this.listTicketService.getListTicket(userData.token, { status: 'TAKEN', insID: userData.data.id }).toPromise().then(res=>{
+          this.listTicketService.getListTicket(userData.token, { status:['TAKEN', 'WAITING', 'REPLIED'], insID: userData.data.id }).toPromise().then(res=>{
             let listTicket:any = res;
             if(listTicket.code === 200 && listTicket.message==='OK'){
               this.getDirectBillingTaken(listTicket);

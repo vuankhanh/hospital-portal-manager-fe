@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiHost: 'https://demoinshos.insmart.com.vn/hosapi/',
-  socketHost: 'wss://demohosapi.insmart.com.vn/wsi',
-  smsFpt: 'https://demoinshos.insmart.com.vn/smsfpt/'
+  apiHost: 'https://inshos.insmart.com.vn/hosapi/',
+  socketHost: 'wss://hosapi.insmart.com.vn:7777/wsi',
+  smsFpt: 'https://inshos.insmart.com.vn/smsfpt/'
 };
 
 
