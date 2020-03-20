@@ -49,7 +49,7 @@ export class PendingComponent implements OnInit, OnDestroy {
       this.response = reponse;
       console.log(this.response);
       for(let directBilling of this.response.data){
-        directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling.created_at);
+        directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling['updated_at ']);
       }
 
       this.length = this.response.total;
@@ -70,6 +70,13 @@ export class PendingComponent implements OnInit, OnDestroy {
       if(res.code === 200){
         this.router.navigate(['/dashboard/directbilling']);
       }
+    },err=>{
+        if(err.error.code === 421){
+          if(err.error.message === 'Ticket already taken or cannot be take'){
+            alert('Ticket này đang có người xử lý hoặc bạn không thể chọn.');
+            element.disabledTaken = true;
+          }
+        }
     });
   }
 

@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { SystemConfigurationService } from '../get/system-configuration.service';
 import { ListTicketService } from '../get/list-ticket.service';
-import { ListTicketsService } from '../../list-tickets.service';
 
 interface ResponseLogin{
   code: number;
@@ -35,8 +34,7 @@ export class LoginService {
   constructor(
     private httpClient: HttpClient,
     private systemConfigurationService: SystemConfigurationService,
-    private listTicketService: ListTicketService,
-    private listTicketsService: ListTicketsService
+    private listTicketService: ListTicketService
   ) { }
 
   login(account:Account){

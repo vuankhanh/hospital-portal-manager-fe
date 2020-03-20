@@ -62,11 +62,14 @@ export class ConfirmActionComponent implements OnInit, OnDestroy {
   }
 
   countTotal(arrayNumber:any){
-    let total = 0;
-    arrayNumber.forEach(element=>{
-      total += parseInt(element.cost_amount);
-    });
-    return total;
+    if(arrayNumber && arrayNumber.length>0){
+      let total = 0;
+      
+      arrayNumber.forEach(element=>{
+        total += parseInt(element.cost_amount);
+      });
+      return total;
+    }
   }
 
   onDispose(): void {

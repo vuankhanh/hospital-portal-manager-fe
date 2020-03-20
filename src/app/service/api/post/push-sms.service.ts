@@ -39,16 +39,14 @@ export class PushSmsService {
         Phone: phoneNumber,
         Message: message
       }
-      console.log('Gửi đến số điện thoại '+phoneNumber);
       
-      return this.httpClient.post<ResPushSms>(this.urlPushSms, body, { headers: headers }).toPromise()
+      return this.httpClient.post<ResPushSms>(this.urlPushSms, body, { headers: headers }).toPromise();
     });
   }
 
   lifeOpdSms(insurer: number, fee, phoneNumber):Promise<any>{
-    console.log(phoneNumber);
     try {
-      let message = this.tratuService.insurers[insurer-1] + "/Insmart da bao lanh chi phi bang "+
+      let message = this.tratuService.insurers[insurer-1].displayName + "/Insmart da bao lanh chi phi bang "+
       fee+" dong. Chuc Quy khach that nhieu suc khoe";
       let encodeBase64:string = window.btoa(message);
       return this.authentication(encodeBase64, phoneNumber);
@@ -60,7 +58,6 @@ export class PushSmsService {
   }
 
   noneLifeSms(fee, phoneNumber:string):Promise<any>{
-    console.log(phoneNumber);
     try {
       let message = "CTBH/Insmart da bao lanh chi phi bang "+fee+" dong. Chuc Quy khach that nhieu suc khoe";
       let encodeBase64:string = window.btoa(message);

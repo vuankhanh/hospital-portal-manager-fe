@@ -22,7 +22,8 @@ export class PushSmsComponent implements OnInit {
   testSms(){
     let encodeBase64:string = window.btoa(this.message);
     this.pushSmsService.authentication(encodeBase64, this.phoneNumber).then(res=>{
-      alert('Đã gửi thành công tin nhắn '+res.Message+' đến sđt '+res.Phone);
+      // alert('Đã gửi thành công tin nhắn '+res.Message+' đến sđt '+res.Phone);
+      console.log(res);
       this.dialogRef.close();
     }).catch(err=>console.log(err));
   }

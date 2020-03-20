@@ -91,7 +91,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
       this.pageSize = this.response.page_size;
 
       for(let requestForRefund of this.response.data){
-        requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.created_at);
+        requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund['updated_at ']);
         this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
           let response:any = res;
           if(response.code === 200 && response.message ==='OK'){
@@ -113,7 +113,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   }
 
   countTotal(arrayNumber:any){
-    
     let total = 0;
     arrayNumber.forEach(element=>{
       total += parseInt(element.cost_amount);
@@ -123,8 +122,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
 
   onRightClick(event: MouseEvent, element: any, type: string){
     event.preventDefault();
-
-    console.log(type);
 
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
@@ -177,14 +174,9 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
       data: ticket.ID,
       id: 'commentBox'
     }).afterClosed().toPromise().then(_=>{console.log('Closed')});
-
-    setTimeout(() => {
-      console.log(this.dialog.openDialogs);
-    }, 500);
   }
 
   costFormChange(event){
-    console.log(event);
     this.costForm = <FormGroup>event;
   }
 
@@ -216,9 +208,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   }
 
   startProccess(ticket){
-
     let userData = this.localStorageService.getLocalStorage('token');
-    console.log(ticket);
     
     if(ticket.costs.length>0){
       if(ticket.accordion){
@@ -233,7 +223,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
             if(res){
               this.updateTicketCostService.insmartUpdateCosts(ticket.ID, costsWillUpdate, userData.token).subscribe(res=>{
                 let response: any = res;
-                console.log(response);
                 
                 if(response.code === 200 && response.message==='OK'){
                   alert('Đã xong');
@@ -254,18 +243,14 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
                             if(response.data.isurance_id < 4){
                               // Phone Number response.patient_phone_numb
                               this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
-                                console.log(resultPushSms);
                                 this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
                               }).catch(err=>{
-                                console.log(err);
                                 alert('Đã có lỗi xảy ra khi gửi SMS');
                               });
                             }else{
                               this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
-                                console.log(resultPushSms);
                                 this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
                               }).catch(err=>{
-                                console.log(err);
                                 alert('Đã có lỗi xảy ra khi gửi SMS');
                               });
                             }
@@ -286,11 +271,9 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
       this.dialog.open(ConfirmActionComponent,{
         data: ticket
       }).afterClosed().subscribe(res=>{
-        console.log(res);
         if(res){
           this.confirmService.insmartConfirm(ticket.ID, userData.token).subscribe(res=>{
             let response: any = res;
-            console.log(response);
             if(response.code === 200 && response.message==='OK'){
               alert('Đã xong');
             }

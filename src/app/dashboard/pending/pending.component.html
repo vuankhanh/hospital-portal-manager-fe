@@ -62,7 +62,7 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
                 <td mat-cell *matCellDef="let element" class="actionCell">
-                    <button (click)="startProccess(element)">Bắt đầu xử lý</button>
+                    <button [disabled]="element.disabledTaken" (click)="startProccess(element)">Bắt đầu xử lý</button>
                 </td>
             </ng-container>
             
