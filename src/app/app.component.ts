@@ -6,6 +6,7 @@ import { LoginService } from './service/api/post/login.service';
 import { LocalStorageService } from './service/local-storage.service';
 import { ListTicketsService } from './service/list-tickets.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from './service/authentication.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,13 +20,15 @@ export class AppComponent implements OnInit {
     private loginService: LoginService,
     private localStorageService: LocalStorageService,
     private listTicketsService: ListTicketsService,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
   ){
     this.timelineOfRequestsService.listentWebSocket();
   }
 
   ngOnInit(){
     let userData = this.localStorageService.getLocalStorage('token');
+    this.authenticationService.setUserInformation(userData);
     if(userData && userData.token){
       this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
         console.log(data);
@@ -42,4 +45,5 @@ export class AppComponent implements OnInit {
       });
     }
   }
+  
 }

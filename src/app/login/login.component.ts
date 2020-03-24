@@ -6,6 +6,7 @@ import { LoginService } from '../service/api/post/login.service';
 import { LocalStorageService } from '../service/local-storage.service';
 import { ListTicketsService } from '../service/list-tickets.service';
 import { ToastService } from '../service/toast.service';
+import { AuthenticationService } from '../service/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService,
     private localStorageService: LocalStorageService,
     private listTicketsService: ListTicketsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private authenticationService: AuthenticationService
   ) {
 
   }
@@ -42,6 +44,7 @@ export class LoginComponent implements OnInit {
       this.loginService.login(this.loginForm.value).toPromise().then(response=>{
         if(response.code === 200 && response.message === 'OK'){
           this.localStorageService.setLocalStorage('token', response);
+          this.authenticationService.setUserInformation(response);
 
           let userData = this.localStorageService.getLocalStorage('token');
           this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{

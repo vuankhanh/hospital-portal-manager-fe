@@ -47,15 +47,13 @@ export class PendingComponent implements OnInit, OnDestroy {
   setList(reponse){
     if(reponse){
       this.response = reponse;
-      console.log(this.response);
       for(let directBilling of this.response.data){
-        directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling['updated_at ']);
+        directBilling.countDown = this.timelineOfRequestsService.calcCountdown(15, directBilling.hospital_updated_at);
       }
 
       this.length = this.response.total;
       this.pageSize = this.response.page_size;
 
-      
       let numbersOfPage:number = Math.floor(this.response.total/this.response.page_size);
       for(let i:number = 0; i<= numbersOfPage;i++){
         this.numbersOfPages.push(i+1);

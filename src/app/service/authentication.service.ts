@@ -2,17 +2,25 @@ import { Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 
 import { LocalStorageService } from './local-storage.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const keyStorageToken:string = 'token';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  
+  userInformation:any;
+  listenUserInformation$: BehaviorSubject<any> = new BehaviorSubject<any>(this.userInformation);
+  listenUserInformation: Observable<any> = this.listenUserInformation$.asObservable();
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService
   ) { }
+  
+  setUserInformation(info){
+    this.userInformation = info;
+    this.listenUserInformation$.next(this.userInformation);
+  }
 
   // waitGetTokenAuthentication():Promise<UrlTree>{
   //   let url: string;

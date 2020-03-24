@@ -91,7 +91,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
       this.pageSize = this.response.page_size;
 
       for(let requestForRefund of this.response.data){
-        requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund['updated_at ']);
+        requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.hospital_updated_at);
         this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
           let response:any = res;
           if(response.code === 200 && response.message ==='OK'){

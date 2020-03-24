@@ -18,6 +18,8 @@ import { map } from 'rxjs/operators';
   animations:[ slideInAnimation ]
 })
 export class DashboardComponent implements OnInit {
+  userInformation:any;
+  
   sideMenus: Array<SideMenu>;
 
   opdTakenBadge$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -35,11 +37,19 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.listenUserInformation();
     this.listTicketsService.listenDirectBillingTaken.subscribe(res=>{
       if(res){
         console.log('Badge Taken ',res.total)
       }
     });
+  }
+
+  listenUserInformation(){
+    this.authenticationService.listenUserInformation.subscribe(result=>{
+      this.userInformation = result.data;
+      console.log(this.userInformation);
+    })
   }
 
   initSideMenu(){

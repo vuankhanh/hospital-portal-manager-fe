@@ -2,16 +2,15 @@
     <img height="50" (click)="testSms()" src="../../assets/imgs/LogoInsmart.png">
     <div class="hospitalInformationContainer" [mdePopoverTriggerFor]="appPopover"
     mdePopoverTriggerOn="click" #popoverTrigger="mdePopoverTrigger">
-        <span>Nguyễn Vĩnh Lâm</span>
+        <span>{{ userInformation.fullname }}</span>
         <div class="avatarContainer">
-            <img class="avatar" height="50" width="50" src="../../assets/imgs/logo_lamthon.jpg">
+            <img class="avatar" height="50" width="50" src="../../assets/imgs/LogoInsmart.png">
             <mat-icon>arrow_drop_down</mat-icon>
         </div>
     </div>
 </div>
 <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
     <mat-list class="popoverAvatarList" style="width:300px; max-width: 300px;background:#ededed">
-        <mat-option>Cập nhật Logo</mat-option>
         <mat-option (click)="logout()" routerLink="/login">Đăng xuất</mat-option>
     </mat-list>
 </mde-popover>
