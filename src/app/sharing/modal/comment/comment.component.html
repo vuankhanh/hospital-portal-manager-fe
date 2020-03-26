@@ -65,9 +65,9 @@
 
     <div #scrollMe class="content-container" [ngStyle]="{'padding.px':detailTickets.comments.length === 0 ? '0' : '15' }">
         <ng-container #messageContainer *ngFor="let comment of detailTickets.comments">
-            <div class="itemListContent" [style.flex-direction]="comment.insmart_user_id === userData.data.id ? 'row-reverse' : 'row'">
-                <div class="textContent" [style.background]="comment.insmart_user_id === userData.data.id ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
-                    <p [style.color]="comment.insmart_user_id === userData.data.id ? 'white' : '#333333'">
+            <div class="itemListContent" [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'">
+                <div class="textContent" [style.background]="comment.insmart_user_id > 0 ? 'rgba(21, 72, 151, 0.9)' : '#ededed'">
+                    <p [style.color]="comment.insmart_user_id > 0 ? 'white' : '#333333'">
                         {{ comment.content.message }}
                     </p>
                     <div class="attachments" *ngIf="comment.content.Files">

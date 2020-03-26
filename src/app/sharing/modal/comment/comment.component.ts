@@ -128,7 +128,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
           if(err.error.code === 421){
             if(err.error.message === 'Incorrect extension in filename'){
               alert('Lỗi đính kèm tệp! Tệp không đúng định dạng quy định');
-            }else if(err.error.message === 'Not insmart turn to reply'){
+            }else if(err.error.message === 'Ticket cannot processable! Action=INSMART_COMMENT'){
               alert('Bạn phải chờ phản hồi từ Bệnh Viện thì mới có thể tiếp tục yêu cầu thêm thông tin')
             }
           }
