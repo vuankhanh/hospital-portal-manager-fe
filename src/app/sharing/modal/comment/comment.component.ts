@@ -58,7 +58,6 @@ export class CommentComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.userData = this.localStorageService.getLocalStorage('token');
-    console.log(this.userData);
     this.setComment();
     this.listenSocket$ = this.listTicketsService.listenCommentTicket.subscribe(socketData=>{
       console.log(socketData);

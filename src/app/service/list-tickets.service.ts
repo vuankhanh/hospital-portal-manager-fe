@@ -58,12 +58,13 @@ export class ListTicketsService {
     console.log(socketData);
     if(socketData){
       if(socketData.data.type){
+        this.listenCommentTicket$.next(socketData);
         if(socketData.meta.sender_type==='hospital'){
           if(socketData.data.type === 'COMMENT'){
             if(this.takenTickets.data && this.takenTickets.data.length>0){
               this.takenTickets.data.forEach(ticket => {
                 if(ticket.ID === socketData.data.ticket_id){
-                  this.listenCommentTicket$.next(socketData);
+                  
                   this.dialog.getDialogById('commentBox').componentInstance.IDticket === socketData.data.ticket_id
                   this.notificationService.showNotificationComment(socketData);
                 }
@@ -71,6 +72,7 @@ export class ListTicketsService {
             }
           }
         }
+        
       }else{
         this.listTicketService.getListTicket(userData.token, { status: ['OPEN'] }).toPromise().then(res=>{
           let listTicket:any = res;
@@ -79,9 +81,7 @@ export class ListTicketsService {
           }
         });
         if(socketData.meta.sender_type==='insmart' && parseInt(socketData.meta.sender_id) === userData.data.id ){
-          console.log(socketData.meta);
-          
-          this.listTicketService.getListTicket(userData.token, { status:['TAKEN', 'WAITING', 'REPLIED'], insID: userData.data.id }).toPromise().then(res=>{
+          this.listTicketService.getListTicket(userData.token, { status:['TAKEN', 'UPDATED', 'WAITING'], insID: userData.data.id }).toPromise().then(res=>{
             let listTicket:any = res;
             if(listTicket.code === 200 && listTicket.message==='OK'){
               this.getDirectBillingTaken(listTicket);

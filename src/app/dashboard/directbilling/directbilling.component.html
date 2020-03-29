@@ -1,189 +1,194 @@
 <div class="container" *ngIf="response && response.data?.length>0; else emptyPage">
 
     <div *ngFor="let element of response.data; let i = index" class="item-list">
-        <div class="background-pending">   
-            <div class="information-container">
-                <div class="icon-container">
-                    <mat-icon>schedule</mat-icon>
-                    <span *ngIf="element.countDown | async as countDown">
-                        {{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}
+        <ng-container *ngIf="element.countDown | async as countDown">
+            <div class="background-pending">   
+                <div class="information-container">
+                    <div class="icon-container">
+                        <mat-icon>schedule</mat-icon>
+                        <span *ngIf="element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN'">
+                            {{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}
+                        </span>
+                    </div>
+            
+                    <div class="width-container"></div>
+            
+                    <div class="text-container">
+                        <p matRipple (click)="copyService.createCopy('Case Number', element.note)">
+                            <span class="primary-key" (contextmenu)="onRightClick($event, element, 'caseNo')">- Case Number: </span>
+                            <span class="secondary-key">{{ element.note }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Mã định danh', element.ID)">
+                            <span class="primary-key">- Mã định danh: </span>
+                            <span class="secondary-key">{{ element.ID }}</span>
+                        </p>
+                        <!-- <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
+                            <span class="primary-key">- Nội hay Ngoại trú: </span>
+                            <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
+                        </p> -->
+                        <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
+                            <span class="primary-key">- Loại hình điều trị: </span>
+                            <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
+                            <span class="primary-key" (contextmenu)="onRightClick($event, element, 'insurerId')">- Nhà Bảo Hiểm: </span>
+                            <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
+                        </p>
+                        <p *ngIf="element.card_no">
+                            <span class="primary-key">- Số thẻ: </span>
+                            <span class="secondary-key">{{ element.card_no }}</span>
+                        </p>
+                        
+                    </div>
+        
+                    <!-- Có thể không có thông tin này -->
+        
+                    <div class="width-container"></div>
+        
+                    <div class="text-container">
+                        <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
+                            <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
+                            <span class="secondary-key">{{ element.cmnd }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
+                            <span class="primary-key">- Tên Khách Hàng: </span>
+                            <span class="secondary-key">{{ element.fullname }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Ngày Sinh', datePipe.transform(element.dob, 'dd/MM/yyy')) ">
+                            <span class="primary-key">- Ngày Sinh: </span>
+                            <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.policy_no)">
+                            <span class="primary-key">- Số Hợp Đồng: </span>
+                            <span class="secondary-key">{{ element.policy_no }}</span>
+                        </p>
+                        
+                    </div>
+
+                    <div class="width-container"></div>
+
+                    <div *ngIf="element.files && element.files.length>0">
+                        <button (click)="showImage(element.files, 0)">Tệp đính kèm</button>
+                    </div>
+                </div>
+                <div class="coordion-container" *ngIf="element.costs && element.costs.length>0">
+                    <button (click)="showAccordion(i)">
+                        <mat-icon>assignment</mat-icon>
+                        <span>{{ element.accordion ? 'Ẩn Bảng':'Bảng Chi Phí' }}</span>
+                        <mat-icon [ngStyle]="{ 'transform': element.accordion ? 'rotate(0deg)' : 'rotate(180deg)' }">arrow_drop_up</mat-icon>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="refund-request-container" *ngIf="element.accordion">
+                <div>
+                    <p class="refund-request-diagnose">
+                        <span class="primary-key">- Chẩn Đoán: </span>
+                        <span class="inputDiagnostic">{{ element.diag_note }}</span>
+                    </p>
+                    <p class="refund-request-diagnose" *ngIf="element.social_insurance_id">
+                        <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+                        <span>{{ element.social_insurance_id }}</span>
+                        <span>-{{ element.social_insurance_id ? 'Có' : 'Không' }} áp dụng:</span>
+                        <mat-icon [ngStyle]="{ 'color' : element.social_insurance_id ? 'green': 'red' }">
+                            {{ element.social_insurance_id ? 'done': 'close' }}
+                        </mat-icon>
+                        <span></span>
+                    </p>
+                </div>
+
+                <div class="height-container"></div>
+
+                <div class="refund-request-left-container">
+                    
+                    <table mat-table [dataSource]="element.costs" class="mat-elevation-z8">
+                        <ng-container matColumnDef="category">
+                            <th mat-header-cell *matHeaderCellDef>Danh mục</th>
+                            <td mat-cell *matCellDef="let element; let last=last">
+                                <span *ngIf="!last">{{element.cost_name}}</span>
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef> Tổng </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="money">
+                            <th mat-header-cell *matHeaderCellDef>Số tiền</th>
+                            <td mat-cell *matCellDef="let element; let last=last">
+                                <span *ngIf="!last">{{element.cost_amount | currency:"VND"}}</span>
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef> {{countTotal(element.costs) | currency:"VND"}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="note">
+                            <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
+                            <td mat-cell *matCellDef="let element; let last=last">
+                                <span
+                                    matTooltip="{{!element.cost_note ? 'null' : element.cost_note }}"
+                                    matTooltipPosition="before"
+                                >
+                                    {{!element.cost_note ? 'null' : element.cost_note }}
+                                </span>
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+        
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+                    </table>
+
+                    <div class="width-container"></div>
+
+                    <app-ticket-cost [ticket]="element" (costFormChange)="costFormChange($event)"></app-ticket-cost>
+
+                </div>
+
+                <div class="height-container"></div>
+            </div>
+
+            <div
+                class="last-container"
+                [class.background-pending-status]="countDown.minutes<=10 && (element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN')"
+                [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1 && (element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN')"
+            >
+        
+                <div class="clinic-information">
+                    <span class="secondary-key">
+                        <mat-icon>local_hospital</mat-icon>
+                        {{ element.hospital_user_id }}
+                    </span>
+                    <div class="width-container"></div>
+                    <span class="secondary-key">
+                        <mat-icon>person</mat-icon>
+                        {{ element.hospital_employee_name }}
+                    </span>
+                    <div class="width-container"></div>
+                    <span class="secondary-key">
+                        <mat-icon>phone</mat-icon>
+                        {{ element.hospital_phone_number }}
                     </span>
                 </div>
         
                 <div class="width-container"></div>
         
-                <div class="text-container">
-                    <p matRipple (click)="copyService.createCopy('Case Number', element.note)">
-                        <span class="primary-key" (contextmenu)="onRightClick($event, element, 'caseNo')">- Case Number: </span>
-                        <span class="secondary-key">{{ element.note }}</span>
-                    </p>
-                    <p matRipple (click)="copyService.createCopy('Mã định danh', element.ID)">
-                        <span class="primary-key">- Mã định danh: </span>
-                        <span class="secondary-key">{{ element.ID }}</span>
-                    </p>
-                    <!-- <p matRipple (click)="copyService.createCopy('Nội hay Ngoại trú', element.request_type === '2' ? 'Ngoại trú' : 'Nội trú')">
-                        <span class="primary-key">- Nội hay Ngoại trú: </span>
-                        <span class="secondary-key">{{ element.request_type === '2' ? 'Ngoại trú' : 'Nội trú' }}</span>
-                    </p> -->
-                    <p matRipple (click)="copyService.createCopy('Loại hình điều trị', traTuService.illCauses[element.ill_cause-1].name)">
-                        <span class="primary-key">- Loại hình điều trị: </span>
-                        <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
-                    </p>
-                    <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
-                        <span class="primary-key" (contextmenu)="onRightClick($event, element, 'insurerId')">- Nhà Bảo Hiểm: </span>
-                        <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
-                    </p>
-                    <p *ngIf="element.card_no">
-                        <span class="primary-key">- Số thẻ: </span>
-                        <span class="secondary-key">{{ element.card_no }}</span>
-                    </p>
+                <div class="button-container">
+                    <button (click)="addComment(element)" [ngClass]="{ 'blink': element.hospital_status==='UPDATED' && element.insmart_status==='WAITING' }">
+                        <span>{{'Thêm thông tin'}}</span>
+                    </button>
                     
-                </div>
-    
-                <!-- Có thể không có thông tin này -->
-    
-                <div class="width-container"></div>
-    
-                <div class="text-container">
-                    <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
-                        <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
-                        <span class="secondary-key">{{ element.cmnd }}</span>
-                    </p>
-                    <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
-                        <span class="primary-key">- Tên Khách Hàng: </span>
-                        <span class="secondary-key">{{ element.fullname }}</span>
-                    </p>
-                    <p matRipple (click)="copyService.createCopy('Ngày Sinh', datePipe.transform(element.dob, 'dd/MM/yyy')) ">
-                        <span class="primary-key">- Ngày Sinh: </span>
-                        <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
-                    </p>
-                    <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.policy_no)">
-                        <span class="primary-key">- Số Hợp Đồng: </span>
-                        <span class="secondary-key">{{ element.policy_no }}</span>
-                    </p>
-                    
-                </div>
+                    <div class="width-container"></div>
 
-                <div class="width-container"></div>
+                    <button (click)="startProccess(element)">
+                        <span>{{ 'Đồng ý' }}</span>
+                    </button>
 
-                <div *ngIf="element.files && element.files.length>0">
-                    <button (click)="showImage(element.files, 0)">Tệp đính kèm</button>
+                    <div class="width-container"></div>
+
+                    <button (click)="reject(element)">
+                        <span>{{ 'Từ Chối' }}</span>
+                    </button>
                 </div>
             </div>
-            <div class="coordion-container" *ngIf="element.costs && element.costs.length>0">
-                <button (click)="showAccordion(i)">
-                    <mat-icon>assignment</mat-icon>
-                    <span>{{ element.accordion ? 'Ẩn Bảng':'Bảng Chi Phí' }}</span>
-                    <mat-icon [ngStyle]="{ 'transform': element.accordion ? 'rotate(0deg)' : 'rotate(180deg)' }">arrow_drop_up</mat-icon>
-                </button>
-            </div>
-        </div>
-        
-        <div class="refund-request-container" *ngIf="element.accordion">
-            <div>
-                <p class="refund-request-diagnose">
-                    <span class="primary-key">- Chẩn Đoán: </span>
-                    <span class="inputDiagnostic">{{ element.diag_note }}</span>
-                </p>
-                <p class="refund-request-diagnose" *ngIf="element.social_insurance_id">
-                    <span class="primary-key">- Thẻ Bảo Hiểm: </span>
-                    <span>{{ element.social_insurance_id }}</span>
-                    <span>-{{ element.social_insurance_id ? 'Có' : 'Không' }} áp dụng:</span>
-                    <mat-icon [ngStyle]="{ 'color' : element.social_insurance_id ? 'green': 'red' }">
-                        {{ element.social_insurance_id ? 'done': 'close' }}
-                    </mat-icon>
-                    <span></span>
-                </p>
-            </div>
-
-            <div class="height-container"></div>
-
-            <div class="refund-request-left-container">
-                
-                <table mat-table [dataSource]="element.costs" class="mat-elevation-z8">
-                    <ng-container matColumnDef="category">
-                        <th mat-header-cell *matHeaderCellDef>Danh mục</th>
-                        <td mat-cell *matCellDef="let element; let last=last">
-                            <span *ngIf="!last">{{element.cost_name}}</span>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef> Tổng </td>
-                    </ng-container>
-    
-                    <ng-container matColumnDef="money">
-                        <th mat-header-cell *matHeaderCellDef>Số tiền</th>
-                        <td mat-cell *matCellDef="let element; let last=last">
-                            <span *ngIf="!last">{{element.cost_amount | currency:"VND"}}</span>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef> {{countTotal(element.costs) | currency:"VND"}} </td>
-                    </ng-container>
-    
-                    <ng-container matColumnDef="note">
-                        <th mat-header-cell *matHeaderCellDef>Ghi chú</th>
-                        <td mat-cell *matCellDef="let element; let last=last">
-                            <span
-                                matTooltip="{{!element.cost_note ? 'null' : element.cost_note }}"
-                                matTooltipPosition="before"
-                            >
-                                {{!element.cost_note ? 'null' : element.cost_note }}
-                            </span>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
-                    </ng-container>
-    
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
-                </table>
-
-                <div class="width-container"></div>
-
-                <app-ticket-cost [ticket]="element" (costFormChange)="costFormChange($event)"></app-ticket-cost>
-
-            </div>
-
-            <div class="height-container"></div>
-        </div>
-
-        <div class="last-container" *ngIf="element.countDown | async as countDown" [class.background-pending-status]="countDown.minutes<=10"
-        [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1">
-    
-            <div class="clinic-information">
-                <span class="secondary-key">
-                    <mat-icon>local_hospital</mat-icon>
-                    {{ element.hospital_user_id }}
-                </span>
-                <div class="width-container"></div>
-                <span class="secondary-key">
-                    <mat-icon>person</mat-icon>
-                    {{ element.hospital_employee_name }}
-                </span>
-                <div class="width-container"></div>
-                <span class="secondary-key">
-                    <mat-icon>phone</mat-icon>
-                    {{ element.hospital_phone_number }}
-                </span>
-            </div>
-    
-            <div class="width-container"></div>
-    
-            <div class="button-container">
-                <button (click)="addComment(element)">
-                    <span>{{'Thêm thông tin'}}</span>
-                </button>
-                
-                <div class="width-container"></div>
-
-                <button (click)="startProccess(element)">
-                    <span>{{ 'Đồng ý' }}</span>
-                </button>
-
-                <div class="width-container"></div>
-
-                <button (click)="reject(element)">
-                    <span>{{ 'Từ Chối' }}</span>
-                </button>
-            </div>
-        </div>
+        </ng-container>
     </div>
 
     <div class="padding-for-the-list"></div>

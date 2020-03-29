@@ -16,7 +16,8 @@ import { ListTicketsService } from '../../service/list-tickets.service';
 import { LocalStorageService } from '../../service/local-storage.service';
 import { UpdateCasenumberService } from '../../service/api/put/update-casenumber.service';
 import { UpdateTicketCostService } from '../../service/api/put/update-ticket-cost.service';
-import { ConfirmService } from '../../service/api/put/confirm.service';
+import { InsmartVerifyService } from '../../service/api/put/insmart-verify.service';
+import { InsmartDenyService } from '../../service/api/put/insmart-deny.service';
 import { RejectService } from '../../service/api/put/reject.service';
 import { DetailTicketService } from '../../service/api/get/detail-ticket.service';
 
@@ -25,6 +26,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { PushSmsService } from '../../service/api/post/push-sms.service';
 import { ListTicketService } from '../../service/api/get/list-ticket.service';
 import { ToastService } from '../../service/toast.service';
+import { ConfirmService } from '../../service/api/put/confirm.service';
+
 @Component({
   selector: 'app-directbilling',
   templateUrl: './directbilling.component.html',
@@ -64,6 +67,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     private localStorageService: LocalStorageService,
     private updateCasenumberService: UpdateCasenumberService,
     private updateTicketCostService: UpdateTicketCostService,
+    private insmartVerifyService: InsmartVerifyService,
+    private insmartDenyService: InsmartDenyService,
     private confirmService: ConfirmService,
     private rejectService: RejectService,
     private spinner: NgxSpinnerService,
@@ -80,6 +85,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     this.listenDirectBillingTakenSubscription = this.listTicketsService.listenDirectBillingTaken.subscribe(resTickets=>{
       this.setList(resTickets);
     });
+
+    this.setTicket();
   }
 
   setList(resTickets){
@@ -94,9 +101,11 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
         requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.hospital_updated_at);
         this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
           let response:any = res;
+          console.log(response);
           if(response.code === 200 && response.message ==='OK'){
             response.data.comments.forEach(comment=>{
-              if(comment.type === 'UPDATE_COST'){
+              if(comment.type === 'REQUEST_COST'){
+                
                 if(comment.hospital_user_id > 0){
                   requestForRefund.insmartCosts = JSON.parse(comment.content).costs;
                   requestForRefund.diag_note = JSON.parse(comment.content).cost_details.diag_note;
@@ -104,12 +113,38 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
                   requestForRefund.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
                   requestForRefund.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
                 }
+                
               }
             })
           }
+          
         })
       }
     }
+  }
+
+  setTicket(){
+
+    this.listTicketsService.listenCommentTicket.subscribe(socketData=>{
+      if(socketData && socketData.data && socketData.data.ticket_id){
+        if(this.response && this.response.data.length>0){
+          this.response.data.forEach(ticket=>{
+            if(ticket.ID === socketData.data.ticket_id){
+              if(socketData.meta.sender_type === 'hospital'){
+                ticket.insmart_status = 'WAITING';
+                ticket.hospital_status = 'UPDATED';
+    
+                let now = new Date();
+                ticket.countDown = this.timelineOfRequestsService.calcCountdown(15, now.toISOString());
+              }else if(socketData.meta.sender_type === 'insmart'){
+                ticket.insmart_status = 'UPDATED';
+                ticket.hospital_status = 'WAITING';
+              }
+            }
+          })
+        }
+      }
+    })
   }
 
   countTotal(arrayNumber:any){
@@ -198,7 +233,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     let userData = this.localStorageService.getLocalStorage('token');
     this.dialog.open(ReasonInputComponent).afterClosed().subscribe(reason=>{
       if(reason && reason.length >10){
-        this.rejectService.insmartReject(ticket.ID, reason, userData.token).subscribe(response=>{
+        this.insmartDenyService.insmartDeny(ticket.ID, reason, userData.token).subscribe(response=>{
           if(response.code === 200 && response.message==='OK'){
             alert('Đã huỷ ticket với lý do '+reason);
           }
@@ -223,42 +258,44 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
             if(res){
               this.updateTicketCostService.insmartUpdateCosts(ticket.ID, costsWillUpdate, userData.token).subscribe(res=>{
                 let response: any = res;
-                
+                console.log(response);
                 if(response.code === 200 && response.message==='OK'){
-                  alert('Đã xong');
-                  this.detailTicketService.getDetailTicket(userData.token, response.data.ID).subscribe(result=>{
-                    let results:any = result;
-                    if(results.code === 200 && results.message ==='OK' ){
-                      results.data.comments.forEach(comment=>{
-                        if(comment.type === 'UPDATE_COST'){
-                          if(comment.insmart_user_id > 0){
-                            comment.content = JSON.parse(comment.content);
-                            let fee;
-                            if(comment.content.cost_details.maximum_claim_value > 0){
-                              fee = comment.content.cost_details.maximum_claim_value;
-                            }else{
-                              fee = this.countTotal(comment.content.costs);
-                            }
-    
-                            if(response.data.isurance_id < 4){
-                              // Phone Number response.patient_phone_numb
-                              this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
-                                this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
-                              }).catch(err=>{
-                                alert('Đã có lỗi xảy ra khi gửi SMS');
-                              });
-                            }else{
-                              this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
-                                this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
-                              }).catch(err=>{
-                                alert('Đã có lỗi xảy ra khi gửi SMS');
-                              });
+                  if(response.code === 200 && response.message==='OK'){
+                    alert('Đã xong');
+                    this.detailTicketService.getDetailTicket(userData.token, response.data.ID).subscribe(result=>{
+                      let results:any = result;
+                      if(results.code === 200 && results.message ==='OK' ){
+                        results.data.comments.forEach(comment=>{
+                          if(comment.type === 'UPDATE_COST'){
+                            if(comment.insmart_user_id > 0){
+                              comment.content = JSON.parse(comment.content);
+                              let fee;
+                              if(comment.content.cost_details.maximum_claim_value > 0){
+                                fee = comment.content.cost_details.maximum_claim_value;
+                              }else{
+                                fee = this.countTotal(comment.content.costs);
+                              }
+      
+                              if(response.data.isurance_id < 4){
+                                // Phone Number response.patient_phone_numb
+                                this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
+                                  this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
+                                }).catch(err=>{
+                                  alert('Đã có lỗi xảy ra khi gửi SMS');
+                                });
+                              }else{
+                                this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
+                                  this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
+                                }).catch(err=>{
+                                  alert('Đã có lỗi xảy ra khi gửi SMS');
+                                });
+                              }
                             }
                           }
-                        }
-                      });
-                    }
-                  })
+                        });
+                      }
+                    })
+                  }
                 }
               })
             }
@@ -272,7 +309,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
         data: ticket
       }).afterClosed().subscribe(res=>{
         if(res){
-          this.confirmService.insmartConfirm(ticket.ID, userData.token).subscribe(res=>{
+          this.insmartVerifyService.insmartVerify(ticket.ID, userData.token).subscribe(res=>{
             let response: any = res;
             if(response.code === 200 && response.message==='OK'){
               alert('Đã xong');
