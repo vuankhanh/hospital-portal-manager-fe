@@ -6,7 +6,7 @@
                 <div class="information-container">
                     <div class="icon-container">
                         <mat-icon>schedule</mat-icon>
-                        <span *ngIf="element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN'">
+                        <span *ngIf="element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN' || element.insmart_status === 'TAKEN'">
                             {{ ('0'+countDown.minutes).slice(-2) +':'+ ('0'+countDown.seconds).slice(-2) }}
                         </span>
                     </div>
@@ -147,8 +147,8 @@
 
             <div
                 class="last-container"
-                [class.background-pending-status]="countDown.minutes<=10 && (element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN')"
-                [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1 && (element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN')"
+                [class.background-pending-status]="countDown.minutes<=10 && (element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN' || element.insmart_status === 'TAKEN')"
+                [class.background-pending-status-overtime]="countDown.minutes == -1 && countDown.seconds == -1 && (element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN' || element.insmart_status === 'TAKEN')"
             >
         
                 <div class="clinic-information">

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="main-image">
-        <img src="{{images.images[images.mainImage] | urlAttachment}}">
-        <button (click)="downloadAll([images.images[images.mainImage]])">
+        <img src="{{images.images[images.mainImage].urlShow}}">
+        <button (click)="downloadAll([images.images[images.mainImage].urlUpload])">
             <mat-icon>arrow_downward</mat-icon>
         </button>
     </div>
@@ -10,7 +10,7 @@
 
     <div class="list-image">
         <img
-            src="{{ image | urlAttachment }}"
+            src="{{ image.urlShow }}"
             *ngFor="let image of images.images; let index = index"
             (click)="imageSelected(index)"
             [ngClass]="{ 'imageIsSelected' : images.mainImage === index }"

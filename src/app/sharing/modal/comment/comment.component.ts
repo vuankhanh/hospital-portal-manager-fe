@@ -75,8 +75,14 @@ export class CommentComponent implements OnInit, AfterViewInit {
         comments.data.files = JSON.parse(comments.data.files);
         comments.data.costs = JSON.parse(comments.data.costs);
         this.detailTickets = comments.data;
+        this.detailTickets.files = this.detailTickets.files.map(url=>{
+          return this.validationFilesUploadService.pipeImageUrl(url);
+        });
         for(let detailTicket of this.detailTickets.comments ){
           detailTicket.content = JSON.parse(detailTicket.content);
+          detailTicket.content.files = detailTicket.content.files.map(url=>{
+            return this.validationFilesUploadService.pipeImageUrl(url);
+          });
         }
         console.log(this.detailTickets);
         this.scrollToBottom();
@@ -187,7 +193,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
   async downloadAttachments(urlsAttachmen){
     if(urlsAttachmen && urlsAttachmen.length>0){
       for(let urlAttachmen of urlsAttachmen){
-        let url = this.urlAttachmentPipe.transform(urlAttachmen);
+        let url = this.urlAttachmentPipe.transform(urlAttachmen.urlUpload);
         console.log(url);
         await this.downloadService.downloadFile(url);
       }

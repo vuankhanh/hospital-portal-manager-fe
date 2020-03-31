@@ -27,6 +27,8 @@ import { PushSmsService } from '../../service/api/post/push-sms.service';
 import { ListTicketService } from '../../service/api/get/list-ticket.service';
 import { ToastService } from '../../service/toast.service';
 import { ConfirmService } from '../../service/api/put/confirm.service';
+import { tick } from '@angular/core/testing';
+import { ValidationFilesUploadService } from '../../service/validation-files-upload.service';
 
 @Component({
   selector: 'app-directbilling',
@@ -74,7 +76,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService,
     private pushSmsService: PushSmsService,
     private listTicketService: ListTicketService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private validationFilesUploadService: ValidationFilesUploadService
   ) { }
 
   ngOnInit() {
@@ -99,6 +102,9 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
 
       for(let requestForRefund of this.response.data){
         requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.hospital_updated_at);
+        requestForRefund.files = requestForRefund.files.map(url=>{
+          return this.validationFilesUploadService.pipeImageUrl(url);
+        })
         this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
           let response:any = res;
           console.log(response);
@@ -230,14 +236,23 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   }
 
   reject(ticket){
+    console.log(ticket);
     let userData = this.localStorageService.getLocalStorage('token');
     this.dialog.open(ReasonInputComponent).afterClosed().subscribe(reason=>{
       if(reason && reason.length >10){
-        this.insmartDenyService.insmartDeny(ticket.ID, reason, userData.token).subscribe(response=>{
-          if(response.code === 200 && response.message==='OK'){
-            alert('Đã huỷ ticket với lý do '+reason);
-          }
-        })
+        if(ticket.costs.length>0){
+          this.rejectService.insmartReject(ticket.ID, reason, userData.token).subscribe(response=>{
+            if(response.code === 200 && response.message==='OK'){
+              alert('Đã huỷ ticket với lý do '+reason);
+            }
+          })
+        }else{
+          this.insmartDenyService.insmartDeny(ticket.ID, reason, userData.token).subscribe(response=>{
+            if(response.code === 200 && response.message==='OK'){
+              alert('Đã huỷ ticket với lý do '+reason);
+            }
+          })
+        }
       }
     })
   }

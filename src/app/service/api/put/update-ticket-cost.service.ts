@@ -18,6 +18,6 @@ export class UpdateTicketCostService {
       'Authorization':token
     });
 
-    return this.httpClient.put<Response>(environment.apiHost+'opd/'+id+'/update-costs', body, { headers: headers });
+    return this.httpClient.put<Response>(environment.apiHost+'opd/'+id+'/insmart-update-costs', body, { headers: headers });
   }
 }

@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-
-
 @Component({
   selector: 'app-case-number',
   templateUrl: './case-number.component.html',

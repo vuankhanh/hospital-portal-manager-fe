@@ -70,13 +70,13 @@
                     <p [style.color]="comment.insmart_user_id > 0 ? 'white' : '#333333'">
                         {{ comment.content.message }}
                     </p>
-                    <div class="attachments" *ngIf="comment.content.Files">
+                    <div class="attachments" *ngIf="comment.content.files">
                         <img
-                            src="{{url | urlAttachment}}"
-                            *ngFor="let url of comment.content.Files; let index = index"
-                            (click)="showImage(comment.content.Files, index)"
+                            src="{{url.urlShow}}"
+                            *ngFor="let url of comment.content.files; let index = index"
+                            (click)="showImage(comment.content.files, index)"
                         >
-                        <button (click)="downloadAttachments(comment.content.Files)">Tải hết</button>
+                        <button (click)="downloadAttachments(comment.content.files)">Tải hết</button>
                     </div>
                 </div>
     

@@ -29,7 +29,7 @@ export class ImageShowComponent implements OnInit {
   async downloadAll(images){
     if(images && images.length>0){
       for(let urlAttachmen of images){
-        let url = this.urlAttachmentPipe.transform(urlAttachmen);
+        let url = this.urlAttachmentPipe.transform(urlAttachmen.urlUpload);
         console.log(url);
         await this.downloadService.downloadFile(url);
       }
