@@ -3,6 +3,12 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+interface Response{
+  code:number;
+  data:string;
+  message:string;
+  total:number
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +25,6 @@ export class UpdateInsurerService {
       'Authorization':token
     });
 
-    return this.httpClient.put<Response>(environment.apiHost+'opd/'+id+'/update-insurer', { insurer_id: newInsurerId, reason:'' }, { headers: headers });
+    return this.httpClient.put<Response>(environment.apiHost+'opd/'+id+'/update-insurer', { insurer_id: newInsurerId, reason:'Sửa lại Nhà Bảo Hiểm' }, { headers: headers });
   }
 }

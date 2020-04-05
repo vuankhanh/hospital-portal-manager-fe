@@ -40,6 +40,7 @@ import { PendingComponent } from './dashboard/pending/pending.component';
 
 import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
+import { UpdateInsurerIdComponent } from './sharing/modal/update-insurer-id/update-insurer-id.component'
 import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.component';
 import { CommentComponent } from './sharing/modal/comment/comment.component';
 import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
@@ -52,11 +53,12 @@ import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
 import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
 
-
 @NgModule({
   entryComponents:[
     ConfirmActionComponent,
-    CaseNumberComponent, ReasonInputComponent,
+    CaseNumberComponent,
+    UpdateInsurerIdComponent,
+    ReasonInputComponent,
     CommentComponent,
     ImageShowComponent,
     PushSmsComponent
@@ -69,6 +71,7 @@ import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.co
     PendingComponent,
     ConfirmActionComponent,
     CaseNumberComponent,
+    UpdateInsurerIdComponent,
     ReasonInputComponent,
     CommentComponent,
     TicketCostComponent,

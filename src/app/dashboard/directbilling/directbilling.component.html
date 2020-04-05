@@ -3,7 +3,7 @@
     <div *ngFor="let element of response.data; let i = index" class="item-list">
         <ng-container *ngIf="element.countDown | async as countDown">
             <div class="background-pending">   
-                <div class="information-container">
+                <div class="information-container" (contextmenu)="onRightClick($event, element)">
                     <div class="icon-container">
                         <mat-icon>schedule</mat-icon>
                         <span *ngIf="element.insmart_status === 'WAITING' || element.insmart_status === 'OPEN' || element.insmart_status === 'TAKEN'">
@@ -15,7 +15,7 @@
             
                     <div class="text-container">
                         <p matRipple (click)="copyService.createCopy('Case Number', element.note)">
-                            <span class="primary-key" (contextmenu)="onRightClick($event, element, 'caseNo')">- Case Number: </span>
+                            <span class="primary-key">- Case Number: </span>
                             <span class="secondary-key">{{ element.note }}</span>
                         </p>
                         <p matRipple (click)="copyService.createCopy('Mã định danh', element.ID)">
@@ -31,7 +31,7 @@
                             <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
                         </p>
                         <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
-                            <span class="primary-key" (contextmenu)="onRightClick($event, element, 'insurerId')">- Nhà Bảo Hiểm: </span>
+                            <span class="primary-key">- Nhà Bảo Hiểm: </span>
                             <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
                         </p>
                         <p *ngIf="element.card_no">
@@ -46,9 +46,9 @@
                     <div class="width-container"></div>
         
                     <div class="text-container">
-                        <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd)">
+                        <p matRipple (click)="copyService.createCopy('Số CMND hoặc Hộ Chiếu', element.cmnd ? element.cmnd : 'null')">
                             <span class="primary-key">- Số CMND hoặc Hộ Chiếu: </span>
-                            <span class="secondary-key">{{ element.cmnd }}</span>
+                            <span class="secondary-key">{{ element.cmnd ? element.cmnd : 'null' }}</span>
                         </p>
                         <p matRipple (click)="copyService.createCopy('Tên Khách Hàng', element.fullname)">
                             <span class="primary-key">- Tên Khách Hàng: </span>
@@ -58,9 +58,13 @@
                             <span class="primary-key">- Ngày Sinh: </span>
                             <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
                         </p>
-                        <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.policy_no)">
+                        <p matRipple (click)="copyService.createCopy('Số điện thoại', element.patient_phone_numb)">
+                            <span class="primary-key">- Số điện thoại: </span>
+                            <span class="secondary-key">{{ element.patient_phone_numb }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.policy_no ? element.policy_no : 'null')">
                             <span class="primary-key">- Số Hợp Đồng: </span>
-                            <span class="secondary-key">{{ element.policy_no }}</span>
+                            <span class="secondary-key">{{ element.policy_no ? element.policy_no : 'null' }}</span>
                         </p>
                         
                     </div>
@@ -199,7 +203,6 @@
 </ng-template>
 
 <mat-paginator
-    *ngIf="response && response.total>9"
     class="paginatorCustom"
     [length]="length"
     [pageSize]="pageSize"
@@ -212,7 +215,7 @@
 <div style="visibility: hidden; position: fixed"
     [style.left]="contextMenuPosition.x"
     [style.top]="contextMenuPosition.y"
-    [matMenuTriggerFor]="typeContextMenu === 'caseNo' ? matMenuUpdateCaseNo : matMenuUpdateInsurerId">
+    [matMenuTriggerFor]="matMenuUpdateCaseNo">
 </div>
 
 <mat-menu #matMenuUpdateCaseNo="matMenu" class="setCaseNumberMnu">
@@ -221,12 +224,7 @@
             <mat-icon>edit</mat-icon>
             <span>Sửa Case Number</span>
         </button>
-    </ng-template>
-</mat-menu>
-
-<mat-menu #matMenuUpdateInsurerId="matMenu" class="setCaseNumberMnu">
-    <ng-template matMenuContent let-id="id">
-        <button mat-menu-item (click)="setCaseNumber(id)">
+        <button mat-menu-item (click)="setInsurerId(id)">
             <mat-icon>edit</mat-icon>
             <span>Sửa Nhà Bảo Hiểm</span>
         </button>

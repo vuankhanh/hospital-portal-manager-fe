@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 
 import { ConfirmActionComponent } from '../../sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from '../../sharing/modal/case-number/case-number.component';
+import { UpdateInsurerIdComponent } from '../../sharing/modal/update-insurer-id/update-insurer-id.component';
 import { CommentComponent } from '../../sharing/modal/comment/comment.component';
 import { ReasonInputComponent } from '../../sharing/modal/reason-input/reason-input.component';
 import { ImageShowComponent } from '../../sharing/modal/image-show/image-show.component';
@@ -29,6 +30,7 @@ import { ToastService } from '../../service/toast.service';
 import { ConfirmService } from '../../service/api/put/confirm.service';
 import { tick } from '@angular/core/testing';
 import { ValidationFilesUploadService } from '../../service/validation-files-upload.service';
+import { UpdateInsurerService } from '../../service/api/put/update-insurer.service';
 
 @Component({
   selector: 'app-directbilling',
@@ -52,7 +54,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   pageSizeOptions: number[] = [5, 10, 15, 20];
 
   contextMenuPosition = { x: '0px', y: '0px' };
-  typeContextMenu: string;
 
   editCostTable:any = [];
 
@@ -68,6 +69,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     public copyService: CopyService,
     private localStorageService: LocalStorageService,
     private updateCasenumberService: UpdateCasenumberService,
+    private updateInsurerService: UpdateInsurerService,
     private updateTicketCostService: UpdateTicketCostService,
     private insmartVerifyService: InsmartVerifyService,
     private insmartDenyService: InsmartDenyService,
@@ -161,33 +163,41 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     return total;
   }
 
-  onRightClick(event: MouseEvent, element: any, type: string){
+  onRightClick(event: MouseEvent, element: any){
     event.preventDefault();
 
     this.contextMenuPosition.x = event.clientX + 'px';
     this.contextMenuPosition.y = event.clientY + 'px';
-    this.typeContextMenu = type;
-    if(this.typeContextMenu === 'caseNo'){
-      this.matMenuUpdateCaseNo.menuData = { 'id': element };
-      // this.matMenuUpdateCaseNo.menu.focusFirstItem('mouse');
-      this.matMenuUpdateCaseNo.openMenu();
-    }else if(this.typeContextMenu === 'insurerId'){
-      this.matMenuUpdateInsurerId.menuData = { 'id': element };
-      // this.matMenuUpdateInsurerId.menu.focusFirstItem('mouse');
-      this.matMenuUpdateInsurerId.openMenu();
-    }
-    
+    this.matMenuUpdateCaseNo.menuData = { 'id': element };
+    this.matMenuUpdateCaseNo.openMenu();
   }
 
   setCaseNumber(element){
     this.dialog.open(CaseNumberComponent,{data: element.note}).afterClosed().subscribe(caseNumber=>{
-      let userData = this.localStorageService.getLocalStorage('token');
-      this.updateCasenumberService.insmartUpdateCaseNo(element.ID, caseNumber, userData.token).subscribe(res=>{
-        if(res.code === 200 && res.message==='OK'){
-          alert('Đã cập nhất số Case Number'); 
-        }
-      });
+      if(caseNumber){
+        let userData = this.localStorageService.getLocalStorage('token');
+        this.updateCasenumberService.insmartUpdateCaseNo(element.ID, caseNumber, userData.token).subscribe(res=>{
+          if(res.code === 200 && res.message==='OK'){
+            alert('Đã cập nhất số Case Number'); 
+          }
+        });
+      }
     })
+  }
+
+  setInsurerId(element){
+    this.dialog.open(UpdateInsurerIdComponent, { data: element.isurance_id, panelClass: '' }).afterClosed().subscribe(idInsurance=>{
+      if(idInsurance){
+        let userData = this.localStorageService.getLocalStorage('token');
+        this.updateInsurerService.updateInsurerId(element.ID ,idInsurance, userData.token).subscribe(res=>{
+          if(res.code === 200 && res.message==='OK'){
+            alert('Đã cập nhất số Case Number'); 
+          }
+        });
+      }
+    })
+    console.log('set Insurer Id for Ticket');
+    console.log(element)
   }
 
   showImage(imageList, index){
@@ -223,7 +233,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
 
   pageChangeEvent(event){
     let userData = this.localStorageService.getLocalStorage('token');
-    this.listTicketService.getListTicket(userData.token, { status:['TAKEN', 'WAITING', 'REPLIED'], insID: userData.data.id, page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
+    this.listTicketService.getListTicket(userData.token, { status:['TAKEN', 'WAITING', 'UPDATED'], insID: userData.data.id, page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
       let response: any = res;
       if(response.code === 200 && response.message === 'OK'){
         for(let ticket of response.data){

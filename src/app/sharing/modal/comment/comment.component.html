@@ -75,6 +75,7 @@
                             src="{{url.urlShow}}"
                             *ngFor="let url of comment.content.files; let index = index"
                             (click)="showImage(comment.content.files, index)"
+                            style="background: rgb(237, 237, 237)"
                         >
                         <button (click)="downloadAttachments(comment.content.files)">Tải hết</button>
                     </div>

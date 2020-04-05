@@ -84,6 +84,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 }
 
+//Select Option
+.mat-select-panel{
+    max-height: 300px !important;
+    .selectInsurerOption{
+        border-bottom: 1px solid #ededed;
+        .mat-option-text{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            img{
+                max-width: 100px;
+                max-height: 22px;
+            }
+        }
+    }
+}
+
 //Shadow for Mat Tab Header
 mat-tab-group{
     mat-tab-header{

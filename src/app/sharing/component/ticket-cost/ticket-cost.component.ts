@@ -29,6 +29,7 @@ export class TicketCostComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.total = this.countTotal(this.ticket.costs);
+    console.log(this.total);
     this.costTableForm = this.requestForRefundFormService.setForm(this.ticket);
     let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
     for(let i = 0; i< formArray.controls.length; i++){
@@ -62,6 +63,12 @@ export class TicketCostComponent implements OnInit, OnDestroy {
 
   onMaximumChange(event){
     let value = event.target.value;
+    value = parseInt(value.toString().replace(/,/gi, ''));
+
+    if(value>= this.total){
+      alert('Giới hạn Quyền Lợi còn lại không được lớn hơn tổng số tiền hiện tại');
+      value = this.total-1;
+    }
     let formArray: FormGroup = this.costTableForm.controls['opd_cost_details'] as FormGroup;
     let control = formArray.controls.maximum_claim_value;
     control.setValue(value.toString().replace(/\D+/g, "").replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));

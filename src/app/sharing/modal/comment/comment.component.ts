@@ -80,9 +80,11 @@ export class CommentComponent implements OnInit, AfterViewInit {
         });
         for(let detailTicket of this.detailTickets.comments ){
           detailTicket.content = JSON.parse(detailTicket.content);
-          detailTicket.content.files = detailTicket.content.files.map(url=>{
-            return this.validationFilesUploadService.pipeImageUrl(url);
-          });
+          if(detailTicket.content.files && detailTicket.content.files.length>0){
+            detailTicket.content.files = detailTicket.content.files.map(url=>{
+              return this.validationFilesUploadService.pipeImageUrl(url);
+            });
+          }
         }
         console.log(this.detailTickets);
         this.scrollToBottom();
