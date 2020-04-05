@@ -85,8 +85,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 //Select Option
+.modal-select-insurer-id{
+    width: 350px;
+}
 .mat-select-panel{
-    max-height: 300px !important;
     .selectInsurerOption{
         border-bottom: 1px solid #ededed;
         .mat-option-text{

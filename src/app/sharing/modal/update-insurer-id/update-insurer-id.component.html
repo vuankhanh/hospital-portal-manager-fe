@@ -5,6 +5,7 @@
             <mat-select
                 class="selectInsurer"
                 placeholder="CMND hoặc Hộ Chiếu"
+                [(value)]="data"
                 required
             >
                 <mat-option class="selectInsurerOption" *ngFor="let insurer of insurers" [value]="insurer.code">

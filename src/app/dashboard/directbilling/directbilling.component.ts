@@ -186,12 +186,12 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   }
 
   setInsurerId(element){
-    this.dialog.open(UpdateInsurerIdComponent, { data: element.isurance_id, panelClass: '' }).afterClosed().subscribe(idInsurance=>{
+    this.dialog.open(UpdateInsurerIdComponent, { data: element.isurance_id, panelClass: 'modal-select-insurer-id' }).afterClosed().subscribe(idInsurance=>{
       if(idInsurance){
         let userData = this.localStorageService.getLocalStorage('token');
         this.updateInsurerService.updateInsurerId(element.ID ,idInsurance, userData.token).subscribe(res=>{
           if(res.code === 200 && res.message==='OK'){
-            alert('Đã cập nhất số Case Number'); 
+            alert('Đã cập nhật Nhà Bảo Hiểm'); 
           }
         });
       }
