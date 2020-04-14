@@ -39,6 +39,9 @@ export class AppComponent implements OnInit {
         if(datas[2].code === 200 && datas[2].message==='OK'){
           this.listTicketsService.getTicketsOpen(datas[2]);
         }
+        if(datas[3].code === 200 && datas[2].message==='OK'){
+          this.listTicketsService.getTicketsHistory(datas[3]);
+        }
       }).catch(err=>{
         this.router.navigate(['/login']);
         console.log(err);

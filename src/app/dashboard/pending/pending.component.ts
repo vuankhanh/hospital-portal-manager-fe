@@ -80,7 +80,7 @@ export class PendingComponent implements OnInit, OnDestroy {
 
   pageChangeEvent(event){
     let userData = this.localStorageService.getLocalStorage('token');
-    this.listTicketService.getListTicket(userData.token, { status: 'OPEN', page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
+    this.listTicketService.getListTicket(userData.token, { status: ['OPEN'], page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
       let response: any = res;
       if(response.code === 200 && response.message === 'OK'){
         for(let ticket of response.data){
@@ -90,7 +90,6 @@ export class PendingComponent implements OnInit, OnDestroy {
         this.setList(response);
       }
     })
-    console.log(event);
   }
 
   ngOnDestroy(){

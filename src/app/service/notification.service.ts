@@ -34,7 +34,6 @@ export class NotificationService {
     this._pushNotifications.create(socketData.meta.sender_id+' đã trả lời ticket số '+socketData.data.ticket_id, options).subscribe( //creates a notification
       res =>{
         if(res.event.type === 'click'){
-          console.log(res);
           this.ngZone.run(()=>{
             this.router.navigateByUrl('/dashboard/directbilling').then(_=>{
               window.focus();
@@ -48,8 +47,7 @@ export class NotificationService {
           })
           res.notification.close();
         }
-      },
-      err => console.log(err)
+      },err => alert('Không hiển thị được Thông Báo - '+ err)
     );
   }
 }

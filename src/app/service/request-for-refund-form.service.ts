@@ -19,7 +19,6 @@ export class RequestForRefundFormService {
   ) {}
 
   setForm(tickets){
-    console.log(tickets);
     this.costForm = this.formBuilder.group({
       opd_cost_details: this.formBuilder.group({
         diag_note: [tickets.diag_note, Validators.required],

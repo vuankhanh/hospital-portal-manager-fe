@@ -37,6 +37,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/main/dashboard.component';
 import { DirectbillingComponent } from './dashboard/directbilling/directbilling.component';
 import { PendingComponent } from './dashboard/pending/pending.component';
+import { HistoryComponent } from './dashboard/history/history.component';
 
 import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
@@ -52,6 +53,7 @@ import { TimelineOfRequestsService } from './service/timeline-of-requests.servic
 import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
 import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
+
 
 @NgModule({
   entryComponents:[
@@ -69,6 +71,7 @@ import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.co
     DashboardComponent,
     DirectbillingComponent,
     PendingComponent,
+    HistoryComponent,
     ConfirmActionComponent,
     CaseNumberComponent,
     UpdateInsurerIdComponent,
@@ -79,6 +82,7 @@ import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.co
     ImageShowComponent,
     PushSmsComponent,
     EmptyPageComponent
+    
   ],
   imports: [
     BrowserModule,

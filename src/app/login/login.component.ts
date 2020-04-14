@@ -49,12 +49,15 @@ export class LoginComponent implements OnInit {
           let userData = this.localStorageService.getLocalStorage('token');
           this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
             let datas: any = data;
-            console.log(datas);
             if(datas[1].code === 200 && datas[1].message==='OK'){
               this.listTicketsService.getDirectBillingTaken(datas[1]);
             }
             if(datas[2].code === 200 && datas[2].message==='OK'){
               this.listTicketsService.getTicketsOpen(datas[2]);
+            }
+
+            if(datas[3].code === 200 && datas[2].message==='OK'){
+              this.listTicketsService.getTicketsHistory(datas[3]);
             }
           }).catch(err=>{
             // this.router.navigate(['/login']);
@@ -64,7 +67,6 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/dashboard');
         };
       }).catch(err=>{
-        console.log(err);
         if(err.error.code === 421 && err.error.message === 'Co loi xay ra: record not found: Co loi xay ra: record not found'){
           this.toastService.showShortToast('Sai tài khoản hoặc mật khẩu', 'Có lỗi xảy ra');
         }

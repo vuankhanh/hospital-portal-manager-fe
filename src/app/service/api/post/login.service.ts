@@ -49,8 +49,9 @@ export class LoginService {
     let getServerConfig = this.systemConfigurationService.getSystemConfiguration(token).toPromise();
     let getDirectBillingTaken = this.listTicketService.getListTicket(token, { status:['TAKEN', 'UPDATED', 'WAITING'], insID: userId }).toPromise();
     let getTicketsOpen = this.listTicketService.getListTicket(token, { status: ['OPEN'] }).toPromise();
+    let getTicketsHistory = this.listTicketService.getListTicket(token, { status: ['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], insID: userId }).toPromise();
 
-    return Promise.all([getServerConfig, getDirectBillingTaken, getTicketsOpen]);
+    return Promise.all([getServerConfig, getDirectBillingTaken, getTicketsOpen, getTicketsHistory]);
   }
 
   // filterListTaken(userId, tickets){

@@ -17,7 +17,14 @@
 <div class="mainPage">
     <div class="leftPage">
         <div class="list-menu">
-            <div class="item-menu" *ngFor="let sideMenu of sideMenus; let i = index" [routerLink]="[sideMenu.routerLink]" routerLinkActive="active" #rla="routerLinkActive">
+            <div
+                class="item-menu"
+                *ngFor="let sideMenu of sideMenus; let i = index; let last=last"
+                [routerLink]="[sideMenu.routerLink]"
+                routerLinkActive="active"
+                #rla="routerLinkActive"
+                [ngClass]="{ 'last-menu-item': last }"
+            >
                 <span class="text-menu">
                     {{ sideMenu.name }}
                     <span *ngIf="i === 0 && sideMenu.badge$ | async as response" matBadge="{{response.total}}" atBadgePosition="above before" [matBadgeHidden]="!response.total || response.total === 0 "></span>

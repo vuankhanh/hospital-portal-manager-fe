@@ -39,7 +39,6 @@ import { UpdateInsurerService } from '../../service/api/put/update-insurer.servi
 })
 export class DirectbillingComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger,{static:false}) matMenuUpdateCaseNo: MatMenuTrigger;
-  @ViewChild(MatMenuTrigger,{static:false}) matMenuUpdateInsurerId: MatMenuTrigger;
   costForm: FormGroup;
   response:any ;
   countDownTimer: Timer;
@@ -109,7 +108,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
         })
         this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
           let response:any = res;
-          console.log(response);
           if(response.code === 200 && response.message ==='OK'){
             response.data.comments.forEach(comment=>{
               if(comment.type === 'REQUEST_COST'){
@@ -196,8 +194,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
         });
       }
     })
-    console.log('set Insurer Id for Ticket');
-    console.log(element)
   }
 
   showImage(imageList, index){
@@ -246,7 +242,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   }
 
   reject(ticket){
-    console.log(ticket);
     let userData = this.localStorageService.getLocalStorage('token');
     this.dialog.open(ReasonInputComponent).afterClosed().subscribe(reason=>{
       if(reason && reason.length >10){
@@ -283,7 +278,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
             if(res){
               this.updateTicketCostService.insmartUpdateCosts(ticket.ID, costsWillUpdate, userData.token).subscribe(res=>{
                 let response: any = res;
-                console.log(response);
                 if(response.code === 200 && response.message==='OK'){
                   if(response.code === 200 && response.message==='OK'){
                     alert('Đã xong');

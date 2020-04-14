@@ -38,24 +38,19 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.listenUserInformation();
-    this.listTicketsService.listenDirectBillingTaken.subscribe(res=>{
-      if(res){
-        console.log('Badge Taken ',res.total)
-      }
-    });
   }
 
   listenUserInformation(){
     this.authenticationService.listenUserInformation.subscribe(result=>{
       this.userInformation = result.data;
-      console.log(this.userInformation);
     })
   }
 
   initSideMenu(){
     this.sideMenus = [
       { id: 0, routerLink:'/dashboard/directbilling', name:'Bảo Lãnh', badge$: this.listTicketsService.listenDirectBillingTaken },
-      { id: 1, routerLink:'/dashboard/pending' , name:'Đang Chờ', badge$: this.listTicketsService.listenTicketsOpen }
+      { id: 1, routerLink:'/dashboard/pending' , name:'Đang Chờ', badge$: this.listTicketsService.listenTicketsOpen },
+      { id: 2, routerLink:'/dashboard/history' , name:'Đã xử lý', badge$: this.listTicketsService.listenTicketsHistory }
     ]
   }
 
@@ -72,7 +67,6 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(){
-    console.log('Logout');
     this.authenticationService.logout();
   }
 }

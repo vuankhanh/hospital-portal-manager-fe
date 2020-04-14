@@ -13,6 +13,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class ListTicketsService {
   takenTickets:any;
   openTickets:any;
+  historyTickets: any;
 
   listenCommentTicket$:BehaviorSubject<any> = new BehaviorSubject<any>(null);
   listenCommentTicket: Observable<any> = this.listenCommentTicket$.asObservable();
@@ -23,6 +24,9 @@ export class ListTicketsService {
 
   listenTicketsOpen$:BehaviorSubject<any> = new BehaviorSubject<any>(null);
   listenTicketsOpen: Observable<any> = this.listenTicketsOpen$.asObservable();
+
+  listenTicketsHistory$:BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  listenTicketsHistory: Observable<any> = this.listenTicketsHistory$.asObservable();
   constructor(
     private dialog: MatDialog,
     private localStorageService: LocalStorageService,
@@ -53,9 +57,18 @@ export class ListTicketsService {
     this.listenTicketsOpen$.next(this.openTickets);
   }
 
+  getTicketsHistory(response){
+    for(let ticket of response.data){
+      ticket.files = JSON.parse(ticket.files);
+      ticket.costs = JSON.parse(ticket.costs);
+    }
+    this.historyTickets = response;
+
+    this.listenTicketsHistory$.next(this.historyTickets);
+  }
+
   changePropertyTicket(socketData){
     let userData = this.localStorageService.getLocalStorage('token');
-    console.log(socketData);
     if(socketData){
       if(socketData.data.type){
         this.listenCommentTicket$.next(socketData);
@@ -88,23 +101,23 @@ export class ListTicketsService {
             }
           });
         }
-      //   let checkExistTicket: boolean;
-    
-      //   ticket.files = JSON.parse(ticket.files);
-      //   ticket.costs = JSON.parse(ticket.costs);
-    
-      //   for(let i=0; i<this.listTickets.length;i++){
-      //     if(this.listTickets[i].ID === ticket.ID){
-      //       checkExistTicket=true;
-      //       this.listTickets[i] = ticket;
-      //     }
-      //   }
-    
-      //   if(!checkExistTicket){
-      //     this.listTickets.push(ticket);
-      //   }
+        if(
+        (socketData.data.insmart_status === 'VERIFINED' ||
+          socketData.data.insmart_status === 'DENIED' ||
+          socketData.data.insmart_status === 'CONFIRM' ||
+          socketData.data.insmart_status === 'REJECT' ||
+          socketData.data.hospital_status === 'CONFIRM' ||
+          socketData.data.hospital_status === 'REJECT') &&
+          parseInt(socketData.meta.sender_id) === userData.data.id
+        ){
+          this.listTicketService.getListTicket(userData.token, { status:['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], insID: userData.data.id }).toPromise().then(res=>{
+            let listTicket:any = res;
+            if(listTicket.code === 200 && listTicket.message==='OK'){
+              this.getTicketsHistory(listTicket);
+            }
+          });
+        }
       }
-      // this.listTicket$.next(this.listTickets);
     }else{
       return 'Có gì đó bị lỗi rồi';
     }

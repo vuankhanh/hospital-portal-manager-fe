@@ -57,6 +57,14 @@ export class TicketCostComponent implements OnInit, OnDestroy {
 
   onInputCurrency(event, i){
     let value = event.target.value;
+    if(!value){
+      value = 0
+    }
+    if(value.length >=2){
+      if(value.charAt(0)===0 || value.charAt(0)==='0'){
+        value = value.substring(1);
+      }
+    }
     let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
     this.setFormat(formArray.controls, value, i);
   }

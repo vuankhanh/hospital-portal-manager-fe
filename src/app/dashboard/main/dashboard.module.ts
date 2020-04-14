@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { DirectbillingComponent } from '../directbilling/directbilling.component';
 import { PendingComponent } from '../pending/pending.component';
+import { HistoryComponent } from '../history/history.component';
 
 const dashboardModuleRoutes: Routes = [
     {
@@ -27,6 +28,14 @@ const dashboardModuleRoutes: Routes = [
                 component: PendingComponent,
                 data: { 
                     title: 'Đang chờ xử lý',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'history',
+                component: HistoryComponent,
+                data: { 
+                    title: 'Đã xử lý',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }

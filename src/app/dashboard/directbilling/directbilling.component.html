@@ -58,13 +58,17 @@
                             <span class="primary-key">- Ngày Sinh: </span>
                             <span class="secondary-key">{{ element.dob | date:'dd/MM/yyy' }}</span>
                         </p>
-                        <p matRipple (click)="copyService.createCopy('Số điện thoại', element.patient_phone_numb)">
+                        <p matRipple (click)="copyService.createCopy('Số điện thoại', element.patient_phone_numb ? element.patient_phone_numb : 'null')">
                             <span class="primary-key">- Số điện thoại: </span>
-                            <span class="secondary-key">{{ element.patient_phone_numb }}</span>
+                            <span class="secondary-key">{{ element.patient_phone_numb ? element.patient_phone_numb : 'null' }}</span>
                         </p>
                         <p matRipple (click)="copyService.createCopy('Số Hợp Đồng', element.policy_no ? element.policy_no : 'null')">
                             <span class="primary-key">- Số Hợp Đồng: </span>
                             <span class="secondary-key">{{ element.policy_no ? element.policy_no : 'null' }}</span>
+                        </p>
+                        <p matRipple (click)="copyService.createCopy('Giờ tạo Ticket', datePipe.transform(element.created_at, 'dd/MM/yyyy HH:mm:ss') )">
+                            <span class="primary-key">- Giờ tạo Ticket: </span>
+                            <span class="secondary-key">{{element.created_at | date:'dd/MM/yyyy HH:mm:ss'}}</span>
                         </p>
                         
                     </div>
