@@ -35,7 +35,7 @@ export class PushSmsService {
       let body = {
         access_token:res.access_token,
         session_id: authenticationBody.session_id,
-        BrandName: "FTI",
+        BrandName: "INSMART",
         Phone: phoneNumber,
         Message: message
       }

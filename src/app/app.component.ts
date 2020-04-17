@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
     this.authenticationService.setUserInformation(userData);
     if(userData && userData.token){
       this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
-        console.log(data);
         let datas: any = data;
         if(datas[1].code === 200 && datas[1].message==='OK'){
           this.listTicketsService.getDirectBillingTaken(datas[1]);

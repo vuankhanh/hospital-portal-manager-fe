@@ -20,6 +20,7 @@ export class ImageShowComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.images);
   }
 
   imageSelected(index){
