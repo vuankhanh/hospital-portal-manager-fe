@@ -47,7 +47,7 @@ export class NotificationService {
           })
           res.notification.close();
         }
-      },err => alert('Không hiển thị được Thông Báo - '+ err)
+      },err =>this._pushNotifications.requestPermission()
     );
   }
 }

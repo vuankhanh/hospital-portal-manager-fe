@@ -103,9 +103,11 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
 
       for(let requestForRefund of this.response.data){
         requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.hospital_updated_at);
-        requestForRefund.files = requestForRefund.files.map(url=>{
-          return this.validationFilesUploadService.pipeImageUrl(url);
-        })
+        if(requestForRefund.files.length>0 && (typeof requestForRefund.files[0]) === 'string'){
+          requestForRefund.files = requestForRefund.files.map(url=>{
+            return this.validationFilesUploadService.pipeImageUrl(url);
+          });
+        }
         this.detailTicketService.getDetailTicket(userData.token, requestForRefund.ID).subscribe(res=>{
           let response:any = res;
           if(response.code === 200 && response.message ==='OK'){
@@ -113,11 +115,12 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
               if(comment.type === 'REQUEST_COST'){
                 
                 if(comment.hospital_user_id > 0){
-                  requestForRefund.insmartCosts = JSON.parse(comment.content).costs;
-                  requestForRefund.diag_note = JSON.parse(comment.content).cost_details.diag_note;
-                  requestForRefund.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
-                  requestForRefund.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
-                  requestForRefund.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
+                  // requestForRefund.insmartCosts = JSON.parse(comment.content).costs;
+                  // requestForRefund.diag_note = JSON.parse(comment.content).cost_details.diag_note;
+                  // requestForRefund.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
+                  // requestForRefund.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
+                  // requestForRefund.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
+                  requestForRefund.hospitalCosts = JSON.parse(comment.content);
                 }
                 
               }
@@ -269,7 +272,8 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
       if(ticket.accordion){
         if(this.costForm && this.costForm.valid){
           let costsWillUpdate = this.parseToNumber(this.costForm.value);
-          ticket.insmartCosts = costsWillUpdate.costs;
+          ticket.insmartCosts = costsWillUpdate;
+          console.log(ticket.insmartCosts);
           ticket.maximum_claim_value = costsWillUpdate.opd_cost_details.maximum_claim_value;
           this.dialog.open(ConfirmActionComponent,{
             data:  ticket,
@@ -285,7 +289,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
                       let results:any = result;
                       if(results.code === 200 && results.message ==='OK' ){
                         results.data.comments.forEach(comment=>{
-                          if(comment.type === 'UPDATE_COST'){
+                          if(comment.type === 'INSMART_UPDATE_COST'){
                             if(comment.insmart_user_id > 0){
                               comment.content = JSON.parse(comment.content);
                               let fee;
@@ -296,13 +300,15 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
                               }
       
                               if(response.data.isurance_id < 4){
-                                // Phone Number response.patient_phone_numb
+                                console.log('Gửi SMS');
+                                
                                 this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
                                   this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
                                 }).catch(err=>{
                                   alert('Đã có lỗi xảy ra khi gửi SMS');
                                 });
                               }else{
+                                console.log('Gửi SMS');
                                 this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
                                   this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
                                 }).catch(err=>{

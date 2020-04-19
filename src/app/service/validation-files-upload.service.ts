@@ -47,7 +47,12 @@ export class ValidationFilesUploadService {
       }else if(groupAllowExtension.excel.includes(fileExtension)){
         urlShow = './assets/imgs/icon/microsoft-excel.svg';
       }
-      return { urlShow: urlShow, urlUpload:url }
+      return { urlShow: urlShow, urlUpload:url, type: this.getTypeOfFile(url) }
     }
+  }
+
+  getTypeOfFile(file){
+    let splitFile = file.split(".");
+    return splitFile[splitFile.length-1];
   }
 }

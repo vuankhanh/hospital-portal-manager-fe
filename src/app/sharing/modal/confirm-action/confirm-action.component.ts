@@ -39,24 +39,19 @@ export class ConfirmActionComponent implements OnInit, OnDestroy {
       if(response.code === 200 && response.message ==='OK'){
         let countHospitalUpdate:number = 0;
         response.data.comments.forEach(comment=>{
-          if(comment.type === 'UPDATE_COST'){
-
+          if(comment.type === 'REQUEST_COST'){
+                
             if(comment.hospital_user_id > 0){
-              this.data.hospitalCosts = JSON.parse(comment.content).costs;
-              countHospitalUpdate++;
+              // requestForRefund.insmartCosts = JSON.parse(comment.content).costs;
+              // requestForRefund.diag_note = JSON.parse(comment.content).cost_details.diag_note;
+              // requestForRefund.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
+              // requestForRefund.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
+              // requestForRefund.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
+              this.data.hospitalCosts = JSON.parse(comment.content);
             }
-
-            if(this.data.diag_note === ''){
-              this.data.diag_note = JSON.parse(comment.content).cost_details.diag_note;
-              this.data.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
-              this.data.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
-            }
+            
           }
         });
-
-        if(countHospitalUpdate === 0){
-          this.data.hospitalCosts = this.data.costs;
-        }
       }
     })
   }

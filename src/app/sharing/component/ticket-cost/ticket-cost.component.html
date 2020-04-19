@@ -1,4 +1,23 @@
+
+
 <form #pushRequest="ngForm" [formGroup]="costTableForm" class="request-for-refund">
+    <div formGroupName="opd_cost_details">
+        <p class="refund-request-diagnose">
+            <span class="primary-key">- Chẩn Đoán: </span>
+            <!-- <span class="inputDiagnostic">{{ element.diag_note }}</span> -->
+            <input type="text" formControlName="diag_note">
+        </p>
+        <p class="refund-request-diagnose" *ngIf="costTableForm.get('opd_cost_details.social_insurance_id').value">
+            <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+            <span>{{ costTableForm.get('opd_cost_details.social_insurance_id').value }}</span>
+            <span>-{{ costTableForm.get('opd_cost_details.social_insurance_id').value ? 'Có' : 'Không' }} áp dụng:</span>
+            <mat-icon [ngStyle]="{ 'color' : costTableForm.get('opd_cost_details.social_insurance_id').value ? 'green': 'red' }">
+                {{ costTableForm.get('opd_cost_details.social_insurance_id').value ? 'done': 'close' }}
+            </mat-icon>
+            <span></span>
+        </p>
+    </div>
+    <div class="height-container"></div>
     <div formArrayName="costs">
         <table mat-table [dataSource]="costTableForm.get('costs')['controls']" class="mat-elevation-z8">
 
@@ -29,6 +48,7 @@
                                 cdkAutosizeMinRows="1"
                                 cdkAutosizeMaxRows="5"
                                 placeholder="Ghi chú tổng"
+                                formControlName="cost_note"
                             ></textarea>
                         </div>
                     </div>

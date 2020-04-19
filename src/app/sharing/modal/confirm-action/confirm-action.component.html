@@ -1,28 +1,29 @@
 <div mat-dialog-content>
-    <p *ngIf="data.costs.length===0;else costs">Bạn có chắc chắn với Ticket số "{{ data.ID }}" có quyền lợi?</p>
+    <p *ngIf="!data.hospitalCosts; else costs">Bạn có chắc chắn với Ticket số "{{ data.ID }}" có quyền lợi?</p>
     <ng-template #costs>
         <p>Bạn chắc chắn với các khoản chi phí đã Bảo Lãnh như sau</p>
     </ng-template>
 </div>
 
-<div class="refund-request-container" *ngIf="data.costs.length>0">
-    <div>
-        <p class="refund-request-diagnose">
-            <span class="primary-key">- Chẩn Đoán: </span>
-            <span class="inputDiagnostic">{{ data.diag_note }}</span>
-        </p>
-        <p class="refund-request-diagnose" *ngIf="data.social_insurance_id">
-            <span class="primary-key">- Thẻ Bảo Hiểm: </span>
-            <span>{{ data.social_insurance_id }}</span>
-        </p>
-    </div>
-
-    <div class="height-container"></div>
+<div class="refund-request-container" *ngIf="data.hospitalCosts && data.hospitalCosts.costs.length>0">
+    
 
     <div style="display: flex;">
         <div [ngStyle]="{ opacity: data.insmartCosts ? '.5' : '1' }">
+            <div>
+                <p class="refund-request-diagnose">
+                    <span class="primary-key">- Chẩn Đoán: </span>
+                    <span class="inputDiagnostic">{{ data.hospitalCosts.cost_details.diag_note }}</span>
+                </p>
+                <p class="refund-request-diagnose" *ngIf="data.hospitalCosts.cost_details.social_insurance_id">
+                    <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+                    <span>{{ data.hospitalCosts.cost_details.social_insurance_id }}</span>
+                </p>
+            </div>
+        
+            <div class="height-container"></div>
             <p class="primary-key">Chi Phí Yêu Cầu</p>
-            <table mat-table [dataSource]="data.hospitalCosts" class="mat-elevation-z8">
+            <table mat-table [dataSource]="data.hospitalCosts.costs" class="mat-elevation-z8">
                 <ng-container matColumnDef="category">
                     <th mat-header-cell *matHeaderCellDef>Danh mục</th>
                     <td mat-cell *matCellDef="let data; let last=last">
@@ -38,7 +39,7 @@
                     <td mat-cell *matCellDef="let data; let last=last">
                         <span *ngIf="!last">{{ data.cost_amount | currency:"VND" }}</span>
                     </td>
-                    <td mat-footer-cell *matFooterCellDef> {{ countTotal(data.hospitalCosts) | currency:"VND"}} </td>
+                    <td mat-footer-cell *matFooterCellDef> {{ countTotal(data.hospitalCosts.costs) | currency:"VND"}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="note">
@@ -63,8 +64,19 @@
         <div class="width-container"></div>
         
         <div *ngIf="data.insmartCosts">
+            <div>
+                <p class="refund-request-diagnose">
+                    <span class="primary-key">- Chẩn Đoán: </span>
+                    <span class="inputDiagnostic">{{ data.insmartCosts.opd_cost_details.diag_note }}</span>
+                </p>
+                <p class="refund-request-diagnose" *ngIf="data.insmartCosts.opd_cost_details.social_insurance_id">
+                    <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+                    <span>{{ data.insmartCosts.opd_cost_details.social_insurance_id }}</span>
+                </p>
+            </div>
+            <div class="height-container"></div>
             <p class="primary-key">Insmart Xác Nhận</p>
-            <table mat-table [dataSource]="data.insmartCosts" class="mat-elevation-z8">
+            <table mat-table [dataSource]="data.insmartCosts.costs" class="mat-elevation-z8">
                 <ng-container matColumnDef="category">
                     <th mat-header-cell *matHeaderCellDef>Danh mục</th>
                     <td mat-cell *matCellDef="let data; let last=last">
@@ -80,7 +92,7 @@
                     <td mat-cell *matCellDef="let data; let last=last">
                         <span *ngIf="!last">{{ data.cost_amount | currency:"VND" }}</span>
                     </td>
-                    <td mat-footer-cell *matFooterCellDef> {{ (data.maximum_claim_value>0 ? data.maximum_claim_value : countTotal(data.insmartCosts)) | currency:"VND"}} </td>
+                    <td mat-footer-cell *matFooterCellDef> {{ (data.maximum_claim_value>0 ? data.maximum_claim_value : countTotal(data.insmartCosts.costs)) | currency:"VND"}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="note">

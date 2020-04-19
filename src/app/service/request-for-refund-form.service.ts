@@ -21,10 +21,10 @@ export class RequestForRefundFormService {
   setForm(tickets){
     this.costForm = this.formBuilder.group({
       opd_cost_details: this.formBuilder.group({
-        diag_note: [tickets.diag_note, Validators.required],
-        maximum_claim_value: [tickets.maximum_claim_value],
-        is_apply_social_insurance: [tickets.is_apply_social_insurance, Validators.required],
-        social_insurance_id: [tickets.social_insurance_id]
+        diag_note: [tickets.cost_details.diag_note, Validators.required],
+        maximum_claim_value: [tickets.cost_details.maximum_claim_value],
+        is_apply_social_insurance: [tickets.cost_details.is_apply_social_insurance, Validators.required],
+        social_insurance_id: [tickets.cost_details.social_insurance_id]
       }),
       costs: this.formBuilder.array([])
     })

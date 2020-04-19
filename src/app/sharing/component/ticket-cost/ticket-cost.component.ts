@@ -29,8 +29,8 @@ export class TicketCostComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.total = this.countTotal(this.ticket.costs);
-    console.log(this.total);
     this.costTableForm = this.requestForRefundFormService.setForm(this.ticket);
+    
     let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
     for(let i = 0; i< formArray.controls.length; i++){
       let value = formArray.controls[i];
@@ -44,6 +44,7 @@ export class TicketCostComponent implements OnInit, OnDestroy {
     this.formSubscription = this.costTableForm.valueChanges.subscribe(value=>{
       this.total = this.countTotal(value.costs);
       this.costFormChange.next(this.costTableForm);
+      console.log(this.costTableForm.value);
     })
   }
 

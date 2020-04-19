@@ -65,30 +65,24 @@ export class HistoryComponent implements OnInit, OnDestroy {
       this.pageSize = this.history.page_size;
 
       for(let history of this.history.data){
-        history.files = history.files.map(url=>{
-          return this.validationFilesUploadService.pipeImageUrl(url);
-        })
+        if(history.files.length>0 && (typeof history.files[0]) === 'string'){
+          history.files = history.files.map(url=>{
+            return this.validationFilesUploadService.pipeImageUrl(url);
+          })
+        }
         this.detailTicketService.getDetailTicket(userData.token, history.ID).subscribe(res=>{
           let response:any = res;
           if(response.code === 200 && response.message ==='OK'){
-            let countHospitalUpdate:number = 0;
             response.data.comments.forEach(comment=>{
               let reason = JSON.parse(comment.content);
               if(comment.type === 'REQUEST_COST'){
 
                 if(comment.hospital_user_id > 0){
-                  history.hospitalCosts = JSON.parse(comment.content).costs;
-                  countHospitalUpdate++;
-                }
-
-                if(history.diag_note === ''){
-                  history.diag_note = JSON.parse(comment.content).cost_details.diag_note;
-                  history.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
-                  history.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
+                  history.hospitalCosts = JSON.parse(comment.content);
                 }
               }else if(comment.type === 'INSMART_UPDATE_COST'){
                 if(comment.insmart_user_id > 0){
-                  history.insmartCosts = JSON.parse(comment.content).costs;
+                  history.insmartCosts = JSON.parse(comment.content);
                   history.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
                 }
               }

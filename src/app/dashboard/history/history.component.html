@@ -129,23 +129,27 @@
             </div>
 
             <div class="refund-request-container" *ngIf="element.accordion">
-                <div>
-                    <p class="refund-request-diagnose">
-                        <span class="primary-key">- Chẩn Đoán: </span>
-                        <span class="inputDiagnostic">{{ element.diag_note }}</span>
-                    </p>
-                    <p class="refund-request-diagnose" *ngIf="element.social_insurance_id">
-                        <span class="primary-key">- Thẻ Bảo Hiểm: </span>
-                        <span>{{ element.social_insurance_id }}</span>
-                    </p>
-                </div>
-    
-                <div class="height-container"></div>
 
                 <div style="display: flex;">
                     <div [ngStyle]="{ opacity: element.insmartCosts ? '.5' : '1' }">
+                        <div>
+                            <p class="refund-request-diagnose">
+                                <span class="primary-key">- Chẩn Đoán: </span>
+                                <span class="inputDiagnostic">{{ element.hospitalCosts.cost_details.diag_note }}</span>
+                            </p>
+                            <p class="refund-request-diagnose" *ngIf="element.hospitalCosts.cost_details.social_insurance_id">
+                                <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+                                <span>{{ element.hospitalCosts.cost_details.social_insurance_id }}</span>
+                                <span>-{{ element.hospitalCosts.cost_details.is_apply_social_insurance ? 'Có' : 'Không' }} áp dụng:</span>
+                                <mat-icon [ngStyle]="{ 'color' : element.hospitalCosts.cost_details.is_apply_social_insurance ? 'green': 'red' }">
+                                    {{ element.hospitalCosts.cost_details.is_apply_social_insurance ? 'done': 'close' }}
+                                </mat-icon>
+                            </p>
+                        </div>
+            
+                        <div class="height-container"></div>
                         <p class="primary-key">Chi Phí Yêu Cầu</p>
-                        <table mat-table [dataSource]="element.hospitalCosts" class="mat-elevation-z8">
+                        <table mat-table [dataSource]="element.hospitalCosts.costs" class="mat-elevation-z8">
                             <ng-container matColumnDef="category">
                                 <th mat-header-cell *matHeaderCellDef>Danh mục</th>
                                 <td mat-cell *matCellDef="let element; let last=last">
@@ -161,7 +165,7 @@
                                 <td mat-cell *matCellDef="let element; let last=last">
                                     <span *ngIf="!last">{{ element.cost_amount | currency:"VND" }}</span>
                                 </td>
-                                <td mat-footer-cell *matFooterCellDef> {{ countTotal(element.hospitalCosts) | currency:"VND"}} </td>
+                                <td mat-footer-cell *matFooterCellDef> {{ countTotal(element.hospitalCosts.costs) | currency:"VND"}} </td>
                             </ng-container>
             
                             <ng-container matColumnDef="note">
@@ -186,8 +190,23 @@
                     <div class="width-container"></div>
                     
                     <div *ngIf="element.insmartCosts">
+                        <div>
+                            <p class="refund-request-diagnose">
+                                <span class="primary-key">- Chẩn Đoán: </span>
+                                <span class="inputDiagnostic">{{ element.insmartCosts.cost_details.diag_note }}</span>
+                            </p>
+                            <p class="refund-request-diagnose" *ngIf="element.insmartCosts.cost_details.social_insurance_id">
+                                <span class="primary-key">- Thẻ Bảo Hiểm: </span>
+                                <span>{{ element.insmartCosts.cost_details.social_insurance_id }}</span>
+                                <span>-{{ element.insmartCosts.cost_details.is_apply_social_insurance ? 'Có' : 'Không' }} áp dụng:</span>
+                                <mat-icon [ngStyle]="{ 'color' : element.insmartCosts.cost_details.is_apply_social_insurance ? 'green': 'red' }">
+                                    {{ element.insmartCosts.cost_details.is_apply_social_insurance ? 'done': 'close' }}
+                                </mat-icon>
+                            </p>
+                        </div>
+                        <div class="height-container"></div>
                         <p class="primary-key">Insmart Xác Nhận</p>
-                        <table mat-table [dataSource]="element.insmartCosts" class="mat-elevation-z8">
+                        <table mat-table [dataSource]="element.insmartCosts.costs" class="mat-elevation-z8">
                             <ng-container matColumnDef="category">
                                 <th mat-header-cell *matHeaderCellDef>Danh mục</th>
                                 <td mat-cell *matCellDef="let element; let last=last">
@@ -203,7 +222,7 @@
                                 <td mat-cell *matCellDef="let element; let last=last">
                                     <span *ngIf="!last">{{ element.cost_amount | currency:"VND" }}</span>
                                 </td>
-                                <td mat-footer-cell *matFooterCellDef> {{ (element.maximum_claim_value>0 ? element.maximum_claim_value : countTotal(element.insmartCosts)) | currency:"VND"}} </td>
+                                <td mat-footer-cell *matFooterCellDef> {{ (element.maximum_claim_value>0 ? element.maximum_claim_value : countTotal(element.insmartCosts.costs)) | currency:"VND"}} </td>
                             </ng-container>
             
                             <ng-container matColumnDef="note">
@@ -225,32 +244,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
-                
-            <div class="height-container"></div>
-
-            <div
-                class="last-container"
-            >
-        
-                <div class="clinic-information">
-                    <span class="secondary-key">
-                        <mat-icon>local_hospital</mat-icon>
-                        {{ element.hospital_user.hospital.hospital_name }}
-                    </span>
-                    <div class="width-container"></div>
-                    <span class="secondary-key">
-                        <mat-icon>person</mat-icon>
-                        {{ element.hospital_employee_name }}
-                    </span>
-                    <div class="width-container"></div>
-                    <span class="secondary-key">
-                        <mat-icon>phone</mat-icon>
-                        {{ element.hospital_phone_number }}
-                    </span>
-                </div>
-        
-                <div class="width-container"></div>
             </div>
         </ng-container>
     </div>
