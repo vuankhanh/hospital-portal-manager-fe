@@ -7,9 +7,20 @@
         img{
             height: 400px;
         }
-        iframe{
-            height: 400px;
-            width: 600px;
+        .frameContainer{
+            position: relative;
+            .documentFrame{
+                height: 400px;
+                width: 600px;
+            }
+            // mat-progress-spinner{
+            //     position: absolute;
+            //     top: 0;
+            //     left:0;
+            //     right: 0;
+            //     bottom: 0;
+            //     margin: auto;
+            // }
         }
         button{
             height: 30px;

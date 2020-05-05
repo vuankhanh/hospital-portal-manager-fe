@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { SystemConfigurationService } from '../get/system-configuration.service';
 import { ListTicketService } from '../get/list-ticket.service';
+import { DateFormatService } from '../../date-format.service';
 
 interface ResponseLogin{
   code: number;
@@ -34,7 +35,8 @@ export class LoginService {
   constructor(
     private httpClient: HttpClient,
     private systemConfigurationService: SystemConfigurationService,
-    private listTicketService: ListTicketService
+    private listTicketService: ListTicketService,
+    private dateFormatService: DateFormatService
   ) { }
 
   login(account:Account){
@@ -49,7 +51,7 @@ export class LoginService {
     let getServerConfig = this.systemConfigurationService.getSystemConfiguration(token).toPromise();
     let getDirectBillingTaken = this.listTicketService.getListTicket(token, { status:['TAKEN', 'UPDATED', 'WAITING'], insID: userId }).toPromise();
     let getTicketsOpen = this.listTicketService.getListTicket(token, { status: ['OPEN'] }).toPromise();
-    let getTicketsHistory = this.listTicketService.getListTicket(token, { status: ['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], insID: userId }).toPromise();
+    let getTicketsHistory = this.listTicketService.getListTicket(token, { status: ['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], from: this.dateFormatService.last2Day(), insID: userId }).toPromise();
 
     return Promise.all([getServerConfig, getDirectBillingTaken, getTicketsOpen, getTicketsHistory]);
   }

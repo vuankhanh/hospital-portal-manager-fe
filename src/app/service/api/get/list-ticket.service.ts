@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
-import { environment } from '../../../../environments/environment.prod';
+import { environment } from '../../../../environments/environment';
 import { DateFormatService } from '../../date-format.service';
 
 @Injectable({
@@ -25,17 +25,26 @@ export class ListTicketService {
     const today =  Date.now();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate()-1);
-    
-    params = params.append('from', this.dateFormatService.formatDate(tomorrow));
 
     if(parameters){
-      // if(parameters.status){
-      //   params = params.append('status', status);
-      // }
       if(parameters.status && parameters.status.length>0){
         parameters.status.forEach(status => {
           params = params.append('status', status);
         });
+      }
+
+      if(parameters.from){
+        params = params.append('from', parameters.from);
+      }else{
+        params = params.append('from', this.dateFormatService.formatDate(tomorrow));
+      }
+
+      if(parameters.caseNumb){
+        params = params.append('caseNumb', parameters.caseNumb);
+      }
+
+      if(parameters.fullname){
+        params = params.append('fullname', parameters.fullname);
       }
 
       if(parameters.cost){

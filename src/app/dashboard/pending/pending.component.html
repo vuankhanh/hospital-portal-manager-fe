@@ -31,6 +31,16 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Trường hợp số </th>
                 <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
             </ng-container>
+
+            <!-- Insurer Column -->
+            <ng-container matColumnDef="isurance_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên nhà Bảo Hiểm </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="traTuService.listenInsurer | async as insurer">
+                        {{insurer[element.isurance_id-1].short_name}}
+                    </span>
+                </td>
+            </ng-container>
             
             <!-- Loại hình điều trị -->
             <ng-container matColumnDef="ill_cause">

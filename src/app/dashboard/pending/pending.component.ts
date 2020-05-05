@@ -20,7 +20,7 @@ export class PendingComponent implements OnInit, OnDestroy {
   response: any;
   numbersOfPages: Array<number> = [];
 
-  displayedColumns: string[] = ['countdown', 'id', 'ill_cause', 'fullname', 'dob', 'type', 'action'];
+  displayedColumns: string[] = ['countdown', 'id', 'isurance_id', 'ill_cause', 'fullname', 'dob', 'type', 'action'];
 
   length = 0;
   pageSize = 0;

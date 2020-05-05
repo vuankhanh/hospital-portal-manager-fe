@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpModule } from '@angular/http';
+import { CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PushNotificationsModule } from 'ng-push';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -38,6 +39,8 @@ import { DashboardComponent } from './dashboard/main/dashboard.component';
 import { DirectbillingComponent } from './dashboard/directbilling/directbilling.component';
 import { PendingComponent } from './dashboard/pending/pending.component';
 import { HistoryComponent } from './dashboard/history/history.component';
+import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
+import { SearchingComponent } from './sharing/modal/searching/searching.component';
 
 import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
@@ -52,7 +55,6 @@ import { TitleService } from './service/title.service';
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
-import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
 
 
 @NgModule({
@@ -63,7 +65,8 @@ import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.co
     ReasonInputComponent,
     CommentComponent,
     ImageShowComponent,
-    PushSmsComponent
+    PushSmsComponent,
+    SearchingComponent
   ],
   declarations: [
     AppComponent,
@@ -81,7 +84,8 @@ import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.co
     CurrencyDirective,
     ImageShowComponent,
     PushSmsComponent,
-    EmptyPageComponent
+    EmptyPageComponent,
+    SearchingComponent
     
   ],
   imports: [
@@ -128,7 +132,8 @@ import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.co
   providers: [
     TitleService,
     TimelineOfRequestsService,
-    { provide : LocationStrategy , useClass: HashLocationStrategy }
+    { provide : LocationStrategy , useClass: HashLocationStrategy },
+    CurrencyPipe
   ],
   bootstrap: [AppComponent]
 })

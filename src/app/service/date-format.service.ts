@@ -48,4 +48,26 @@ export class DateFormatService {
 
     return year+'-'+month+'-'+day;
   }
+
+  last90Day(){
+    let today = new Date();
+    today.setDate(today.getDate()-90);
+
+    let day = String("0"+today.getDate()).slice(-2);
+    let month = String("0"+(today.getMonth()+1)).slice(-2);
+    let year = today.getFullYear();
+
+    return year+'-'+month+'-'+day;
+  }
+
+  last2Day(){
+    let today = new Date();
+    today.setDate(today.getDate()-2);
+
+    let day = String("0"+today.getDate()).slice(-2);
+    let month = String("0"+(today.getMonth()+1)).slice(-2);
+    let year = today.getFullYear();
+
+    return year+'-'+month+'-'+day;
+  }
 }

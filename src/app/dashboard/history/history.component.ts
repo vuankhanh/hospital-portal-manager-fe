@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { MatDialog, MatMenuTrigger } from '@angular/material';
 
 import { ImageShowComponent } from '../../sharing/modal/image-show/image-show.component';
 import { CaseNumberComponent } from '../../sharing/modal/case-number/case-number.component';
 import { UpdateInsurerIdComponent } from '../../sharing/modal/update-insurer-id/update-insurer-id.component';
+import { SearchingComponent } from '../../sharing/modal/searching/searching.component';
 
 import { LocalStorageService } from '../../service/local-storage.service';
 import { ValidationFilesUploadService } from '../../service/validation-files-upload.service';
@@ -17,6 +18,8 @@ import { UpdateInsurerService } from '../../service/api/put/update-insurer.servi
 
 import { Subscription } from 'rxjs';
 import { UpdateCasenumberService } from '../../service/api/put/update-casenumber.service';
+import { DateFormatService } from '../../service/date-format.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-history',
@@ -25,6 +28,7 @@ import { UpdateCasenumberService } from '../../service/api/put/update-casenumber
 })
 export class HistoryComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger,{static:false}) matMenuUpdateCaseNo: MatMenuTrigger;
+  @ViewChild('inputCaseNumber', {static:false}) inputCaseNumber: ElementRef;
   history: any;
 
   length = 0;
@@ -38,6 +42,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
   datePipe = new DatePipe('en-US');
   listenHistoryTicketSubscription: Subscription;
   constructor(
+    public currencyPipe: CurrencyPipe,
     public traTuService: TraTuService,
     public copyService: CopyService,
     private localStorageService: LocalStorageService,
@@ -47,10 +52,15 @@ export class HistoryComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private listTicketService: ListTicketService,
     private updateInsurerService: UpdateInsurerService,
-    private updateCasenumberService: UpdateCasenumberService
+    private updateCasenumberService: UpdateCasenumberService,
+    private dateFormatService: DateFormatService,
   ) { }
 
   ngOnInit() {
+    this.getListHistory();
+  }
+
+  getListHistory(){
     this.listenHistoryTicketSubscription = this.listTicketsService.listenTicketsHistory.subscribe(resTickets=>{
       this.setList(resTickets);
     });
@@ -65,6 +75,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
       this.pageSize = this.history.page_size;
 
       for(let history of this.history.data){
+        console.log(history);
         if(history.files.length>0 && (typeof history.files[0]) === 'string'){
           history.files = history.files.map(url=>{
             return this.validationFilesUploadService.pipeImageUrl(url);
@@ -164,7 +175,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   pageChangeEvent(event){
     let userData = this.localStorageService.getLocalStorage('token');
-    this.listTicketService.getListTicket(userData.token, { status:['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], insID: userData.data.id, page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
+    this.listTicketService.getListTicket(userData.token, { status:['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], from: this.dateFormatService.last2Day(), insID: userData.data.id, page: event.pageIndex+1, pageSize: event.pageSize }).toPromise().then(res=>{
       let response: any = res;
       if(response.code === 200 && response.message === 'OK'){
         for(let ticket of response.data){
@@ -174,6 +185,13 @@ export class HistoryComponent implements OnInit, OnDestroy {
         this.setList(response);
       }
     });
+  }
+
+  openSearching(){
+    this.dialog.open(SearchingComponent, {
+      data: { status: ['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'] },
+      panelClass: 'searching-modal'
+    })
   }
 
   ngOnDestroy(){

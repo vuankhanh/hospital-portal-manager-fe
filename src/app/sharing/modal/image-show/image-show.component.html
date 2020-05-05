@@ -1,13 +1,12 @@
 <div class="container">
     <div class="main-image">
-            <img
+        <img
             *ngIf="typeImages.image.includes(images.images[images.mainImage].type)"
             src="{{images.images[images.mainImage].urlShow}}"
         >
-        <iframe
-            *ngIf="typeImages.document.includes(images.images[images.mainImage].type)"
-            [src]="images.images[images.mainImage].trustResourceUrl"
-        ></iframe>
+        <div class="frameContainer" *ngIf="typeImages.document.includes(images.images[images.mainImage].type)">
+            <iframe class="documentFrame" [src]="images.images[images.mainImage].trustResourceUrl"></iframe>
+        </div>
         <button (click)="downloadAll([images.images[images.mainImage]])">
             <mat-icon>arrow_downward</mat-icon>
         </button>

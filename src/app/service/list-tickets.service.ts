@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { LocalStorageService } from './local-storage.service';
 import { ListTicketService } from './api/get/list-ticket.service';
 import { NotificationService } from './notification.service';
+import { DateFormatService } from './date-format.service';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
@@ -31,7 +32,8 @@ export class ListTicketsService {
     private dialog: MatDialog,
     private localStorageService: LocalStorageService,
     private listTicketService: ListTicketService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dateFormatService: DateFormatService
   ) {
     
   }
@@ -110,7 +112,7 @@ export class ListTicketsService {
           socketData.data.hospital_status === 'REJECT') &&
           parseInt(socketData.meta.sender_id) === userData.data.id
         ){
-          this.listTicketService.getListTicket(userData.token, { status:['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], insID: userData.data.id }).toPromise().then(res=>{
+          this.listTicketService.getListTicket(userData.token, { status:['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], from: this.dateFormatService.last2Day(), insID: userData.data.id }).toPromise().then(res=>{
             let listTicket:any = res;
             if(listTicket.code === 200 && listTicket.message==='OK'){
               this.getTicketsHistory(listTicket);

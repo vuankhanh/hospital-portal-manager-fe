@@ -32,6 +32,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 }
 
+.paginatorSearching{
+    .mat-paginator-container{
+        padding: 0;
+        .mat-paginator-range-actions{
+            height: 35px;
+            background: white;
+            border-radius: 10px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+        }
+    }
+}
+
 .padding-for-the-list{
     height: 120px;
 }
@@ -120,6 +134,16 @@ mat-tab-group{
 app-confirm-action{
     .mat-dialog-actions{
         justify-content: flex-end;
+    }
+}
+
+//Searching Modal
+.searching-modal{
+    width: 100%;
+    height: 100%;
+    max-height: 80vh;
+    mat-dialog-container{
+        padding: 0;
     }
 }
 

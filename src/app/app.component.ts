@@ -7,6 +7,8 @@ import { LocalStorageService } from './service/local-storage.service';
 import { ListTicketsService } from './service/list-tickets.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './service/authentication.service';
+import { ToastService } from './service/toast.service';
+import { TraTuService } from './service/tra-tu.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,7 +23,9 @@ export class AppComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private listTicketsService: ListTicketsService,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private toastService: ToastService,
+    private traTuService: TraTuService
   ){
     this.timelineOfRequestsService.listentWebSocket();
   }
@@ -32,6 +36,10 @@ export class AppComponent implements OnInit {
     if(userData && userData.token){
       this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
         let datas: any = data;
+        if(datas[0].code === 200 && datas[0].message==='OK'){
+          this.traTuService.setInsurers(datas[0].insurers);
+        }
+
         if(datas[1].code === 200 && datas[1].message==='OK'){
           this.listTicketsService.getDirectBillingTaken(datas[1]);
         }
@@ -42,8 +50,10 @@ export class AppComponent implements OnInit {
           this.listTicketsService.getTicketsHistory(datas[3]);
         }
       }).catch(err=>{
-        this.router.navigate(['/login']);
-        console.log(err);
+        if(err.status && err.status === 401 && err.statusText === 'Unauthorized'){
+          this.toastService.showShortToast('Mời bạn đăng nhập lại', 'Hết hạn phiên đăng nhập');
+        }
+        this.router.navigate(['/login']).then(_=>this.localStorageService.removeLocalStorage('token'));
       });
     }
   }

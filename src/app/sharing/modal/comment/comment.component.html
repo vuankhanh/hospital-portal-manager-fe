@@ -21,7 +21,9 @@
             </p>
             <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[detailTickets.isurance_id-1].displayName)">
                 <span class="primary-key">- Nhà Bảo Hiểm: </span>
-                <span class="secondary-key">{{ traTuService.insurers[detailTickets.isurance_id-1].displayName }}</span>
+                <span class="secondary-key" *ngIf="traTuService.listenInsurer | async as insurer">
+                    {{insurer[detailTickets.isurance_id-1].short_name}}
+                </span>
             </p>
             <p *ngIf="detailTickets.card_no">
                 <span class="primary-key">- Số thẻ: </span>

@@ -185,7 +185,7 @@ export class CommentComponent implements OnInit, AfterViewInit {
               );
             }
           }else{
-            alert('Tệp '+file.name+' không được nhiều hơn 1 dấu chấm.');
+            alert('Tệp đính kèm không được nhiều hơn 1 dấu chấm, chứa khoảng trắng và ký tự đặc biệt.');
           }
         }
       }

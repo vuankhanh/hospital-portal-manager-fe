@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -11,11 +11,12 @@ import { UrlAttachmentPipe } from '../../../pipes/url-attachment.pipe';
   templateUrl: './image-show.component.html',
   styleUrls: ['./image-show.component.scss']
 })
-export class ImageShowComponent implements OnInit {
+export class ImageShowComponent implements OnInit, OnDestroy, AfterViewInit {
   typeImages = {
     image: ['png', 'jpg', 'jpeg', 'tiff', 'tif', 'gif'],
     document: ['doc', 'docx', 'xlsx', 'xls', 'pdf']
-  }
+  };
+
   constructor(
     public dialogRef: MatDialogRef<ImageShowComponent>,
     @Inject(MAT_DIALOG_DATA) public images: any,
@@ -30,6 +31,11 @@ export class ImageShowComponent implements OnInit {
         this.images.images[i].trustResourceUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/gview?url='+this.urlAttachmentPipe.transform(this.images.images[i].urlUpload)+'&embedded=true');
       }
     }
+    this.imageSelected(this.images.mainImage);
+  }
+
+  ngAfterViewInit(){
+    // this.iframe.nativeElement.onload()
   }
 
   imageSelected(index){
@@ -47,5 +53,9 @@ export class ImageShowComponent implements OnInit {
         });
       }
     }
+  }
+
+  ngOnDestroy(){
+    console.log('destroy');
   }
 }

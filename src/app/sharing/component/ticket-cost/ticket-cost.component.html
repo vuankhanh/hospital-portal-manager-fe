@@ -29,8 +29,9 @@
                     </div>
                 </td>
                 <td mat-footer-cell *matFooterCellDef>
-                    <div class="totalEditContainer">
+                    <div class="totalEditContainer" [ngStyle]="{ 'color': total > hospitalTotal ? '#b71111' : 'unset' }">
                         {{ total | currency:"VND"}}
+                        <span *ngIf="total > hospitalTotal">Đã vượt quá chi phí yêu cầu của Bệnh Viện</span>
                     </div>
                 </td>
             </ng-container>

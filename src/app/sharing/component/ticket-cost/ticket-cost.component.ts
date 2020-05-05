@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } 
 import { FormGroup, FormArray } from '@angular/forms';
 
 import { RequestForRefundFormService } from '../../../service/request-for-refund-form.service';
+import { ToastService } from '../../../service/toast.service';
 
 import { Subscription } from 'rxjs';
 
@@ -20,15 +21,18 @@ export class TicketCostComponent implements OnInit, OnDestroy {
 
   formSubscription: Subscription;
   total: number;
+  hospitalTotal: number;
   overBenefit:boolean=false;
   constructor(
-    private requestForRefundFormService: RequestForRefundFormService
+    private requestForRefundFormService: RequestForRefundFormService,
+    private toastService: ToastService
   ) {
     
   }
 
   ngOnInit() {
     this.total = this.countTotal(this.ticket.costs);
+    this.hospitalTotal = this.countTotal(this.ticket.costs);
     this.costTableForm = this.requestForRefundFormService.setForm(this.ticket);
     
     let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
@@ -44,7 +48,6 @@ export class TicketCostComponent implements OnInit, OnDestroy {
     this.formSubscription = this.costTableForm.valueChanges.subscribe(value=>{
       this.total = this.countTotal(value.costs);
       this.costFormChange.next(this.costTableForm);
-      console.log(this.costTableForm.value);
     })
   }
 
@@ -66,7 +69,12 @@ export class TicketCostComponent implements OnInit, OnDestroy {
         value = value.substring(1);
       }
     }
+
     let formArray: FormArray = this.costTableForm.controls['costs'] as FormArray;
+    if(this.total > this.hospitalTotal){
+      this.toastService.showShortToast('Đã vượt quá chi phí yêu cầu của Bệnh Viện', 'Cảnh báo');
+    }
+    
     this.setFormat(formArray.controls, value, i);
   }
 

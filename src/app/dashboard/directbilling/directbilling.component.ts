@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MatDialog, MatMenuTrigger } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 
 import { ConfirmActionComponent } from '../../sharing/modal/confirm-action/confirm-action.component';
 import { CaseNumberComponent } from '../../sharing/modal/case-number/case-number.component';
@@ -28,7 +28,6 @@ import { PushSmsService } from '../../service/api/post/push-sms.service';
 import { ListTicketService } from '../../service/api/get/list-ticket.service';
 import { ToastService } from '../../service/toast.service';
 import { ConfirmService } from '../../service/api/put/confirm.service';
-import { tick } from '@angular/core/testing';
 import { ValidationFilesUploadService } from '../../service/validation-files-upload.service';
 import { UpdateInsurerService } from '../../service/api/put/update-insurer.service';
 
@@ -61,6 +60,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
+    private currencyPipe: CurrencyPipe,
     private timelineOfRequestsService: TimelineOfRequestsService,
     public traTuService: TraTuService,
     private listTicketsService: ListTicketsService,
@@ -102,6 +102,7 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
       this.pageSize = this.response.page_size;
 
       for(let requestForRefund of this.response.data){
+        console.log(requestForRefund);
         requestForRefund.countDown = this.timelineOfRequestsService.calcCountdown(15, requestForRefund.hospital_updated_at);
         if(requestForRefund.files.length>0 && (typeof requestForRefund.files[0]) === 'string'){
           requestForRefund.files = requestForRefund.files.map(url=>{
@@ -115,11 +116,6 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
               if(comment.type === 'REQUEST_COST'){
                 
                 if(comment.hospital_user_id > 0){
-                  // requestForRefund.insmartCosts = JSON.parse(comment.content).costs;
-                  // requestForRefund.diag_note = JSON.parse(comment.content).cost_details.diag_note;
-                  // requestForRefund.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
-                  // requestForRefund.social_insurance_id = JSON.parse(comment.content).cost_details.social_insurance_id;
-                  // requestForRefund.is_apply_social_insurance = JSON.parse(comment.content).cost_details.is_apply_social_insurance;
                   requestForRefund.hospitalCosts = JSON.parse(comment.content);
                 }
                 
@@ -253,13 +249,23 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
             if(response.code === 200 && response.message==='OK'){
               alert('Đã huỷ ticket với lý do '+reason);
             }
-          })
+          },err=>{
+            // if(err.error.code === 421 && err.error.message === 'Ticket cannot processable! Action=INSMART_DENIED'){
+            //   alert('Phải trả lời \'Yêu Cầu Thông Tin\' trước khi Từ Chối.')
+            // }
+            console.log('Đã có lỗi xảy ra ',err)
+          });
         }else{
           this.insmartDenyService.insmartDeny(ticket.ID, reason, userData.token).subscribe(response=>{
             if(response.code === 200 && response.message==='OK'){
               alert('Đã huỷ ticket với lý do '+reason);
             }
-          })
+          },err=>{
+            if(err.error.code === 421 && err.error.message === 'Ticket cannot processable! Action=INSMART_DENIED'){
+              alert('Phải trả lời \'Yêu Cầu Thông Tin\' trước khi Từ Chối.')
+            }
+            console.log('Đã có lỗi xảy ra ',err)
+          });
         }
       }
     })
@@ -271,60 +277,60 @@ export class DirectbillingComponent implements OnInit, OnDestroy {
     if(ticket.costs.length>0){
       if(ticket.accordion){
         if(this.costForm && this.costForm.valid){
-          let costsWillUpdate = this.parseToNumber(this.costForm.value);
-          ticket.insmartCosts = costsWillUpdate;
-          console.log(ticket.insmartCosts);
-          ticket.maximum_claim_value = costsWillUpdate.opd_cost_details.maximum_claim_value;
-          this.dialog.open(ConfirmActionComponent,{
-            data:  ticket,
-            maxWidth: 'unset'
-          }).afterClosed().subscribe(res=>{
-            if(res){
-              this.updateTicketCostService.insmartUpdateCosts(ticket.ID, costsWillUpdate, userData.token).subscribe(res=>{
-                let response: any = res;
-                if(response.code === 200 && response.message==='OK'){
+          if(ticket.note){
+            let costsWillUpdate = this.parseToNumber(this.costForm.value);
+            ticket.insmartCosts = costsWillUpdate;
+            ticket.maximum_claim_value = costsWillUpdate.opd_cost_details.maximum_claim_value;
+            this.dialog.open(ConfirmActionComponent,{
+              data:  ticket,
+              maxWidth: 'unset'
+            }).afterClosed().subscribe(res=>{
+              if(res){
+                this.updateTicketCostService.insmartUpdateCosts(ticket.ID, costsWillUpdate, userData.token).subscribe(res=>{
+                  let response: any = res;
                   if(response.code === 200 && response.message==='OK'){
-                    alert('Đã xong');
-                    this.detailTicketService.getDetailTicket(userData.token, response.data.ID).subscribe(result=>{
-                      let results:any = result;
-                      if(results.code === 200 && results.message ==='OK' ){
-                        results.data.comments.forEach(comment=>{
-                          if(comment.type === 'INSMART_UPDATE_COST'){
-                            if(comment.insmart_user_id > 0){
-                              comment.content = JSON.parse(comment.content);
-                              let fee;
-                              if(comment.content.cost_details.maximum_claim_value > 0){
-                                fee = comment.content.cost_details.maximum_claim_value;
-                              }else{
-                                fee = this.countTotal(comment.content.costs);
-                              }
-      
-                              if(response.data.isurance_id < 4){
-                                console.log('Gửi SMS');
-                                
-                                this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
-                                  this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
-                                }).catch(err=>{
-                                  alert('Đã có lỗi xảy ra khi gửi SMS');
-                                });
-                              }else{
-                                console.log('Gửi SMS');
-                                this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
-                                  this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
-                                }).catch(err=>{
-                                  alert('Đã có lỗi xảy ra khi gửi SMS');
-                                });
+                    if(response.code === 200 && response.message==='OK'){
+                      alert('Đã xong');
+                      this.detailTicketService.getDetailTicket(userData.token, response.data.ID).subscribe(result=>{
+                        let results:any = result;
+                        if(results.code === 200 && results.message ==='OK' ){
+                          results.data.comments.forEach(comment=>{
+                            if(comment.type === 'INSMART_UPDATE_COST'){
+                              if(comment.insmart_user_id > 0){
+                                comment.content = JSON.parse(comment.content);
+                                let fee;
+                                if(comment.content.cost_details.maximum_claim_value > 0){
+                                  fee = comment.content.cost_details.maximum_claim_value;
+                                }else{
+                                  fee = this.countTotal(comment.content.costs);
+                                }
+                                fee = this.currencyPipe.transform(fee, 'VND').substring(1);
+                                if(response.data.isurance_id < 4){
+                                  this.pushSmsService.lifeOpdSms(response.data.isurance_id, fee, response.data.patient_phone_numb).then(resultPushSms=>{
+                                    this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
+                                  }).catch(err=>{
+                                    alert('Đã có lỗi xảy ra khi gửi SMS');
+                                  });
+                                }else{
+                                  this.pushSmsService.noneLifeSms(fee, response.data.patient_phone_numb).then(resultPushSms=>{
+                                    this.toastService.showShortToast('Đã gửi lời chúc đến KH có sđt '+resultPushSms.Phone, 'Đã gửi SMS thành công');
+                                  }).catch(err=>{
+                                    alert('Đã có lỗi xảy ra khi gửi SMS');
+                                  });
+                                }
                               }
                             }
-                          }
-                        });
-                      }
-                    })
+                          });
+                        }
+                      })
+                    }
                   }
-                }
-              })
-            }
-          })
+                })
+              }
+            })
+          }else{
+            alert('Bạn chưa nhập Case Number cho Ticket này.')
+          }
         }
       }else{
         alert('Bạn chưa xem Bảng Chi Phí của Ticket số '+ticket.ID);

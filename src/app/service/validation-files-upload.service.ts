@@ -19,11 +19,18 @@ export class ValidationFilesUploadService {
   ) { }
 
   checkValidator(fileName: string){
-    let check = fileName.split('.').length;
-    if(check>2){
+    let checkQuantityDot = fileName.split('.');
+    if(checkQuantityDot.length>2){
       return false;
+    }else{
+      let checkCharacter = checkQuantityDot[0].match(/[^a-zA-Z0-9 ]+/);
+      let checkSpace = /\s/g.test(checkQuantityDot[0]);
+
+      if((checkCharacter && checkCharacter.length>0) || checkSpace){
+        return false;
+      }
+      return true;
     }
-    return true;
   }
 
   getTailExtension(fileName: string){
