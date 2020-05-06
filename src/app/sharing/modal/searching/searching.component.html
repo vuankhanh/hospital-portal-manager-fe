@@ -45,7 +45,7 @@
             <div *ngFor="let element of searching.data; let i = index" class="item-list">
                 <ng-container>
                     <div class="background-pending">   
-                        <div class="information-container" (contextmenu)="onRightClick($event, element)">
+                        <div class="information-container">
                     
                             <div class="width-container"></div>
                     
@@ -108,9 +108,11 @@
                                     <span class="primary-key">- Loại hình điều trị: </span>
                                     <span class="secondary-key">{{ traTuService.illCauses[element.ill_cause-1].name }}</span>
                                 </p>
-                                <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[element.isurance_id-1].displayName)">
+                                <p matRipple *ngIf="traTuService.listenInsurer | async as insurer" (click)="copyService.createCopy('Nhà Bảo Hiểm', insurer[element.isurance_id-1].short_name)">
                                     <span class="primary-key">- Nhà Bảo Hiểm: </span>
-                                    <span class="secondary-key">{{ traTuService.insurers[element.isurance_id-1].displayName }}</span>
+                                    <span class="secondary-key">
+                                        {{insurer[element.isurance_id-1].short_name}}
+                                    </span>
                                 </p>
                                 <p *ngIf="element.card_no">
                                     <span class="primary-key">- Số thẻ: </span>

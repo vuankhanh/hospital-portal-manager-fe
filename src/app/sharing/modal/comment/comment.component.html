@@ -19,9 +19,9 @@
                 <span class="primary-key">- Loại hình điều trị: </span>
                 <span class="secondary-key">{{ traTuService.illCauses[detailTickets.ill_cause-1].name }}</span>
             </p>
-            <p matRipple (click)="copyService.createCopy('Nhà Bảo Hiểm', traTuService.insurers[detailTickets.isurance_id-1].displayName)">
+            <p matRipple *ngIf="traTuService.listenInsurer | async as insurer" (click)="copyService.createCopy('Nhà Bảo Hiểm', insurer[detailTickets.isurance_id-1].short_name)">
                 <span class="primary-key">- Nhà Bảo Hiểm: </span>
-                <span class="secondary-key" *ngIf="traTuService.listenInsurer | async as insurer">
+                <span class="secondary-key">
                     {{insurer[detailTickets.isurance_id-1].short_name}}
                 </span>
             </p>

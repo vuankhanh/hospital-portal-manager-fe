@@ -7,6 +7,7 @@ import { LocalStorageService } from '../service/local-storage.service';
 import { ListTicketsService } from '../service/list-tickets.service';
 import { ToastService } from '../service/toast.service';
 import { AuthenticationService } from '../service/authentication.service';
+import { TraTuService } from '../service/tra-tu.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private listTicketsService: ListTicketsService,
     private toastService: ToastService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private traTuService: TraTuService
   ) {
 
   }
@@ -49,6 +51,11 @@ export class LoginComponent implements OnInit {
           let userData = this.localStorageService.getLocalStorage('token');
           this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
             let datas: any = data;
+
+            if(datas[0].code === 200 && datas[0].message==='OK'){
+              this.traTuService.setInsurers(datas[0].insurers);
+            }
+
             if(datas[1].code === 200 && datas[1].message==='OK'){
               this.listTicketsService.getDirectBillingTaken(datas[1]);
             }

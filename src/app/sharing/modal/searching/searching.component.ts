@@ -11,6 +11,7 @@ import { DetailTicketService } from '../../../service/api/get/detail-ticket.serv
 import { DateFormatService } from '../../../service/date-format.service';
 import { TraTuService } from '../../../service/tra-tu.service';
 import { CopyService } from '../../../service/copy.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-searching',
@@ -25,6 +26,10 @@ export class SearchingComponent implements OnInit {
   length = 0;
   pageSize = 0;
   pageSizeOptions: number[] = [5, 10, 15, 20];
+
+  displayedColumns: string[] = ['category', 'money', 'note'];
+
+  datePipe = new DatePipe('en-US');
   constructor(
     public dialogRef: MatDialogRef<SearchingComponent>,
     @Inject(MAT_DIALOG_DATA) public params: any,
