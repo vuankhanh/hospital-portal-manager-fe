@@ -1,0 +1,77 @@
+.container{
+    padding: 15px;
+    height: calc(100% - 30px);
+    .ticket-report-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .ticket-count-container{
+            transition: box-shadow .15s;
+            width: 25%;
+            margin-right: 15px;
+            .vertical-container{
+                .horizontal-container{
+                    justify-content: space-between;
+                    padding: 15px;
+                    align-items: flex-start;
+                    .left-container{
+                        width: 70%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        color: white;
+                        h2{
+                            margin-top: 0;
+                            margin-bottom: 15px;
+                        }
+                        p{
+                            margin-top: 15px;
+                            margin-bottom: 0;
+                            font-size: 14px;
+                        }
+                    }
+                    .right-container{
+                        img{
+                            width: 50px;
+                        }
+                        mat-icon{
+                            font-size: 60px;
+                            height: 60px;
+                            width: 60px;
+                            color: rgba(0,0,0,.35);
+                        }
+                    }
+                }
+                .more-container{
+                    height: 15px;
+                    padding: 5px;
+                    background: rgba(0,0,0,.35);
+                    font-size: 14px;
+                    text-align: center;
+                    color: rgba(255, 255, 255,0.35);
+                }
+                .more-container:hover{
+                    color: white;
+                    cursor: pointer;
+                }
+            }
+        }
+        .ticket-count-container:last-child{
+            margin-right: 0;
+        }
+        .ticket-count-container:hover{
+            box-shadow: 0px 2px 2px 2px grey;
+        }
+    }
+
+    .chart-container{
+        .horizontal-container{
+            .left-container{
+                width: 60%;
+            }
+            .right-container{
+                width: 40%;
+            }
+        }
+    }
+}

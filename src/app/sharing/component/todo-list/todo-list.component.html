@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="title-container">
+        <span>Ghi chú</span>
+    </div>
+
+    <div class="height-container"></div>
+
+    <div class="body-container">
+        <div class="item-list" *ngFor="let contentToDoList of contentToDoLists">
+            <div class="item-content-container">
+                <p class="title">{{ contentToDoList.title }}</p>
+                <p class="content">{{ contentToDoList.content }}</p>
+            </div>
+            <div class="btn-container">
+                <button>Sửa</button>
+                <button>Xoá</button>
+            </div>
+        </div>
+    </div>
+</div>

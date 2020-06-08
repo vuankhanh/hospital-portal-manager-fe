@@ -7,15 +7,19 @@ import { CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PushNotificationsModule } from 'ng-push';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { DatePipe } from '@angular/common';
+import { NextDayPipe } from './pipes/next-day.pipe';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule, MatCardModule, MatToolbarModule, MatButtonToggleModule } from '@angular/material';
 import { MdePopoverModule } from '@material-extended/mde';
@@ -27,6 +31,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -36,9 +41,7 @@ import { DashboardRoutingModule } from '../app/dashboard/main/dashboard.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/main/dashboard.component';
-import { DirectbillingComponent } from './dashboard/directbilling/directbilling.component';
-import { PendingComponent } from './dashboard/pending/pending.component';
-import { HistoryComponent } from './dashboard/history/history.component';
+import { ExportDataComponent } from './dashboard/export-data/export-data.component';
 import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
 import { SearchingComponent } from './sharing/modal/searching/searching.component';
 
@@ -55,7 +58,24 @@ import { TitleService } from './service/title.service';
 import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
 import { SharedModule } from './sharing/module/shared.module';
 import { CurrencyDirective } from './directives/currency.directive';
+import { ExportDataService } from './service/export-data.service';
+import { HomeComponent } from './dashboard/home/home.component';
+import { StaffAccountManagementComponent } from './dashboard/staff-account-management/staff-account-management.component';
+import { HospitalListManagementComponent } from './dashboard/hospital-list-management/hospital-list-management.component';
+import { OutWorkingTimeComponent } from './dashboard/out-working-time/out-working-time.component';
+import { TodoListComponent } from './sharing/component/todo-list/todo-list.component';
 
+const ISO_FORMAT = {
+  parse: {
+    dateInput: 'DD/MM/yyyy'
+  },
+  display: {
+    dateInput: 'DD/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMM yyyy'
+  }
+}
 
 @NgModule({
   entryComponents:[
@@ -72,9 +92,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    DirectbillingComponent,
-    PendingComponent,
-    HistoryComponent,
+    ExportDataComponent,
     ConfirmActionComponent,
     CaseNumberComponent,
     UpdateInsurerIdComponent,
@@ -85,7 +103,13 @@ import { CurrencyDirective } from './directives/currency.directive';
     ImageShowComponent,
     PushSmsComponent,
     EmptyPageComponent,
-    SearchingComponent
+    SearchingComponent,
+    NextDayPipe,
+    HomeComponent,
+    StaffAccountManagementComponent,
+    HospitalListManagementComponent,
+    OutWorkingTimeComponent,
+    TodoListComponent
     
   ],
   imports: [
@@ -99,6 +123,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     PushNotificationsModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
+    MatSidenavModule,
     MatIconModule,
     MatListModule,
     MatRadioModule,
@@ -120,6 +145,7 @@ import { CurrencyDirective } from './directives/currency.directive';
     MatMenuModule,
     MatRippleModule,
     MatTooltipModule,
+    MatDatepickerModule,
     SharedModule,
     
     ClipboardModule,
@@ -130,10 +156,15 @@ import { CurrencyDirective } from './directives/currency.directive';
     })
   ],
   providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: ISO_FORMAT },
     TitleService,
     TimelineOfRequestsService,
     { provide : LocationStrategy , useClass: HashLocationStrategy },
-    CurrencyPipe
+    CurrencyPipe,
+    DatePipe,
+    NextDayPipe,
+    ExportDataService
   ],
   bootstrap: [AppComponent]
 })

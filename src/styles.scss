@@ -9,10 +9,6 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-::-webkit-scrollbar{
-    display: none;
-}
-
 .container{
     height:100%;
     overflow-y: auto;
@@ -59,6 +55,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 //define khoảng cách dọc
 .height-container{
     height:15px;
+}
+
+.vertical-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.horizontal-container{
+    display: flex;
+    align-items: flex-end;
 }
 
 // define chữ

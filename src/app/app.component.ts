@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from './service/authentication.service';
 import { ToastService } from './service/toast.service';
 import { TraTuService } from './service/tra-tu.service';
+import { IconSvgService } from './service/icon-svg.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,9 +27,11 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private toastService: ToastService,
-    private traTuService: TraTuService
+    private traTuService: TraTuService,
+    private iconSvgService: IconSvgService
   ){
     this.timelineOfRequestsService.listentWebSocket();
+    this.iconSvgService.loadIcons();
   }
 
   ngOnInit(){

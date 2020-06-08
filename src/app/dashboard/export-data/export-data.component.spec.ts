@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DirectbillingComponent } from './directbilling.component';
+import { ExportDataComponent } from './export-data.component';
 
-describe('DirectbillingComponent', () => {
-  let component: DirectbillingComponent;
-  let fixture: ComponentFixture<DirectbillingComponent>;
+describe('ExportDataComponent', () => {
+  let component: ExportDataComponent;
+  let fixture: ComponentFixture<ExportDataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DirectbillingComponent ]
+      declarations: [ ExportDataComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DirectbillingComponent);
+    fixture = TestBed.createComponent(ExportDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

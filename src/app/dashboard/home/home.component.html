@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="ticket-report-container">
+        <div class="ticket-count-container" *ngFor="let ticketCount of ticketCounts" [ngStyle]="{'background':ticketCount.background}">
+            <div class="vertical-container">
+                <div class="horizontal-container">
+                    <div class="left-container">
+                        <h2>{{ticketCount.value}}</h2>
+                        <p>{{ticketCount.name}}</p>
+                    </div>
+                    <div class="right-container">
+                        <mat-icon svgIcon="{{ticketCount.icon}}"></mat-icon>
+                    </div>
+                </div>
+                <div class="more-container">
+                    <span>
+                        Thông tin chi tiết
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="height-container"></div>
+
+    <div class="chart-container">
+        <div class="horizontal-container">
+            <div class="left-container">
+                left
+            </div>
+
+            <div class="width-container"></div>
+
+            <div class="right-container">
+                <app-todo-list></app-todo-list>
+            </div>
+        </div>
+    </div>
+</div>

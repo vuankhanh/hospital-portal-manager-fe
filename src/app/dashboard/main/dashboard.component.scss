@@ -1,109 +1,96 @@
-.headerPage{
-    height: 80px;
-    background: #333333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    .hospitalInformationContainer{
-        display: flex;
-        align-items: center;
-        span{
-            color:white;
-        }
-        .avatarContainer{
-            display: flex;
-            align-items: center;
-            padding-left: 15px;
-            .avatar{
-                object-fit: contain;
-                background:white;
-                border-radius: 50%;
-            }
-            mat-icon{
-                color:white;
-            }
-        }
-    }
-}
-
-.popoverAvatarList{
-    padding:0;
-    border-radius:5px;
-    mat-option{
-        padding:0 15px;
-    }
-}
-
-.mainPage{
+.container {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
-    top: 80px;
-    bottom: 0;
-    user-select: none;
-    .leftPage{
-        width: 250px;
-        min-width: 250px;
-        height: 100%;
-        background: #fdecce;
-        .list-menu{
-            padding-top: 15px;
-            .item-menu{
+    height: 100%;
+    .sidenav {
+        // padding: 20px;
+        .sideMenuContainer{
+            width: 100%;
+            height: 100%;
+            display: block;
+            
+            background-size: cover;
+            .information{
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
-                padding: 0 15px;
-                height: 50px;
-                border-bottom:1px solid white;
-                font-size: 14px;
-                color:#999999;
-                outline: none;
-                .text-menu{
-                    .mat-badge{
-                        height: 22px;
-                        .mat-badge-content{
-                            position: unset;
-                            background: #154897;
-                        }
-                    }
+                padding: 15px;
+                background: rgba(0,0,0,.2);
+                .avatar{
+                    width: 50px;
+                    height: 50px;
+                    vertical-align: middle;
+                    border: 2px solid white;
+                    background: #154897;
+                    background-image: url('../../../assets/imgs/sheild-mini.png');
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    border-radius: 50%;
                 }
-                .icon-menu{
+                span{
+                    font-size: 14px;
+                    color: white;
+                }
+            }
+            .listMenu{
+                .itemMenu{
                     display: flex;
                     align-items: center;
-                    height: 24px;
-                    
+                    padding: 10px 15px;
+                    color: white;
+                    mat-icon{
+    
+                    }
+                    span{
+                        font-size: 14px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        margin-left:5px;
+                    }
+                }
+                .itemMenu:hover{
+                    cursor: pointer;
+                    background: rgba(255,255,255,.15);
                 }
             }
-            .last-menu-item{
-                margin-top: 100px;
-                border-top:1px solid white;
-            }
-            .item-menu:hover{
-                background:#ededed;
-            }
-            .item-menu:first-child{
-                border-top: 1px solid white;
-            }
-            .item-menu:last-child{
-                // border-top: 1px solid white;
-                // border-bottom:1px solid white;
-            }
-            .active{
-                color:orange;
-                background:#fff7e9 !important;
-                font-size: 16px;
-            }
+        }
+        .sideMenuContainer::after{
+            content: "";
+            background: url("../../../assets/imgs/background-login-mini.png");
+            background-size: cover;
+            opacity: .75;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: absolute;
+            z-index: -1;
         }
     }
-    .centerPage{
-        width: 100%;
+    
+    .sidenav-content {
+        display: flex;
+        flex-direction: column;
         height: 100%;
-    }
-    .bottomPage{
-        position: fixed;
-        bottom: 15px;
-        right: 30px;
+        .titleContainer{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50px;
+            background: #154897;
+                mat-icon{
+                    padding: 15px;
+                    border: none;
+                    color: white;
+                }
+                mat-icon:hover{
+                    cursor: pointer;
+                }
+        }
+        .router-outlet{
+            width: 100%;
+            height: 100%;
+        }
     }
 }
+  
+  

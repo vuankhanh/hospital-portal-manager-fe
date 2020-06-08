@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { slideInAnimation } from '../../animations/usually-use';
 import { MatDialog } from '@angular/material';
+import { MatSidenav, MatDrawer } from '@angular/material/sidenav';
 
 import { PushSmsComponent } from '../../sharing/modal/push-sms/push-sms.component';
 
@@ -10,7 +11,7 @@ import { AuthenticationService } from '../../service/authentication.service';
 import { ListTicketsService } from '../../service/list-tickets.service';
 
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -18,6 +19,7 @@ import { map } from 'rxjs/operators';
   animations:[ slideInAnimation ]
 })
 export class DashboardComponent implements OnInit {
+
   userInformation:any;
   
   sideMenus: Array<SideMenu>;
@@ -28,6 +30,7 @@ export class DashboardComponent implements OnInit {
   opdOpenBadge$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   opdOpenBadge: Observable<number> = this.opdOpenBadge$.asObservable();
 
+  showFiller = false;
   constructor(
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
@@ -48,9 +51,11 @@ export class DashboardComponent implements OnInit {
 
   initSideMenu(){
     this.sideMenus = [
-      { id: 0, routerLink:'/dashboard/directbilling', name:'Bảo Lãnh', badge$: this.listTicketsService.listenDirectBillingTaken },
-      { id: 1, routerLink:'/dashboard/pending' , name:'Đang Chờ', badge$: this.listTicketsService.listenTicketsOpen },
-      { id: 2, routerLink:'/dashboard/history' , name:'Đã xử lý', badge$: this.listTicketsService.listenTicketsHistory }
+      { id: 0, routerLink:'/dashboard/home', icon: { type: 'customize', name: 'home' }, name:'Trang chủ', badge$: this.listTicketsService.listenDirectBillingTaken },
+      { id: 1, routerLink:'/dashboard/staff-account-management', icon: { type: 'customize', name: 'worker' }, name:'Quản lý tài khoản nhân viên', badge$: this.listTicketsService.listenDirectBillingTaken },
+      { id: 2, routerLink:'/dashboard/hospital-list-management', icon: { type: 'customize', name: 'hospital-building' }, name:'Quản lý danh sách CSYT', badge$: this.listTicketsService.listenDirectBillingTaken },
+      { id: 3, routerLink:'/dashboard/out-working-time', icon: { type: 'default', name: 'timer_off' }, name:'Trực ngoài giờ', badge$: this.listTicketsService.listenDirectBillingTaken },
+      { id: 4, routerLink:'/dashboard/export-data', icon: { type: 'default', name: 'cloud_download' }, name:'Xuất dữ liệu', badge$: this.listTicketsService.listenDirectBillingTaken }
     ]
   }
 
@@ -72,7 +77,11 @@ export class DashboardComponent implements OnInit {
 }
 export interface SideMenu{
   id: number;
-  routerLink:string;
-  name:string;
+  routerLink: string;
+  icon: {
+    type: string;
+    name: string;
+  };
+  name: string;
   badge$?: Observable<number>
 }

@@ -1,0 +1,76 @@
+<div class="container">
+    <div class="title-container">
+        <p>Thời gian dành cho nhân viên trực ngoài hành chính.</p>
+        <p>Bắt đầu từ 17h30 ngày hôm trước đến 7h30 hôm sau.</p>
+    </div>
+
+    <div class="height-container"></div>
+
+    <table mat-table [dataSource]="listenStaffNumbers$" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="number">
+            <th mat-header-cell *matHeaderCellDef>Số điện thoại</th>
+            <td mat-cell *matCellDef="let element"> {{element.number}} </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <ng-container *ngIf="showFooterRow">
+                    <input
+                        type="text"
+                        placeholder="Số điện thoại"
+                        [(ngModel)]="newRecord.number"
+                        class="styleDefault"
+                    >
+                </ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="staff">
+            <th mat-header-cell *matHeaderCellDef>Nhân viên</th>
+            <td mat-cell *matCellDef="let element"> {{element.staff}} </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <ng-container *ngIf="showFooterRow">
+                    <input
+                        type="text"
+                        placeholder="Nhân viên"
+                        [(ngModel)]="newRecord.staff"
+                        class="styleDefault"
+                    >
+                </ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element; let index = index">
+                <div class="btn-container">
+                    <button (click)="delete(index)" class="styleDefault">Xoá</button>
+                    <div class="width-container"></div>
+                    <button (click)="edit(index)" class="styleDefault">Sửa</button>
+                </div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+                <ng-container *ngIf="showFooterRow">
+                    <div class="btn-container">
+                        <button (click)="insert()" class="styleDefault">Lưu</button>
+                        <div class="width-container"></div>
+                        <button (click)="dispose()" class="styleDefault">Huỷ</button>
+                    </div>
+                </ng-container>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr
+            mat-footer-row
+            *matFooterRowDef="displayedColumns"
+            [ngStyle]="{ 'display': showFooterRow ? '' : 'none' }"
+        ></tr>
+    </table>
+
+    <div class="height-container"></div>
+
+    <div class="btn-container">
+        <button (click)="addStaffPhoneNumber()" class="styleDefault">Thêm số điện thoại</button>
+    </div>
+
+</div>

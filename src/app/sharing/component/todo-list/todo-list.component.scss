@@ -1,0 +1,50 @@
+.container{
+    .title-container{
+        background: rgb(77, 193, 241);
+        color: white;
+        padding: 10px;
+        display: flex;
+    }
+    .body-container{
+        font-size: 14px;
+        p{
+            margin:0;
+        }
+        .item-list{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            
+            .item-content-container{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                .title{
+                    font-weight: bold;
+                }
+                .content{
+                    font-size: 12px;
+                }
+            }
+            .btn-container{
+                display: none;
+                min-width: 55px;
+                button{
+                    padding: 0;
+                    background: none;
+                    border: none;
+                    color: #ff5959;
+                }
+                button:first-child{
+                    margin-right: 5px;
+                }
+            }
+        }
+        .item-list:hover{
+            .btn-container{
+                display: flex;
+            }
+        }
+    }
+}

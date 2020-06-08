@@ -23,8 +23,8 @@ export class ListTicketService {
     let params = new HttpParams();
 
     const today =  Date.now();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate()-1);
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate()-1);
 
     if(parameters){
       if(parameters.status && parameters.status.length>0){
@@ -36,7 +36,11 @@ export class ListTicketService {
       if(parameters.from){
         params = params.append('from', parameters.from);
       }else{
-        params = params.append('from', this.dateFormatService.formatDate(tomorrow));
+        params = params.append('from', this.dateFormatService.formatDate(yesterday));
+      }
+
+      if(parameters.to){
+        params = params.append('to', parameters.to);
       }
 
       if(parameters.caseNumb){

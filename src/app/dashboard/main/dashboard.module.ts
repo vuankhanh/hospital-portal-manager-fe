@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
-import { DirectbillingComponent } from '../directbilling/directbilling.component';
-import { PendingComponent } from '../pending/pending.component';
-import { HistoryComponent } from '../history/history.component';
+import { HomeComponent } from '../home/home.component';
+import { StaffAccountManagementComponent } from '../staff-account-management/staff-account-management.component';
+import { HospitalListManagementComponent } from '../hospital-list-management/hospital-list-management.component';
+import { OutWorkingTimeComponent } from '../out-working-time/out-working-time.component';
+import { ExportDataComponent } from '../export-data/export-data.component';
 
 const dashboardModuleRoutes: Routes = [
     {
@@ -13,29 +15,45 @@ const dashboardModuleRoutes: Routes = [
         children:[
             {
                 path:'',
-                redirectTo:'directbilling',
+                redirectTo:'home',
                 pathMatch:'full'
             },{
-                path: 'directbilling',
-                component: DirectbillingComponent,
+                path: 'home',
+                component: HomeComponent,
                 data: { 
-                    title: 'Bảo Lãnh',
-                    shouldReuse: true,
-                    animation: 'DirectBilling'
-                }
-            },{
-                path: 'pending',
-                component: PendingComponent,
-                data: { 
-                    title: 'Đang chờ xử lý',
+                    title: 'Trang chủ',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }
             },{
-                path: 'history',
-                component: HistoryComponent,
+                path: 'staff-account-management',
+                component: StaffAccountManagementComponent,
                 data: { 
-                    title: 'Đã xử lý',
+                    title: 'Quản lý tài khoản nhân viên',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'hospital-list-management',
+                component: HospitalListManagementComponent,
+                data: { 
+                    title: 'Quản lý danh sách CSYT',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'out-working-time',
+                component: OutWorkingTimeComponent,
+                data: { 
+                    title: 'Trực ngoài giờ',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'export-data',
+                component: ExportDataComponent,
+                data: { 
+                    title: 'Xuất dữ liệu',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }
