@@ -7,6 +7,15 @@
     form{
         mat-form-field{
             margin-bottom: -1.25em;
+            .selectInsurer{
+                mat-option:first-child{
+                    position: sticky;
+                    top: 0;
+                    z-index: 2;
+                    background: white;
+                    border: 1px solid #ededed;
+                }
+            }
         }
         button[type="submit"]{
             display: flex;

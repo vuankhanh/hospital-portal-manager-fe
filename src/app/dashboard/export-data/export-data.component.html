@@ -26,6 +26,21 @@
             </mat-form-field>
             <div class="width-container"></div>
             <mat-form-field>
+                <mat-select
+                    class="selectInsurer"
+                    formControlName="insurer_id"
+                    placeholder="Nhà Bảo Hiểm"
+                    required
+                >
+                    <mat-option value='all' class="firstSelectInsurerOption">Tất cả</mat-option>
+                    <mat-option class="selectInsurerOption" *ngFor="let insurer of insurers" [value]="insurer.ID">
+                        <span>{{ insurer.short_name ? insurer.short_name : 'Tên nhà Bảo Hiểm' }}</span>
+                        <img *ngIf="insurer.logo" src="{{ insurer.logo }}">
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
                 <mat-label>Số bản ghi</mat-label>
                 <mat-select formControlName="numberOfRecord">
                     <mat-option *ngFor="let numberOfRecord of numberOfRecords" [value]="numberOfRecord">
@@ -33,12 +48,12 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div class="width-container"></div>
-            <button type="submit" [disabled]="!filterForm.valid">
-                <mat-icon>cloud_download</mat-icon>
-                <span>Xuất dữ liệu</span>
-            </button>
         </div>
+        <div class="height-container"></div>
+        <button type="submit" [disabled]="!filterForm.valid">
+            <mat-icon>cloud_download</mat-icon>
+            <span>Xuất dữ liệu</span>
+        </button>
     </form>
     <!-- <div class="height-container"></div>
     <div class="mat-elevation-z8 table-container" *ngIf="history && history.data">

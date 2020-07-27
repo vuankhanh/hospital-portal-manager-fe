@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 import { NextDayPipe } from './pipes/next-day.pipe';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -43,27 +43,22 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/main/dashboard.component';
 import { ExportDataComponent } from './dashboard/export-data/export-data.component';
 import { EmptyPageComponent } from './sharing/component/empty-page/empty-page.component';
-import { SearchingComponent } from './sharing/modal/searching/searching.component';
-
-import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
-import { CaseNumberComponent } from './sharing/modal/case-number/case-number.component';
-import { UpdateInsurerIdComponent } from './sharing/modal/update-insurer-id/update-insurer-id.component'
-import { ReasonInputComponent } from './sharing/modal/reason-input/reason-input.component';
-import { CommentComponent } from './sharing/modal/comment/comment.component';
-import { TicketCostComponent } from './sharing/component/ticket-cost/ticket-cost.component';
-import { ImageShowComponent } from './sharing/modal/image-show/image-show.component';
-import { PushSmsComponent } from './sharing/modal/push-sms/push-sms.component';
-
-import { TitleService } from './service/title.service';
-import { TimelineOfRequestsService } from './service/timeline-of-requests.service';
-import { SharedModule } from './sharing/module/shared.module';
-import { CurrencyDirective } from './directives/currency.directive';
-import { ExportDataService } from './service/export-data.service';
 import { HomeComponent } from './dashboard/home/home.component';
 import { StaffAccountManagementComponent } from './dashboard/staff-account-management/staff-account-management.component';
 import { HospitalListManagementComponent } from './dashboard/hospital-list-management/hospital-list-management.component';
+import { HospitalDetailComponent } from './dashboard/hospital-detail/hospital-detail.component';
 import { OutWorkingTimeComponent } from './dashboard/out-working-time/out-working-time.component';
 import { TodoListComponent } from './sharing/component/todo-list/todo-list.component';
+import { ConnectionStatusComponent } from './sharing/component/connection-status/connection-status.component';
+
+//Modal
+import { CreateAccountHospitalComponent } from './sharing/modal/create-account-hospital/create-account-hospital.component';
+
+import { TitleService } from './service/title.service';
+import { CurrencyDirective } from './directives/currency.directive';
+import { ExportDataService } from './service/export-data.service';
+import { InsuranceListManagementComponent } from './dashboard/insurance-list-management/insurance-list-management.component';
+import { UserInformationComponent } from './dashboard/user-information/user-information.component';
 
 const ISO_FORMAT = {
   parse: {
@@ -79,37 +74,26 @@ const ISO_FORMAT = {
 
 @NgModule({
   entryComponents:[
-    ConfirmActionComponent,
-    CaseNumberComponent,
-    UpdateInsurerIdComponent,
-    ReasonInputComponent,
-    CommentComponent,
-    ImageShowComponent,
-    PushSmsComponent,
-    SearchingComponent
+    CreateAccountHospitalComponent
   ],
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
     ExportDataComponent,
-    ConfirmActionComponent,
-    CaseNumberComponent,
-    UpdateInsurerIdComponent,
-    ReasonInputComponent,
-    CommentComponent,
-    TicketCostComponent,
     CurrencyDirective,
-    ImageShowComponent,
-    PushSmsComponent,
     EmptyPageComponent,
-    SearchingComponent,
     NextDayPipe,
     HomeComponent,
     StaffAccountManagementComponent,
     HospitalListManagementComponent,
+    HospitalDetailComponent,
     OutWorkingTimeComponent,
-    TodoListComponent
+    TodoListComponent,
+    ConnectionStatusComponent,
+    InsuranceListManagementComponent,
+    CreateAccountHospitalComponent,
+    UserInformationComponent,
     
   ],
   imports: [
@@ -146,7 +130,6 @@ const ISO_FORMAT = {
     MatRippleModule,
     MatTooltipModule,
     MatDatepickerModule,
-    SharedModule,
     
     ClipboardModule,
     ToastrModule.forRoot({
@@ -159,7 +142,6 @@ const ISO_FORMAT = {
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: ISO_FORMAT },
     TitleService,
-    TimelineOfRequestsService,
     { provide : LocationStrategy , useClass: HashLocationStrategy },
     CurrencyPipe,
     DatePipe,

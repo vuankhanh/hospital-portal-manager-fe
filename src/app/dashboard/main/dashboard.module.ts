@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
 import { HomeComponent } from '../home/home.component';
+import { InsuranceListManagementComponent } from '../insurance-list-management/insurance-list-management.component';
 import { StaffAccountManagementComponent } from '../staff-account-management/staff-account-management.component';
 import { HospitalListManagementComponent } from '../hospital-list-management/hospital-list-management.component';
+import { HospitalDetailComponent } from '../hospital-detail/hospital-detail.component';
 import { OutWorkingTimeComponent } from '../out-working-time/out-working-time.component';
 import { ExportDataComponent } from '../export-data/export-data.component';
 
@@ -26,6 +28,14 @@ const dashboardModuleRoutes: Routes = [
                     animation: 'TheRequirements'
                 }
             },{
+                path: 'insurance-management',
+                component: InsuranceListManagementComponent,
+                data: { 
+                    title: 'Quản lý danh sách nhà BH',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
                 path: 'staff-account-management',
                 component: StaffAccountManagementComponent,
                 data: { 
@@ -38,6 +48,14 @@ const dashboardModuleRoutes: Routes = [
                 component: HospitalListManagementComponent,
                 data: { 
                     title: 'Quản lý danh sách CSYT',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'hospital-detail/:id',
+                component: HospitalDetailComponent,
+                data: { 
+                    title: 'Thông tin CSYT',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }

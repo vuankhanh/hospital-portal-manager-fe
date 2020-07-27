@@ -9,28 +9,7 @@
             display: block;
             
             background-size: cover;
-            .information{
-                display: flex;
-                align-items: center;
-                padding: 15px;
-                background: rgba(0,0,0,.2);
-                .avatar{
-                    width: 50px;
-                    height: 50px;
-                    vertical-align: middle;
-                    border: 2px solid white;
-                    background: #154897;
-                    background-image: url('../../../assets/imgs/sheild-mini.png');
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    border-radius: 50%;
-                }
-                span{
-                    font-size: 14px;
-                    color: white;
-                }
-            }
+            
             .listMenu{
                 .itemMenu{
                     display: flex;

@@ -4,9 +4,7 @@ import { NextDayPipe } from '../../pipes/next-day.pipe';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { LocalStorageService } from '../../service/local-storage.service';
-import { ListTicketService } from '../../service/api/get/list-ticket.service';
 import { DateFormatService } from '../../service/date-format.service';
-import { DetailTicketService } from '../../service/api/get/detail-ticket.service';
 import { TraTuService } from '../../service/tra-tu.service';
 import { ExportDataService } from '../../service/export-data.service';
 
@@ -54,14 +52,13 @@ export class ExportDataComponent implements OnInit {
     private nextDay: NextDayPipe,
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
-    private listTicketService: ListTicketService,
     private dateFormatService: DateFormatService,
-    private detailTicketService: DetailTicketService,
     private traTuService: TraTuService,
     private exportDataService: ExportDataService
   ) {
     this.traTuService.listenInsurer.subscribe(result=>{
       this.insurers=result;
+      console.log(this.insurers);
     })
   }
 
@@ -69,70 +66,81 @@ export class ExportDataComponent implements OnInit {
     this.initForm();
   }
 
-  async setList(response){
-    let userData = this.localStorageService.getLocalStorage('token');
-    if(response){
+  // async setList(response){
+  //   let userData = this.localStorageService.getLocalStorage('token');
+  //   if(response){
 
-      for(let history of response.data){
-        await this.detailTicketService.getDetailTicket(userData.token, history.ID).toPromise().then(res=>{
-          let response:any = res;
-          if(response.code === 200 && response.message ==='OK'){
-            response.data.comments.forEach(comment=>{
-              let reason = JSON.parse(comment.content);
-              if(comment.type === 'REQUEST_COST'){
+  //     for(let history of response.data){
+  //       await this.detailTicketService.getDetailTicket(userData.token, history.ID).toPromise().then(res=>{
+  //         let response:any = res;
+  //         if(response.code === 200 && response.message ==='OK'){
+  //           response.data.comments.forEach(comment=>{
+  //             let reason = JSON.parse(comment.content);
+  //             if(comment.type === 'REQUEST_COST'){
 
-                if(comment.hospital_user_id > 0){
-                  history.hospitalCosts = JSON.parse(comment.content);
-                }
-              }else if(comment.type === 'INSMART_UPDATE_COST'){
-                if(comment.insmart_user_id > 0){
-                  history.insmartCosts = JSON.parse(comment.content);
-                  history.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
-                }
-              }
-              if(comment.type === 'CHANGE_STATUS' && (reason.new_status === 'DENIED' || reason.new_status === 'REJECT')){
-                history.reason = reason;
-              }
-            })
-          }
-        })
-      };
-      this.exportData(response);
-    }
-  }
+  //               if(comment.hospital_user_id > 0){
+  //                 history.hospitalCosts = JSON.parse(comment.content);
+  //               }
+  //             }else if(comment.type === 'INSMART_UPDATE_COST'){
+  //               if(comment.insmart_user_id > 0){
+  //                 history.insmartCosts = JSON.parse(comment.content);
+  //                 history.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
+  //               }
+  //             }
+  //             if(comment.type === 'CHANGE_STATUS' && (reason.new_status === 'DENIED' || reason.new_status === 'REJECT')){
+  //               history.reason = reason;
+  //             }
+  //           })
+  //         }
+  //       })
+  //     };
+  //     let formValue = this.filterForm.value;
+  //     console.log(formValue);
+  //     if(typeof(formValue.insurer_id)==='string' && formValue.insurer_id === 'all'){
+  //       console.log('Tất cả');
+  //       this.exportData(response);
+  //     }else if(typeof(formValue.insurer_id)==='number'){
+  //       console.log('Nhà Bảo Hiểm nào đó');
+  //       response.data = response.data.filter(ticket=>ticket.isurance_id===formValue.insurer_id);
+  //       this.exportData(response);
+  //     }
+  //   }
+  // }
 
   initForm(){
     this.filterForm = this.formBuilder.group({
       dateFrom: this.dateFormatService.formatDate(this.defaultToday),
       dateTo: this.dateFormatService.formatDate(this.defaultToday),
+      insurer_id: 'all',
       numberOfRecord: this.numberOfRecords[4]
     })
   }
 
   filterData(){
-    if(this.filterForm.valid){
-      let dateFrom = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateFrom));
-      let dateTo = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateTo));
-      let numberOfRecord = this.filterForm.value.numberOfRecord;
-      let userData = this.localStorageService.getLocalStorage('token');
-      if(!dateFrom){
+    // if(this.filterForm.valid){
+    //   let dateFrom = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateFrom));
+    //   let dateTo = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateTo));
+    //   let numberOfRecord = this.filterForm.value.numberOfRecord;
+    //   let userData = this.localStorageService.getLocalStorage('tokenPortal');
+    //   console.log(userData);
+    //   if(!dateFrom){
         
-      }else if(!dateTo){
-        let dateTo = this.dateFormatService.formatDate(new Date(this.defaultToday));
-        this.listTicketService.getListTicket(userData.token, { status: ['CONFIRM', 'REJECT'], from: dateFrom, to: dateTo, cost: true, pageSize: numberOfRecord }).subscribe(res=>{
-          this.setList(res);
-        });
-      }else{
-        if(dateFrom<=dateTo){
-          console.log('Hợp lệ. Call API');
-          this.listTicketService.getListTicket(userData.token, { status: ['CONFIRM', 'REJECT'], from: dateFrom, to: dateTo, cost: true, pageSize: numberOfRecord }).subscribe(res=>{
-            this.setList(res);
-          });
-        }else{
-          console.log('Ngày chốt không thể trước ngày bắt đầu');
-        }
-      }
-    }
+    //   }else if(!dateTo){
+    //     let dateTo = this.dateFormatService.formatDate(new Date(this.defaultToday));
+    //     this.listTicketService.getListTicket(userData.token, { status: ['CONFIRM', 'REJECT'], from: dateFrom, to: dateTo, cost: true, pageSize: numberOfRecord }).subscribe(res=>{
+    //       this.setList(res);
+    //     },err=>console.log(err));
+    //   }else{
+    //     if(dateFrom<=dateTo){
+    //       console.log('Hợp lệ. Call API');
+    //       this.listTicketService.getListTicket(userData.token, { status: ['CONFIRM', 'REJECT'], from: dateFrom, to: dateTo, cost: true, pageSize: numberOfRecord }).subscribe(res=>{
+    //         this.setList(res);
+    //       },err=>console.log(err));
+    //     }else{
+    //       console.log('Ngày chốt không thể trước ngày bắt đầu');
+    //     }
+    //   }
+    // }
   }
 
   countTotal(arrayNumber:any){

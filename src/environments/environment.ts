@@ -11,9 +11,7 @@
 
 export const environment = {
   production: false,
-  apiHost: 'https://inshos.insmart.com.vn/hosapi/',
-  socketHost: 'wss://hosapi.insmart.com.vn/wsi',
-  smsFpt: 'https://inshos.insmart.com.vn/smsfpt/'
+  managerHost: 'http://localhost:3000/'
 };
 
 

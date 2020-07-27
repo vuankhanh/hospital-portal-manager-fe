@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { LoginService } from '../service/api/post/login.service';
 import { LocalStorageService } from '../service/local-storage.service';
-import { ListTicketsService } from '../service/list-tickets.service';
 import { ToastService } from '../service/toast.service';
 import { AuthenticationService } from '../service/authentication.service';
 import { TraTuService } from '../service/tra-tu.service';
@@ -22,7 +21,6 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private loginService: LoginService,
     private localStorageService: LocalStorageService,
-    private listTicketsService: ListTicketsService,
     private toastService: ToastService,
     private authenticationService: AuthenticationService,
     private traTuService: TraTuService
@@ -43,40 +41,17 @@ export class LoginComponent implements OnInit {
 
   doLogin(){
     if(this.loginForm.valid){
-      this.loginService.login(this.loginForm.value).toPromise().then(response=>{
-        if(response.code === 200 && response.message === 'OK'){
+      this.loginService.login(this.loginForm.value).subscribe(response=>{
+        console.log(response);
+        if(response.code === 200){
           this.localStorageService.setLocalStorage('token', response);
           this.authenticationService.setUserInformation(response);
-
-          let userData = this.localStorageService.getLocalStorage('token');
-          this.loginService.thenLogin(userData.token, userData.data.id).then(data=>{
-            let datas: any = data;
-
-            if(datas[0].code === 200 && datas[0].message==='OK'){
-              this.traTuService.setInsurers(datas[0].insurers);
-            }
-
-            if(datas[1].code === 200 && datas[1].message==='OK'){
-              this.listTicketsService.getDirectBillingTaken(datas[1]);
-            }
-            if(datas[2].code === 200 && datas[2].message==='OK'){
-              this.listTicketsService.getTicketsOpen(datas[2]);
-            }
-
-            if(datas[3].code === 200 && datas[2].message==='OK'){
-              this.listTicketsService.getTicketsHistory(datas[3]);
-            }
-          }).catch(err=>{
-            // this.router.navigate(['/login']);
-            // console.log(err);
-          });
-
           this.router.navigateByUrl('/dashboard');
-        };
-      }).catch(err=>{
-        if(err.error.code === 421 && err.error.message === 'Co loi xay ra: record not found: Co loi xay ra: record not found'){
-          this.toastService.showShortToast('Sai tài khoản hoặc mật khẩu', 'Có lỗi xảy ra');
+        }else if(response.code === 500){
+          this.toastService.showShortToast(response.message, 'Có lỗi xảy ra');
         }
+      },err=>{
+        this.toastService.showShortToast('Không xác định được lỗi '+err, 'Có lỗi xảy ra');
       });
     }
   }

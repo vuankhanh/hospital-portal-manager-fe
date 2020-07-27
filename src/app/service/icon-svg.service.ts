@@ -28,4 +28,6 @@ const arrSvg = [
   { iconKeys: 'best', svgUrl: '../assets/imgs/icon/best.svg' },
   { iconKeys: 'star', svgUrl: '../assets/imgs/icon/star.svg' },
   { iconKeys: 'money', svgUrl: '../assets/imgs/icon/money.svg' },
+  { iconKeys: 'insurer', svgUrl: '../assets/imgs/icon/insurer.svg' },
+  { iconKeys: 'logout', svgUrl: '../assets/imgs/icon/logout.svg' },
 ]

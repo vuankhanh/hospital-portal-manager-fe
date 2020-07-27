@@ -1,0 +1,21 @@
+<form [formGroup]="createAccount" (ngSubmit)="create()">
+    <div class="userInformation-container">
+        <mat-form-field>
+            <mat-label>Tài khoản</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Mật khẩu</mat-label>
+            <input matInput formControlName="password">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Nhập lại mật khẩu</mat-label>
+            <input matInput formControlName="rePassword">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
+        <button type="submit">Tạo tài khoản</button>
+    </div>
+</form>

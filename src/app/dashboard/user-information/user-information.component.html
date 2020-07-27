@@ -1,0 +1,12 @@
+<div class="information" [matMenuTriggerFor]="menu">
+    <div class="avatar"></div>
+    <div class="width-container"></div>
+    <span>{{'Nguyễn Vĩnh Lâm'}}</span>
+</div>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="logout()">
+      <mat-icon svgIcon="logout"></mat-icon>
+      <span>Đăng xuất</span>
+    </button>
+</mat-menu>

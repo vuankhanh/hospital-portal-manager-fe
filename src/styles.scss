@@ -123,6 +123,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 }
 
+.firstSelectInsurerOption{
+    position: sticky !important;
+    top: 0;
+    z-index: 2;
+    background: white !important;
+    border-bottom: 1px solid #ededed;
+}
+
 // Mat Tooltip styles
 .mat-tooltip{
     font-size: 14px;
@@ -133,6 +141,19 @@ mat-tab-group{
     mat-tab-header{
         z-index: 10;
         box-shadow: 10px 0 15px #999999;
+    }
+}
+
+mat-table{
+    mat-header-row{
+        mat-header-cell{
+            padding: 0 15px;
+        }
+    }
+    mat-row{
+        mat-cell{
+            padding: 0 15px;
+        }
     }
 }
 

@@ -1,0 +1,56 @@
+<div class="container">
+    <mat-table [dataSource]="insurers" class="mat-elevation-z8">
+        <!-- ID Nhà Bảo Hiểm -->
+        <ng-container matColumnDef="id" sticky>
+            <mat-header-cell *matHeaderCellDef>ID Nhà Bảo Hiểm</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ID}} </mat-cell>
+        </ng-container>
+
+        <!-- Tên Viết Tắt -->
+        <ng-container matColumnDef="short_name" sticky>
+            <mat-header-cell *matHeaderCellDef>Tên Viết Tắt</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.short_name}} </mat-cell>
+        </ng-container>
+
+        <!-- Tên Nhà Bảo Hiểm -->
+        <ng-container matColumnDef="name" sticky>
+            <mat-header-cell *matHeaderCellDef class="longText">Tên Nhà Bảo Hiểm</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="longText"> {{element.name}} </mat-cell>
+        </ng-container>
+        
+        <!-- Logo -->
+        <ng-container matColumnDef="logo">
+            <mat-header-cell *matHeaderCellDef>Logo</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.logo}} </mat-cell>
+        </ng-container>
+
+        <!-- Kiểm tra Quyền lợi trong -->
+        <ng-container matColumnDef="check_benefit_countdown">
+            <mat-header-cell *matHeaderCellDef>Kiểm tra Quyền lợi trong</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.check_benefit_countdown}} </mat-cell>
+        </ng-container>
+
+        <!-- Đưa ra phương án BL trong -->
+        <ng-container matColumnDef="gl_countdown">
+            <mat-header-cell *matHeaderCellDef>Đưa ra phương án BL trong</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.gl_countdown}} </mat-cell>
+        </ng-container>
+
+        <!-- Loại hình -->
+        <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef>Loại hình</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ traTuService.typeInsurers[element.type-1].name }} </mat-cell>
+        </ng-container>
+
+        <!-- Chi tiết -->
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <button (click)="showDetail(element)">Chi tiết</button>
+            </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

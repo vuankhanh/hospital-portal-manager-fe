@@ -1,0 +1,15 @@
+mat-table{
+    mat-header-row{
+        mat-header-cell{
+            padding: 0 15px;
+        }
+    }
+    mat-row{
+        mat-cell{
+            padding: 0 15px;
+        }
+    }
+    .longText{
+        min-width: 200px;
+    }
+}

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { SystemConfigurationService } from '../get/system-configuration.service';
-import { ListTicketService } from '../get/list-ticket.service';
+import { ProfileService } from '../get/profile.service';
 import { DateFormatService } from '../../date-format.service';
 
 interface ResponseLogin{
@@ -14,13 +13,16 @@ interface ResponseLogin{
 }
 
 interface ResponseDataLogin{
-  id: number;
-  name: string;
-  email: string;
-  status: 0;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
+  ID: number,
+  name: string,
+  email: string,
+  fullname: string,
+  phone: string,
+  title: string,
+  status: number,
+  created_at: string,
+  updated_at: string,
+  deleted_at: string
 }
 
 interface Account{
@@ -31,11 +33,10 @@ interface Account{
   providedIn: 'root'
 })
 export class LoginService {
-  urlLogin: string = environment.apiHost + 'auth/user';
+  urlLogin: string = environment.managerHost + 'login';
   constructor(
     private httpClient: HttpClient,
-    private systemConfigurationService: SystemConfigurationService,
-    private listTicketService: ListTicketService,
+    private profileService: ProfileService,
     private dateFormatService: DateFormatService
   ) { }
 
@@ -46,19 +47,8 @@ export class LoginService {
     return this.httpClient.post<ResponseLogin>(this.urlLogin, account, { headers: headers });
   }
 
-  thenLogin(token, userId){
-    
-    let getServerConfig = this.systemConfigurationService.getSystemConfiguration(token).toPromise();
-    let getDirectBillingTaken = this.listTicketService.getListTicket(token, { status:['TAKEN', 'UPDATED', 'WAITING'], insID: userId }).toPromise();
-    let getTicketsOpen = this.listTicketService.getListTicket(token, { status: ['OPEN'] }).toPromise();
-    let getTicketsHistory = this.listTicketService.getListTicket(token, { status: ['VERIFIED', 'DENIED', 'CONFIRM', 'REJECT'], from: this.dateFormatService.last2Day(), insID: userId }).toPromise();
-
-    return Promise.all([getServerConfig, getDirectBillingTaken, getTicketsOpen, getTicketsHistory]);
+  thenLogin(token){
+    let getServerConfig = this.profileService.getProfile(token).toPromise();
+    return Promise.all([getServerConfig]);
   }
-
-  // filterListTaken(userId, tickets){
-  //   if(tickets){
-  //     tickets.filter(ticket=>ticket.)
-  //   }
-  // }
 }
