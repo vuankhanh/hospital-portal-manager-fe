@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AccountInsmartService } from '../../service/api/get/account-insmart.service';
+import { AccountInsmartService, InsmartAccounts } from '../../service/api/get/account-insmart.service';
 import { LocalStorageService } from '../../service/local-storage.service';
 
 @Component({
@@ -9,7 +9,8 @@ import { LocalStorageService } from '../../service/local-storage.service';
   styleUrls: ['./staff-account-management.component.scss']
 })
 export class StaffAccountManagementComponent implements OnInit {
-
+  accounts: InsmartAccounts;
+  displayedColumns: string[] = ['name', 'fullname', 'email', 'phone', 'type'];
   constructor(
     private accountInsmartService: AccountInsmartService,
     private localStorageService: LocalStorageService
@@ -20,8 +21,13 @@ export class StaffAccountManagementComponent implements OnInit {
     if(userData){
       this.accountInsmartService.getInsmart(userData.token).subscribe(res=>{
         console.log(res);
+        this.accounts = res.data;
       })
     }
+  }
+
+  showDetail(element){
+    console.log(element);
   }
 
 }

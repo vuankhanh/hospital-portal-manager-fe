@@ -1,15 +1,16 @@
-mat-table{
-    mat-header-row{
-        mat-header-cell{
-            padding: 0 15px;
+.container{
+    mat-table{
+        height: 100%;
+        overflow: scroll;
+        mat-row{
+            mat-cell{
+                .insurer-logo-img{
+                    
+                }
+            }
         }
-    }
-    mat-row{
-        mat-cell{
-            padding: 0 15px;
+        .longText{
+            min-width: 200px;
         }
-    }
-    .longText{
-        min-width: 200px;
     }
 }

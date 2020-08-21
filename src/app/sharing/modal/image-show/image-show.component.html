@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="main-image">
+        <img
+            *ngIf="typeImages.image.includes(images.images[images.mainImage].type)"
+            src="{{images.images[images.mainImage].urlShow}}"
+        >
+        <div class="frameContainer" *ngIf="typeImages.document.includes(images.images[images.mainImage].type)">
+            <iframe class="documentFrame" [src]="images.images[images.mainImage].trustResourceUrl"></iframe>
+        </div>
+        <button (click)="downloadAll([images.images[images.mainImage]])">
+            <mat-icon>arrow_downward</mat-icon>
+        </button>
+    </div>
+
+    <div class="height-container"></div>
+
+    <div class="list-image">
+        <img
+            src="{{ image.urlShow }}"
+            *ngFor="let image of images.images; let index = index"
+            (click)="imageSelected(index)"
+            [ngClass]="{ 'imageIsSelected' : images.mainImage === index }"
+        >
+        <div class="width-container"></div>
+        <div class="download-container">
+            <button (click)="downloadAll(images.images)">Tải hết</button>
+        </div>
+    </div>
+</div>

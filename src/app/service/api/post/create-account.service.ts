@@ -18,6 +18,12 @@ export class CreateAccountService {
       'tablechoose': tablechoose
     });
 
-    return this.httpClient.post(this.url, body, { headers: headers });
+    return this.httpClient.post<Response>(this.url, body, { headers: headers });
   }
+}
+
+interface Response{
+  code: number;
+  data: any,
+  message: string;
 }

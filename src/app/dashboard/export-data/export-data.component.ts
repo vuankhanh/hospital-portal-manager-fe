@@ -7,6 +7,10 @@ import { LocalStorageService } from '../../service/local-storage.service';
 import { DateFormatService } from '../../service/date-format.service';
 import { TraTuService } from '../../service/tra-tu.service';
 import { ExportDataService } from '../../service/export-data.service';
+import { TicketsService } from '../../service/api/get/tickets.service';
+import { InsurersService, Insurers } from '../../service/api/get/insurers.service';
+
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-export-data',
@@ -16,34 +20,7 @@ import { ExportDataService } from '../../service/export-data.service';
 export class ExportDataComponent implements OnInit {
   filterForm: FormGroup;
 
-  insurers: any;
-
-  displayedColumns: string[] = 
-  [
-    'fullname',
-    'dob',
-    'cmnd',
-    'policy_no',
-    'isurance_id',
-    'ID',
-    'created_at',
-    'finished_at',
-    'hospitalCosts',
-    'insmartCosts',
-    'type',
-    'diag_note',
-    'note',
-    'hospital_name',
-    'last_time',
-    'updated_at',
-    'insmart_status',
-    'reasons',
-    'insmart_user'
-  ];
-
-  numberOfRecords: number[] = [
-    100,500,1000,2000,5000,10000
-  ]
+  insurers: Insurers;
 
   defaultToday: number = Date.now();
 
@@ -53,94 +30,96 @@ export class ExportDataComponent implements OnInit {
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
     private dateFormatService: DateFormatService,
-    private traTuService: TraTuService,
-    private exportDataService: ExportDataService
+    public traTuService: TraTuService,
+    private insurersService: InsurersService,
+    private exportDataService: ExportDataService,
+    private ticketsService: TicketsService
   ) {
-    this.traTuService.listenInsurer.subscribe(result=>{
-      this.insurers=result;
-      console.log(this.insurers);
-    })
+    let userData = this.localStorageService.getLocalStorage("token");
+    this.insurersService.getHospital(userData.token).subscribe(res=>{
+      if(res.data){
+        this.insurers = res.data;
+      }
+    });
   }
 
   ngOnInit() {
     this.initForm();
   }
 
-  // async setList(response){
-  //   let userData = this.localStorageService.getLocalStorage('token');
-  //   if(response){
-
-  //     for(let history of response.data){
-  //       await this.detailTicketService.getDetailTicket(userData.token, history.ID).toPromise().then(res=>{
-  //         let response:any = res;
-  //         if(response.code === 200 && response.message ==='OK'){
-  //           response.data.comments.forEach(comment=>{
-  //             let reason = JSON.parse(comment.content);
-  //             if(comment.type === 'REQUEST_COST'){
-
-  //               if(comment.hospital_user_id > 0){
-  //                 history.hospitalCosts = JSON.parse(comment.content);
-  //               }
-  //             }else if(comment.type === 'INSMART_UPDATE_COST'){
-  //               if(comment.insmart_user_id > 0){
-  //                 history.insmartCosts = JSON.parse(comment.content);
-  //                 history.maximum_claim_value = JSON.parse(comment.content).cost_details.maximum_claim_value;
-  //               }
-  //             }
-  //             if(comment.type === 'CHANGE_STATUS' && (reason.new_status === 'DENIED' || reason.new_status === 'REJECT')){
-  //               history.reason = reason;
-  //             }
-  //           })
-  //         }
-  //       })
-  //     };
-  //     let formValue = this.filterForm.value;
-  //     console.log(formValue);
-  //     if(typeof(formValue.insurer_id)==='string' && formValue.insurer_id === 'all'){
-  //       console.log('Tất cả');
-  //       this.exportData(response);
-  //     }else if(typeof(formValue.insurer_id)==='number'){
-  //       console.log('Nhà Bảo Hiểm nào đó');
-  //       response.data = response.data.filter(ticket=>ticket.isurance_id===formValue.insurer_id);
-  //       this.exportData(response);
-  //     }
-  //   }
-  // }
-
   initForm(){
     this.filterForm = this.formBuilder.group({
-      dateFrom: this.dateFormatService.formatDate(this.defaultToday),
+      isToday: false,
+      dateFrom: this.dateFormatService.previousDay(this.defaultToday),
       dateTo: this.dateFormatService.formatDate(this.defaultToday),
-      insurer_id: 'all',
-      numberOfRecord: this.numberOfRecords[4]
+      insurer_id: 'all'
+    });
+
+    this.filterForm.valueChanges.subscribe(valueChanged=>{
+      this.validationStage(valueChanged);
     })
   }
 
   filterData(){
-    // if(this.filterForm.valid){
-    //   let dateFrom = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateFrom));
-    //   let dateTo = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateTo));
-    //   let numberOfRecord = this.filterForm.value.numberOfRecord;
-    //   let userData = this.localStorageService.getLocalStorage('tokenPortal');
-    //   console.log(userData);
-    //   if(!dateFrom){
-        
-    //   }else if(!dateTo){
-    //     let dateTo = this.dateFormatService.formatDate(new Date(this.defaultToday));
-    //     this.listTicketService.getListTicket(userData.token, { status: ['CONFIRM', 'REJECT'], from: dateFrom, to: dateTo, cost: true, pageSize: numberOfRecord }).subscribe(res=>{
-    //       this.setList(res);
-    //     },err=>console.log(err));
-    //   }else{
-    //     if(dateFrom<=dateTo){
-    //       console.log('Hợp lệ. Call API');
-    //       this.listTicketService.getListTicket(userData.token, { status: ['CONFIRM', 'REJECT'], from: dateFrom, to: dateTo, cost: true, pageSize: numberOfRecord }).subscribe(res=>{
-    //         this.setList(res);
-    //       },err=>console.log(err));
-    //     }else{
-    //       console.log('Ngày chốt không thể trước ngày bắt đầu');
-    //     }
-    //   }
-    // }
+    if(this.filterForm.valid){
+      let userData = this.localStorageService.getLocalStorage('token');
+      let dateFrom = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateFrom));
+      let dateTo = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateTo));
+      
+      let params = {
+        from: dateFrom,
+        to: dateTo,
+        insurer_id: this.filterForm.value.insurer_id,
+        isToday: this.filterForm.value.isToday
+      }
+
+      combineLatest(this.insurersService.getHospital(userData.token), this.ticketsService.getInsmart(userData.token, params)).subscribe(result=>{
+        if(result[0].code === 200 && result[1].code === 200){
+          let insurerResponse = result[0];
+          let ticketResponse = result[1];
+  
+          this.insurers = insurerResponse.data;
+
+          for(let ticket of ticketResponse.data){
+            for(let comment of ticket.detailTicket){
+              if(comment.type === 'CHANGE_STATUS'){
+                let content = JSON.parse(comment.content);
+                ticket.reasonReject = content.reasons;
+                ticket.insmartRejectAt = comment.created_at;
+              }else if(comment.type === 'INSMART_UPDATE_COST'){
+                let cost = JSON.parse(comment.content);
+                ticket.insmartCosts = cost;
+                ticket.insmartUpdatedCostAt = comment.created_at;
+              }else if(comment.type === 'REQUEST_COST'){
+                let cost = JSON.parse(comment.content);
+                ticket.hospitalCosts = cost;
+                ticket.hospitalUpdatedCostAt = comment.created_at;
+              }else if(comment.type === 'COMMENT'){
+                if(comment.hospital_user_id>0){
+                  ticket.lastAddition = comment.created_at;
+                }
+              }
+            }
+          }
+          console.log(ticketResponse);
+          this.exportData(ticketResponse);
+        }
+      },err=>{
+        console.log(err);
+      })
+    }
+  }
+
+  validationStage(valueChanged){
+    let dateFrom = this.dateFormatService.formatDate(new Date(valueChanged.dateFrom));
+    let dateTo = this.dateFormatService.formatDate(new Date(valueChanged.dateTo));
+    if(dateFrom<dateTo){
+      console.log('Hợp lệ. Call API');
+    }else{
+      console.log('Đây là ngày hôm nay mà');
+      console.log('Ngày chốt không thể trước ngày bắt đầu');
+      this.filterForm.get('dateFrom').setValue(this.dateFormatService.previousDay(new Date(valueChanged.dateTo)));
+    }
   }
 
   countTotal(arrayNumber:any){
@@ -170,41 +149,26 @@ export class ExportDataComponent implements OnInit {
         'Công ty bảo hiểm': this.insurers[ticket.isurance_id-1].name,
         'Mã Định Danh': ticket.ID,
         'Case number': ticket.note,
-        'Ngày xảy ra sự kiện': this.datePipe.transform(ticket.created_at, 'dd/MM/yyyy HH:mm:ss'),
-        'Ngày kết thúc sự kiện': this.datePipe.transform(this.nextDay.transform(ticket.created_at), 'dd/MM/yyyy HH:mm:ss'),
-        'Chi phí phát sinh': this.countTotal(ticket.hospitalCosts.costs).toString(),
+        'Ngày xảy ra sự kiện': this.datePipe.transform(ticket.created_at, 'dd/MM/yyyy'),
+        'Ngày kết thúc sự kiện': this.datePipe.transform(this.nextDay.transform(ticket.updated_at), 'dd/MM/yyyy'),
+        'Chi phí phát sinh': ticket.hospitalCosts ? this.countTotal(ticket.hospitalCosts.costs).toString() : '',
         'Chi phí bảo lãnh': ticket.insmartCosts ? this.countTotal(ticket.insmartCosts.costs).toString() : '',
         'Loại hình bảo lãnh': 'Outpatient Claim',
-        'Chẩn đoán': ticket.insmartCosts ? ticket.insmartCosts.cost_details.diag_note : ticket.hospitalCosts.cost_details.diag_note,
-        'Cơ sở y tế': ticket.hospital_user.hospital.hospital_name,
-        'Thời gian bổ sung cuối cùng': '',
-        'Thời gian xác nhận bảo lãnh': this.datePipe.transform(this.nextDay.transform(ticket.updated_at), 'dd/MM/yyyy HH:mm:ss'),
+        'Chẩn đoán': ticket.insmartCosts ? ticket.insmartCosts.cost_details.diag_note : ticket.hospitalCosts ? ticket.hospitalCosts.cost_details.diag_note : '',
+        'Cơ sở y tế': ticket.hospitalInfo.hospital_name,
+        'Thời gian tạo yêu cầu kiểm tra quyền lợi': this.datePipe.transform(ticket.created_at, 'dd/MM/yyyy HH:mm:ss'),
+        'Thời gian bổ sung cuối cùng': this.datePipe.transform(ticket.lastAddition, 'dd/MM/yyyy HH:mm:ss'),
+        'Thời gian CSYT cập nhật yêu cầu BLVP': this.datePipe.transform(ticket.hospitalUpdatedCostAt, 'dd/MM/yyyy HH:mm:ss'),
+        'Thời gian xác nhận bảo lãnh': this.datePipe.transform(ticket.insmart_status === 'CONFIRM' ? ticket.insmartUpdatedCostAt : ticket.insmartRejectAt, 'dd/MM/yyyy HH:mm:ss'),
+        'Thời gian gửi duyệt CTBH': '',
+        'Thời gian CTBH duyệt': '',
         'Trạng Thái Bảo Lãnh': ticket.insmart_status,
-        'Lý do từ chối': ticket.insmart_status === 'REJECT' ? ticket.reason.reasons : '',
-        'Tên nhân viên xác nhận': ticket.insmart_user.fullname
+        'Lý do từ chối': ticket.insmart_status === 'REJECT' ? ticket.reasonReject : '',
+        'Tên nhân viên xác nhận': ticket.insmartUser.fullname,
+        'Ngày Insmart nhận hồ sơ': '',
+        'Ngày chuyển khoản': '',
+        'Nội dung thanh toán': ''
       };
-      
-      // arr = [
-      //   ticket.fullname,
-      //   this.dateFormatService.originFormatDate(ticket.dob),
-      //   ticket.cmnd,
-      //   ticket.policy_no,
-      //   this.insurers[ticket.isurance_id-1].name,
-      //   ticket.ID,
-      //   this.datePipe.transform(ticket.created_at, 'dd/MM/yyyy HH:mm:ss'),
-      //   this.datePipe.transform(this.nextDay.transform(ticket.created_at), 'dd/MM/yyyy HH:mm:ss'),
-      //   this.countTotal(ticket.hospitalCosts.costs).toString(),
-      //   ticket.insmartCosts ? this.countTotal(ticket.insmartCosts.costs).toString() : '',
-      //   'Outpatient Claim',
-      //   ticket.insmartCosts ? ticket.insmartCosts.cost_details.diag_note : '',
-      //   ticket.note,
-      //   ticket.hospital_user.hospital.hospital_name,
-      //   '',
-      //   this.datePipe.transform(this.nextDay.transform(ticket.updated_at), 'dd/MM/yyyy HH:mm:ss'),
-      //   ticket.insmart_status,
-      //   ticket.insmart_status === 'REJECT' ? ticket.reason.reasons : '',
-      //   ticket.insmart_user.fullname
-      // ]
       report.push(information);
     });
 
@@ -232,4 +196,5 @@ export interface Report{
   status_directbilling: string;
   reason_reject: string;
   insmart_staff: string;
+  reasonReject: string;
 }

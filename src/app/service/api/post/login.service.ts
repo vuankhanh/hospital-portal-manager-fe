@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+
 import { ProfileService } from '../get/profile.service';
 import { DateFormatService } from '../../date-format.service';
+import { InsurersService } from '../get/insurers.service';
+
+import { environment } from '../../../../environments/environment';
 
 interface ResponseLogin{
   code: number;
@@ -37,6 +40,7 @@ export class LoginService {
   constructor(
     private httpClient: HttpClient,
     private profileService: ProfileService,
+    private insurersService: InsurersService,
     private dateFormatService: DateFormatService
   ) { }
 
@@ -49,6 +53,7 @@ export class LoginService {
 
   thenLogin(token){
     let getServerConfig = this.profileService.getProfile(token).toPromise();
-    return Promise.all([getServerConfig]);
+    let insurersService = this.insurersService.getHospital(token).toPromise();
+    return Promise.all([getServerConfig, insurersService]);
   }
 }

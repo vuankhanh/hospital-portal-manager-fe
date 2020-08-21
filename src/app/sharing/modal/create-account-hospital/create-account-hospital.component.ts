@@ -17,7 +17,6 @@ export class CreateAccountHospitalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('hospital ID ',this.hospitalId);
     this.initForm();
   }
 
@@ -29,7 +28,7 @@ export class CreateAccountHospitalComponent implements OnInit {
       email: [''],
       status: [0],
       hospital_id: this.hospitalId
-    })
+    });
   }
 
   create(){

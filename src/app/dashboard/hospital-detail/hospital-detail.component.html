@@ -1,70 +1,95 @@
 <div class="container">
     <ng-container *ngFor="let hospital of hospitalDetail">
-        <div class="horizontal-container">
-
-            <div class="vertical-container">
-                <div class="horizontal-container">
-                    <span>ID:</span>
-                    <span>{{hospital.ID}}</span>
-                </div>
-                <div class="height-container"></div>
-                <div class="horizontal-container">
-                    <span>Tên CSYT:</span>
-                    <span>{{hospital.hospital_name}}</span>
-                </div>
-                <div class="height-container"></div>
-                <div class="horizontal-container">
-                    <span>Mã CSYT:</span>
-                    <span>{{hospital.hospital_code}}</span>
-                </div>
-                <div class="height-container"></div>
-                <div class="horizontal-container">
-                    <span>Địa chỉ CSYT:</span>
-                    <span>{{hospital.street}}</span>
-                </div>
-            </div>
-            <div class="width-container"></div>
-            <div class="vertical-container">
-                <h3>Các tài khoản đã có</h3>
-                <ng-container *ngFor="let account of hospitalAccounts">
-                    <div class="vertical-container">
-                        <div class="horizontal-container">
-                            <span>ID:</span>
-                            <span>{{account.ID}}</span>
-                        </div>
-                        <div class="horizontal-container">
-                            <span>Tài khoản:</span>
-                            <span>{{account.name}}</span>
-                        </div>
+        <div class="hospital-information-container">
+            <div>
+                <div class="vertical-container">
+                    <div class="horizontal-container">
+                        <span>ID:</span>
+                        <span>{{hospital.ID}}</span>
                     </div>
                     <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Tên CSYT:</span>
+                        <span>{{hospital.hospital_name}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Mã CSYT:</span>
+                        <span>{{hospital.hospital_code}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Địa chỉ CSYT:</span>
+                        <span>
+                            <span>{{hospital.street}}</span>
+                            <span *ngIf="hospital.ward">, {{hospital.ward}}</span>
+                            <span *ngIf="hospital.district">, {{hospital.district}}</span>
+                            <span *ngIf="hospital.city">, {{hospital.city}}</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="height-container"></div>
+
+                <div class="horizontal-container">
+                    <button (click)="createAccount(hospital.ID)">
+                        <mat-icon>add</mat-icon>
+                        <span> Tạo tài khoản</span>
+                    </button>
+                    <div class="width-container"></div>
+                    <button (click)="updateHospital(hospital)">
+                        <mat-icon>update</mat-icon>
+                        <span> Cập nhật thông tin CSYT</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="width-container"></div>
+
+            <div class="vertical-container account-container">
+                <h3>Các tài khoản đã có</h3>
+
+                <ng-container *ngIf="hospitalAccounts && hospitalAccounts.length>0; else empty">
+                    <mat-table [dataSource]="hospitalAccounts" class="mat-elevation-z8">
+                        <!-- ID Tài khoản CSYT -->
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.ID}} </mat-cell>
+                        </ng-container>
+                
+                        <!-- Tên Tài khoản CSYT -->
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef>Tài khoản</mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" [matMenuTriggerFor]="menu">
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="updateAccount(row)">
+                                    <mat-icon>update</mat-icon>
+                                    <span>Cập nhật</span>
+                                </button>
+                                <button mat-menu-item (click)="deleteAccount(row)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>Xoá tài khoản</span>
+                                </button>
+                            </mat-menu>
+                        </mat-row>
+                    </mat-table>
                 </ng-container>
+                <ng-template #empty>Chưa có tài khoản nào.</ng-template>
             </div>
         </div>
-        <div class="height-container"></div>
-        <div class="horizontal-container">
-            <button (click)="updateInformation(hospital.ID)">Cập nhật thông tin</button>
-            <div class="width-container"></div>
-            <button (click)="createAccount(hospital.ID)">Tạo tài khoản</button>
-            <div class="width-container"></div>
-            <button (click)="showAccouts(hospital.ID)">Các tài khoản của CSYT này</button>
+
+        <div class="button-container">
+            <button (click)="deleteHospital(hospital)">
+                <mat-icon>delete</mat-icon>
+                <span> Xoá Cơ Sở Y Tế</span>
+            </button>
         </div>
+        
     </ng-container>
 </div>
-<!-- interface Hospital {
-    ID: number;
-    hospital_name: string;
-    hospital_code: string;
-    street: string;
-    ward: string;
-    district: string;
-    city: string;
-    idCity: number;
-    workTime: string;
-    position: string;
-    type: string;
-    country: string;
-    created_at: Date;
-    updated_at: Date;
-    deleted_at: Date;
-  } -->
+

@@ -1,38 +1,63 @@
-<div class="container">
-    <mat-table [dataSource]="hospitals" class="mat-elevation-z8">
-        <!-- ID CSYT -->
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef>ID CSYT</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.ID}} </mat-cell>
-        </ng-container>
+<div class="container vertical-container">
 
-        <!-- Tên CSYT -->
-        <ng-container matColumnDef="hospital_name">
-            <mat-header-cell *matHeaderCellDef>Tên CSYT</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.hospital_name}} </mat-cell>
-        </ng-container>
-        
-        <!-- Mã Bệnh Viện -->
-        <ng-container matColumnDef="hospital_code">
-            <mat-header-cell *matHeaderCellDef>Mã CSYT</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.hospital_code}} </mat-cell>
-        </ng-container>
+    <div class="height-container"></div>
 
-        <!-- Thuộc Vùng -->
-        <ng-container matColumnDef="idCity">
-            <mat-header-cell *matHeaderCellDef>Thuộc Vùng</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.idCity}} </mat-cell>
-        </ng-container>
+    <div class="button-container horizontal-container">
+        <button (click)="createHospital()">
+            <mat-icon>add</mat-icon>
+            <span>Tạo mới</span>
+        </button>
+        <div class="width-container"></div>
+        <mat-form-field>
+            <mat-label>Tìm kiếm CSYT</mat-label>
+            <input matInput type="text" (input)="onSearchChange($event)" placeholder="Mã CSYT">
+            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
 
-        <!-- Chi tiết -->
-        <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <button (click)="showDetail(element)">Chi tiết</button>
-            </mat-cell>
-        </ng-container>
-        
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+    <div class="height-container"></div>
+
+    <ng-container *ngIf="hospitals && hospitals.length>0; else empty">
+        <mat-table [dataSource]="hospitals" class="mat-elevation-z8">
+            <!-- ID CSYT -->
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef class="ID-container">ID CSYT</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="ID-container"> {{element.ID}} </mat-cell>
+            </ng-container>
+    
+            <!-- Tên CSYT -->
+            <ng-container matColumnDef="hospital_name">
+                <mat-header-cell *matHeaderCellDef>Tên CSYT</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.hospital_name}} </mat-cell>
+            </ng-container>
+            
+            <!-- Mã Bệnh Viện -->
+            <ng-container matColumnDef="hospital_code">
+                <mat-header-cell *matHeaderCellDef>Mã CSYT</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.hospital_code}} </mat-cell>
+            </ng-container>
+    
+            <!-- Thuộc Vùng -->
+            <ng-container matColumnDef="city">
+                <mat-header-cell *matHeaderCellDef>Thuộc Vùng</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.city}} </mat-cell>
+            </ng-container>
+            
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showDetail(row)"></mat-row>
+        </mat-table>
+        <mat-paginator
+            [length]="length"
+            [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="pageChangeEvent($event)"
+        >
+        </mat-paginator>
+    </ng-container>
+
+    <ng-template #empty>Không tìm thấy Cơ Sở Y Tế nào.</ng-template>
+
+    <div class="height-container"></div>
 </div>

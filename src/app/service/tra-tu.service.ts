@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,19 +17,13 @@ export class TraTuService {
     { code: 1, name: 'Nhân Thọ' },
     { code: 2, name: 'Phi Nhân Thọ' }
   ]
-
-  insurers: Array<Insurers>;
-
-  listenInsurer$: BehaviorSubject<Array<Insurers>> = new BehaviorSubject<Array<Insurers>>([]);
-  listenInsurer: Observable<Array<Insurers>> = this.listenInsurer$.asObservable();
-
-  setInsurers(insurers: Array<Insurers>){
-    this.insurers = insurers;
-
-    this.listenInsurer$.next(this.insurers);
-  }
   
 }
+
+export interface Insurers{
+
+}
+
 export interface Insurers{
   ID: number,
   short_name: string,

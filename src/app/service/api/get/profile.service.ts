@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class ProfileService {
-  url: string = environment.managerHost + 'profile';
+  url: string = environment.managerHost + 'config';
   constructor(
     private httpClient: HttpClient
   ){ }

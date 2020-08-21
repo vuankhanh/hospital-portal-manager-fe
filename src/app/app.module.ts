@@ -9,6 +9,7 @@ import { PushNotificationsModule } from 'ng-push';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { DatePipe } from '@angular/common';
 import { NextDayPipe } from './pipes/next-day.pipe';
+import { UrlAttachmentPipe } from './pipes/url-attachment.pipe';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -53,12 +54,19 @@ import { ConnectionStatusComponent } from './sharing/component/connection-status
 
 //Modal
 import { CreateAccountHospitalComponent } from './sharing/modal/create-account-hospital/create-account-hospital.component';
+import { ImageShowComponent } from './sharing/modal/image-show/image-show.component';
+import { InsuranceListManagementComponent } from './dashboard/insurance-list-management/insurance-list-management.component';
+import { UserInformationComponent } from './dashboard/user-information/user-information.component';
+import { TimelineTicketComponent } from './dashboard/timeline-ticket/timeline-ticket.component';
+import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
+import { CreateHospitalComponent } from './sharing/modal/create-hospital/create-hospital.component';
+import { UpdateHospitalComponent } from './sharing/modal/update-hospital/update-hospital.component';
+import { UpdateHospitalAccountComponent } from './sharing/modal/update-hospital-account/update-hospital-account.component';
 
 import { TitleService } from './service/title.service';
 import { CurrencyDirective } from './directives/currency.directive';
 import { ExportDataService } from './service/export-data.service';
-import { InsuranceListManagementComponent } from './dashboard/insurance-list-management/insurance-list-management.component';
-import { UserInformationComponent } from './dashboard/user-information/user-information.component';
+import { HospitalInformationComponent } from './sharing/modal/hospital-information/hospital-information.component';
 
 const ISO_FORMAT = {
   parse: {
@@ -74,7 +82,13 @@ const ISO_FORMAT = {
 
 @NgModule({
   entryComponents:[
-    CreateAccountHospitalComponent
+    CreateAccountHospitalComponent,
+    ImageShowComponent,
+    ConfirmActionComponent,
+    CreateHospitalComponent,
+    UpdateHospitalComponent,
+    UpdateHospitalAccountComponent,
+    HospitalInformationComponent
   ],
   declarations: [
     AppComponent,
@@ -84,6 +98,7 @@ const ISO_FORMAT = {
     CurrencyDirective,
     EmptyPageComponent,
     NextDayPipe,
+    UrlAttachmentPipe,
     HomeComponent,
     StaffAccountManagementComponent,
     HospitalListManagementComponent,
@@ -93,7 +108,14 @@ const ISO_FORMAT = {
     ConnectionStatusComponent,
     InsuranceListManagementComponent,
     CreateAccountHospitalComponent,
+    ImageShowComponent,
     UserInformationComponent,
+    TimelineTicketComponent,
+    ConfirmActionComponent,
+    CreateHospitalComponent,
+    UpdateHospitalComponent,
+    UpdateHospitalAccountComponent,
+    HospitalInformationComponent,
     
   ],
   imports: [
@@ -146,6 +168,7 @@ const ISO_FORMAT = {
     CurrencyPipe,
     DatePipe,
     NextDayPipe,
+    UrlAttachmentPipe,
     ExportDataService
   ],
   bootstrap: [AppComponent]

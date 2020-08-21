@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from './service/authentication.service';
 import { ToastService } from './service/toast.service';
 import { TraTuService } from './service/tra-tu.service';
+import { ListenConfigurationService } from './service/listen-configuration.service';
 import { IconSvgService } from './service/icon-svg.service';
 import { BackEndService } from './service/api/get/back-end';
 
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy{
     private authenticationService: AuthenticationService,
     private toastService: ToastService,
     private traTuService: TraTuService,
+    private listenConfigurationService: ListenConfigurationService,
     private iconSvgService: IconSvgService,
     private backEndService: BackEndService
   ){
@@ -42,10 +44,15 @@ export class AppComponent implements OnInit, OnDestroy{
   ngOnInit(){
     
     let userData = this.localStorageService.getLocalStorage('token');
+
     this.authenticationService.setUserInformation(userData);
     if(userData && userData.token){
       this.loginService.thenLogin(userData.token).then(data=>{
         let datas: any = data;
+
+        if(datas[0] && datas[0].code ===200){
+          this.listenConfigurationService.setCity(datas[0].data.city);
+        }
       }).catch(err=>{
         if(err.status && err.status === 401 && err.statusText === 'Unauthorized'){
           this.toastService.showShortToast('Mời bạn đăng nhập lại', 'Hết hạn phiên đăng nhập');

@@ -1,0 +1,38 @@
+.container{
+    padding: 15px;
+    height: calc(100% - 30px);
+    .search-bar{
+        mat-form-field{
+            margin-bottom: -1.25em;
+        }
+    }
+    .information-container{
+        position: sticky;
+        top: 0;
+    }
+    .detail-container{
+        .comment-container{
+            .row-container{
+                width: 600px;
+                justify-content: space-between;
+                align-items: center;
+                .content-container{
+                    max-width: 330px;
+                    padding: 15px;
+                    border-radius: 15px;
+                    align-items: center;
+                }
+                .content-ins{
+                    background: #154897;
+                    color: white;
+                }
+                .content-hos{
+                    background: #ededed;
+                }
+                .time{
+                    width: 225px;
+                }
+            }
+        }
+    }
+}

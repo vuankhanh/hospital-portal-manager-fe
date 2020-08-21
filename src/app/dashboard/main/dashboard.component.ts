@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit {
       { id: 3, routerLink:'/dashboard/hospital-list-management', icon: { type: 'customize', name: 'hospital-building' }, name:'Quản lý danh sách CSYT' },
       { id: 4, routerLink:'/dashboard/out-working-time', icon: { type: 'default', name: 'timer_off' }, name:'Trực ngoài giờ' },
       { id: 5, routerLink:'/dashboard/export-data', icon: { type: 'default', name: 'cloud_download' }, name:'Xuất dữ liệu' },
+      { id: 6, routerLink:'/dashboard/timeline-ticket', icon: { type: 'customize', name: 'timeline' }, name:'Quá trình Ticket' },
     ]
   }
 

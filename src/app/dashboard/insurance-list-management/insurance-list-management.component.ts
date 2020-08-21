@@ -11,7 +11,7 @@ import { TraTuService } from '../../service/tra-tu.service';
 })
 export class InsuranceListManagementComponent implements OnInit {
   insurers: Insurers = [];
-  displayedColumns: string[] = ['id', 'short_name', 'name', 'logo', 'check_benefit_countdown', 'gl_countdown', 'type', 'action'];
+  displayedColumns: string[] = ['id', 'short_name', 'name', 'logo', 'check_benefit_countdown', 'gl_countdown', 'type' ];
   constructor(
     private insurersService: InsurersService,
     private localStorageService: LocalStorageService,

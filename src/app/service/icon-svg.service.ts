@@ -30,4 +30,5 @@ const arrSvg = [
   { iconKeys: 'money', svgUrl: '../assets/imgs/icon/money.svg' },
   { iconKeys: 'insurer', svgUrl: '../assets/imgs/icon/insurer.svg' },
   { iconKeys: 'logout', svgUrl: '../assets/imgs/icon/logout.svg' },
+  { iconKeys: 'timeline', svgUrl: '../assets/imgs/icon/time-line.svg' },
 ]

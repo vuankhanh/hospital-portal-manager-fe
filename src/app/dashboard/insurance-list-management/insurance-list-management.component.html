@@ -1,4 +1,5 @@
-<div class="container">
+<div class="container vertical-container">
+    <div class="height-container"></div>
     <mat-table [dataSource]="insurers" class="mat-elevation-z8">
         <!-- ID Nhà Bảo Hiểm -->
         <ng-container matColumnDef="id" sticky>
@@ -21,7 +22,9 @@
         <!-- Logo -->
         <ng-container matColumnDef="logo">
             <mat-header-cell *matHeaderCellDef>Logo</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.logo}} </mat-cell>
+            <mat-cell *matCellDef="let element">
+                <img class="insurer-logo-img" src="{{element.logo}}" height="20">
+            </mat-cell>
         </ng-container>
 
         <!-- Kiểm tra Quyền lợi trong -->
@@ -41,16 +44,9 @@
             <mat-header-cell *matHeaderCellDef>Loại hình</mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ traTuService.typeInsurers[element.type-1].name }} </mat-cell>
         </ng-container>
-
-        <!-- Chi tiết -->
-        <ng-container matColumnDef="action">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <button (click)="showDetail(element)">Chi tiết</button>
-            </mat-cell>
-        </ng-container>
         
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <div class="height-container"></div>
 </div>

@@ -1,1 +1,49 @@
-<p>Chưa sẵn sàng</p>
+<div class="container vertical-container">
+    <div class="height-container"></div>
+    <mat-table [dataSource]="accounts" class="mat-elevation-z8">
+
+        <!-- Tài khoản -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>
+                <span>Tài khoản</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <!-- Tên đầy đủ -->
+        <ng-container matColumnDef="fullname">
+            <mat-header-cell *matHeaderCellDef>
+                <span>Tên đầy đủ</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.fullname}} </mat-cell>
+        </ng-container>
+        
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef>
+                <span>Email</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
+
+        <!-- Số điện thoại -->
+        <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef>
+                <span>Số điện thoại</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+        </ng-container>
+
+        <!-- Loại tài khoản -->
+        <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef>
+                <span>Loại tài khoản</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div class="height-container"></div>
+</div>

@@ -9,6 +9,7 @@ import { HospitalListManagementComponent } from '../hospital-list-management/hos
 import { HospitalDetailComponent } from '../hospital-detail/hospital-detail.component';
 import { OutWorkingTimeComponent } from '../out-working-time/out-working-time.component';
 import { ExportDataComponent } from '../export-data/export-data.component';
+import { TimelineTicketComponent } from '../timeline-ticket/timeline-ticket.component';
 
 const dashboardModuleRoutes: Routes = [
     {
@@ -46,7 +47,7 @@ const dashboardModuleRoutes: Routes = [
             },{
                 path: 'hospital-list-management',
                 component: HospitalListManagementComponent,
-                data: { 
+                data: {
                     title: 'Quản lý danh sách CSYT',
                     shouldReuse: true,
                     animation: 'TheRequirements'
@@ -72,6 +73,14 @@ const dashboardModuleRoutes: Routes = [
                 component: ExportDataComponent,
                 data: { 
                     title: 'Xuất dữ liệu',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'timeline-ticket',
+                component: TimelineTicketComponent,
+                data: { 
+                    title: 'Quá trình Ticket',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }

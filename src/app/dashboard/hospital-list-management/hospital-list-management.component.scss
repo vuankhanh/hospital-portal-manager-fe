@@ -1,5 +1,19 @@
 .container{
+    .button-container{
+        button{
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border: 1px solid rgba(0,0,0,.42);
+            border-radius: 5px;
+        }
+        mat-form-field{
+            margin-bottom: -1.25em;
+        }
+    }
     mat-table{
+        max-height: 100%;
+        overflow: auto;
         mat-header-row{
             // position: sticky;
             // top: 0;

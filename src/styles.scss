@@ -10,7 +10,8 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .container{
-    height:100%;
+    padding: 0 15px;
+    height: 100%;
     overflow-y: auto;
 }
 
@@ -54,7 +55,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 //define khoảng cách dọc
 .height-container{
-    height:15px;
+    height: 15px;
+    min-height: 15px
 }
 
 .vertical-container{
@@ -82,6 +84,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     mat-icon{
         margin-right:2px;
     }
+}
+
+button{
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.42);
+    border-radius: 5px;
 }
 
 .loadding-container{
@@ -144,7 +154,9 @@ mat-tab-group{
     }
 }
 
+//Table
 mat-table{
+    
     mat-header-row{
         mat-header-cell{
             padding: 0 15px;
@@ -152,6 +164,21 @@ mat-table{
     }
     mat-row{
         mat-cell{
+            padding: 0 15px;
+        }
+    }
+    mat-row:hover{
+        background: #ededed;
+        cursor: pointer;
+    }
+    .ID-container{
+        max-width: 100px;
+    }
+    mat-footer-row{
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: rgba(0,0,0,.12);
+        mat-footer-cell{
             padding: 0 15px;
         }
     }

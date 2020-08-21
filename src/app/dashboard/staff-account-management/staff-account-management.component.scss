@@ -1,0 +1,14 @@
+.container{
+    mat-table{
+        max-height: 100%;
+        overflow: auto;
+        mat-header-row{
+            mat-header-cell{
+                // span{
+                //     width: 100%;
+                //     text-align: center;
+                // }
+            }
+        }
+    }
+}

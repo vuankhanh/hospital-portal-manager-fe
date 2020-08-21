@@ -1,0 +1,13 @@
+<form [formGroup]="confirmGroup" (ngSubmit)="requestAuthentication()">
+  <div mat-dialog-content>
+    <p>Nhập mật khẩu của bạn để xác nhận</p>
+    <mat-form-field>
+      <mat-label>Mật khẩu</mat-label>
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button type="button" mat-dialog-close>Huỷ</button>
+    <button mat-button type="submit" cdkFocusInitial>Xác nhận</button>
+  </div>
+</form>
