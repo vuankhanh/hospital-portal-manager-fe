@@ -5,8 +5,8 @@ import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TicketsService {
-  private url: string = environment.managerHost + 'get_ticket_opd';
+export class DataService {
+  private url: string = environment.managerHost + 'export_opd_data/';
   constructor(
     private httpClient: HttpClient
   ) { }
@@ -20,11 +20,17 @@ export class TicketsService {
     let params = new HttpParams();
 
     if(parameters){
-      if(parameters.idTicket){
-        params = params.append('id', parameters.idTicket);
+      if(parameters.from){
+        params = params.append('from', parameters.from);
       }
-      if(parameters.fullname){
-        params = params.append('full_name', parameters.fullname);
+      if(parameters.to){
+        params = params.append('to', parameters.to);
+      }
+      if(parameters.insurer_id){
+        params = params.append('insurer_id', parameters.insurer_id);
+      }
+      if(parameters.isToday){
+        params = params.append('isToday', parameters.isToday);
       }
     }
     return this.httpClient.get<Response>(this.url, { headers: headers, params: params })

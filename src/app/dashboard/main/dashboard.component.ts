@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { slideInAnimation } from '../../animations/usually-use';
 import { MatDialog } from '@angular/material';
@@ -8,6 +9,7 @@ import { MatSidenav, MatDrawer } from '@angular/material/sidenav';
 import { AuthenticationService } from '../../service/authentication.service';
 
 import { Observable, BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +30,12 @@ export class DashboardComponent implements OnInit {
   opdOpenBadge: Observable<number> = this.opdOpenBadge$.asObservable();
 
   showFiller = false;
+
+  routeLength: number;
   constructor(
+    private router: Router,
+    private aRouter: ActivatedRoute,
+    public localtion: Location,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService
   ) {
@@ -36,7 +43,16 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.listenRouteChange();
     this.listenUserInformation();
+  }
+
+  listenRouteChange(){
+    this.routeLength = this.router.url.split("/").length;
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+    .subscribe((s: NavigationEnd) => {
+      this.routeLength = s.url.split("/").length;
+    });
   }
 
   listenUserInformation(){

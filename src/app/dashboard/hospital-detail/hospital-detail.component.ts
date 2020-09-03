@@ -3,7 +3,6 @@ import { MatDialog, MatTable } from '@angular/material';
 
 import { CreateAccountHospitalComponent } from '../../sharing/modal/create-account-hospital/create-account-hospital.component';
 import { ConfirmActionComponent } from '../../sharing/modal/confirm-action/confirm-action.component';
-import { UpdateHospitalComponent } from '../../sharing/modal/update-hospital/update-hospital.component';
 import { HospitalInformationComponent } from '../../sharing/modal/hospital-information/hospital-information.component';
 
 import { HospitalDetailService, Hospitals } from '../../service/api/get/hospital-detail.service';
@@ -16,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { RemoveHospitalAccountService } from '../../service/api/post/remove-hospital-account.service';
 import { RemoveElementByAttributeService } from '../../service/remove-element-by-attribute.service';
 import { RemoveHospitalService } from '../../service/api/post/remove-hospital.service';
+import { HospitalService } from '../../service/api/post/hospital.service';
 @Component({
   selector: 'app-hospital-detail',
   templateUrl: './hospital-detail.component.html',
@@ -40,6 +40,7 @@ export class HospitalDetailComponent implements OnInit {
     private removeHospitalService: RemoveHospitalService,
     private localStorageService: LocalStorageService,
     private removeElementByAttributeService: RemoveElementByAttributeService,
+    private hositalService: HospitalService
   ) { }
 
   ngOnInit() {
@@ -76,7 +77,6 @@ export class HospitalDetailComponent implements OnInit {
           alert(res.message);
           this.hospitalAccounts.push(res.data);
           this.table.renderRows();
-          console.log(this.hospitalAccounts);
         });
       }
     });
@@ -88,18 +88,31 @@ export class HospitalDetailComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(result=>{
-      console.log(result);
-      
+      if(result && result.password){
+        delete result.information.created_at;
+        console.log(result);
+        let userToken = this.localStorageService.getLocalStorage("token");
+        this.hositalService.updateHospital(userToken.token, row.ID, result.password, result.information).subscribe(res=>{
+          console.log(res);
+        },error=>console.log(error));
+      }
     });
   }
 
   updateAccount(row){
     console.log(row);
+    // this.dialog.open(UpdateHospitalComponent,{
+    //   data: row
+    // }).afterClosed().subscribe(updated=>{
+    //   let userToken = this.localStorageService.getLocalStorage("token");
+    //   console.log(updated);
+    // })
   }
 
   deleteAccount(row){
-    let userToken = this.localStorageService.getLocalStorage("token");
+    
     this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password=>{
+      let userToken = this.localStorageService.getLocalStorage("token");
       if(password){
         this.removeHospitalAccountService.removeHospitalAccount(userToken.token, row.ID, password).subscribe(res=>{
           if(res.code === 200){

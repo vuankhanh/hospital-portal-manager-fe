@@ -6,6 +6,7 @@ import { ConfirmActionComponent } from '../confirm-action/confirm-action.compone
 
 import { Hospital } from '../../../service/api/post/create-hospital.service';
 import { ListenConfigurationService } from '../../../service/listen-configuration.service';
+import { DateFormatService } from '../../../service/date-format.service';
 
 @Component({
   selector: 'app-hospital-information',
@@ -14,20 +15,24 @@ import { ListenConfigurationService } from '../../../service/listen-configuratio
 })
 export class HospitalInformationComponent implements OnInit {
   hospitalForm: FormGroup;
+  password: string;
 
+  checkObject:number = Object.keys(this.hospital).length;
+  
   types=[
     { ID: 1, name: "Phòng khám" },
     { ID: 2, name: "Bệnh viện" }
-  ]
+  ];
 
   countries=[
     { ID: 1, name: "VN" }
-  ]
+  ];
   constructor(
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public hospital: Hospital,
     private dialogRef: MatDialogRef<HospitalInformationComponent>,
-    public listenConfigurationService: ListenConfigurationService
+    public listenConfigurationService: ListenConfigurationService,
+    private dateFormatService: DateFormatService
   ) { }
 
   ngOnInit() {
@@ -47,36 +52,32 @@ export class HospitalInformationComponent implements OnInit {
       position: [this.hospital.position ? this.hospital.position : ''],
       type: [this.hospital.type ? this.hospital.type : ''],
       country: [this.hospital.country ? this.hospital.country : ''],
-      created_at: [this.hospital.created_at ? this.hospital.created_at : ''],
-      updated_at: [this.hospital.updated_at ? this.hospital.updated_at : ''],
+      created_at: [this.hospital.created_at ? this.hospital.created_at : this.dateFormatService.fullTime(new Date())],
+      updated_at: [this.hospital.updated_at ? this.hospital.updated_at : this.dateFormatService.fullTime(new Date())],
     });
-
-    // this.hospitalForm = this.formBuilder.group({
-    //   hospital_name: ['', Validators.required],
-    //   hospital_code: ['', Validators.required],
-    //   street: ['', Validators.required],
-    //   ward: ['', Validators.required],
-    //   district: ['', Validators.required],
-    //   city: ['', Validators.required],
-    //   idCity: ['', Validators.required],
-    //   workTime: [''],
-    //   position: [''],
-    //   type: [''],
-    //   country: [''],
-    //   created_at: [''],
-    //   updated_at: [''],
-    // });
-
-    console.log(this.hospitalForm);
-  }
-
-  private showDetail(city){
-    this.hospitalForm.get('idCity').setValue(city.ID);
   }
 
   private createHospital(){
     if(this.hospitalForm.valid){
-      this.dialogRef.close(this.hospitalForm.value);
+      let changeProperty = {};
+      Object.keys(this.hospitalForm.value).forEach(key=>{
+        if(this.hospitalForm.value[key] != this.hospital[key]){
+          changeProperty[key] = this.hospitalForm.value[key];
+        }
+      });
+      this.dialogRef.close(
+        this.checkObject === 0 ? { information: changeProperty } :
+        {
+          password: this.password,
+          information: changeProperty
+        }
+      );
+    }
+  }
+
+  private selectionCity(event, city){
+    if(event.isUserInput){
+      this.hospitalForm.controls['idCity'].setValue(city.ID);
     }
   }
 

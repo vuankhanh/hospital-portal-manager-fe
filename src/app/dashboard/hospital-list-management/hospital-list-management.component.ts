@@ -79,7 +79,7 @@ export class HospitalListManagementComponent implements OnInit {
     }).afterClosed().subscribe(result=>{
       if(result){
         let userData = this.localStorageSerivce.getLocalStorage("token");
-        this.createHospitalService.createHospital(userData.token, result).subscribe(res=>{
+        this.createHospitalService.createHospital(userData.token, result.information).subscribe(res=>{
           if(res.code === 200){
             alert(res.message);
             this.hospitals.push(res.data[0]);
@@ -87,6 +87,8 @@ export class HospitalListManagementComponent implements OnInit {
           }else if(res.code === 500){
             alert(res.message);
           }
+        },error=>{
+          console.log(error);
         })
       }
     });

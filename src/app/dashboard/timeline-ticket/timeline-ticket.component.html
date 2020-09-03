@@ -1,16 +1,87 @@
-<div class="container">
+<div class="vertical-container container">
     <form [formGroup]="ticketGroup" (ngSubmit)="search()" class="search-bar horizontal-container">
         <mat-form-field>
             <input matInput type="text" placeholder="Mã định danh" formControlName="idTicket">
         </mat-form-field>
         <div class="width-container"></div>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Tên khách hàng" formControlName="fullname">
+        </mat-form-field>
+        <div class="width-container"></div>
         <button type="submit" mat-raised-button>Tìm kiếm</button>
     </form>
     <div class="height-container"></div>
-    <div class="vertical-container">
+    <div class="vertical-container result-container">
         <ng-container *ngIf="ticket && ticket.detailTicket">
-            <div class="information-container">
-                ID: {{ticket.ID}}
+            <div class="horizontal-container">
+                <div class="vertical-container information-container">
+                    <div class="horizontal-container">
+                        <span class="primary-key">ID:</span>
+                        <span class="secondary-key">{{ticket.ID}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Trạng thái Ticket:</span>
+                        <span class="secondary-key">{{
+                            ticket.insmart_status === 'VERIFIED' ?'Có Quyền Lợi' :
+                            ticket.insmart_status === 'DENIED' ? 'Không có quyền lợi' :
+                            ticket.insmart_status === 'CONFIRM' ? 'Đồng ý Bảo Lãnh' :
+                            ticket.insmart_status === 'REJECT' ? 'Từ chối Bảo Lãnh' : ''
+                        }}</span>
+                    </div>
+                    <div class="horizontal-container">
+                            <span class="primary-key">Tên khách hàng:</span>
+                            <span class="secondary-key">{{ticket.fullname}}</span>
+                        </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Ngày sinh:</span>
+                        <span class="secondary-key">{{ticket.dob | date: 'dd/MM/yyyy'}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Cty Bảo Hiểm:</span>
+                        <span class="secondary-key">{{ticket.insurerInfo.short_name}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">CMND/Passport:</span>
+                        <span class="secondary-key">{{ticket.cmnd}}</span>
+                    </div>
+                    <div class="horizontal-container" *ngIf="ticket.policy_no">
+                        <span class="primary-key">Số hợp đồng:</span>
+                        <span class="secondary-key">{{ticket.policy_no}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Chẩn đoán:</span>
+                        <span class="secondary-key">{{ticket.diag_note}}</span>
+                    </div>
+                </div>
+
+                <div class="width-container"></div>
+
+                <div class="vertical-container information-container">
+                    <div class="horizontal-container">
+                        <span class="primary-key">ID:</span>
+                        <span class="secondary-key">{{ticket.ID}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Tên khách hàng:</span>
+                        <span class="secondary-key">{{ticket.fullname}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Tên CSYT:</span>
+                        <span class="secondary-key">{{ticket.hospitalInfo.hospital_name}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Tên NV CSYT:</span>
+                        <span class="secondary-key">{{ticket.hospital_employee_name}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">SĐT NV CSYT:</span>
+                        <span class="secondary-key">{{ticket.hospital_phone_number}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span class="primary-key">Mã CSYT:</span>
+                        <span class="secondary-key">{{ticket.hospitalInfo.hospital_code}}</span>
+                    </div>
+                </div>
             </div>
             <div class="height-container"></div>
             <div class="detail-container">
@@ -174,6 +245,8 @@
                     </ng-container>
                 </div>
             </div>
+            <div class="height-container"></div>
+            <button class="btnDownload" type="button" mat-stroked-button (click)="download(ticket)">Tải xuống</button>
         </ng-container>
     </div>
 </div>

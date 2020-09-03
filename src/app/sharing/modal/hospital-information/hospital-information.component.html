@@ -43,7 +43,7 @@
                     <mat-option
                         *ngFor="let city of listenConfigurationService.listenCity | async"
                         [value]="city.city"
-                        (click)="showDetail(city)"
+                        (onSelectionChange)="selectionCity($event, city)"
                     >
                         {{city.city}}
                     </mat-option>
@@ -86,10 +86,21 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div class="height-container"></div>
+        <mat-form-field *ngIf="checkObject > 0">
+            <mat-label>Xác thực</mat-label>
+            <input
+                type="password"
+                matInput
+                [(ngModel)]="password"
+                [ngModelOptions]="{standalone: true}"
+                placeholder="Nhập mật khẩu"
+            >
+        </mat-form-field>
     </div>
 
     <div mat-dialog-actions>
         <button mat-button type="button" mat-dialog-close>Huỷ</button>
-        <button mat-button type="submit" cdkFocusInitial>Tạo mới</button>
+        <button mat-button type="submit" cdkFocusInitial>{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
     </div>
 </form>

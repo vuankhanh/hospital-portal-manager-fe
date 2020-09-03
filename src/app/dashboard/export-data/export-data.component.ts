@@ -7,7 +7,7 @@ import { LocalStorageService } from '../../service/local-storage.service';
 import { DateFormatService } from '../../service/date-format.service';
 import { TraTuService } from '../../service/tra-tu.service';
 import { ExportDataService } from '../../service/export-data.service';
-import { TicketsService } from '../../service/api/get/tickets.service';
+import { DataService } from '../../service/api/get/data.service';
 import { InsurersService, Insurers } from '../../service/api/get/insurers.service';
 
 import { combineLatest } from 'rxjs';
@@ -33,7 +33,7 @@ export class ExportDataComponent implements OnInit {
     public traTuService: TraTuService,
     private insurersService: InsurersService,
     private exportDataService: ExportDataService,
-    private ticketsService: TicketsService
+    private dataService: DataService
   ) {
     let userData = this.localStorageService.getLocalStorage("token");
     this.insurersService.getHospital(userData.token).subscribe(res=>{
@@ -73,7 +73,7 @@ export class ExportDataComponent implements OnInit {
         isToday: this.filterForm.value.isToday
       }
 
-      combineLatest(this.insurersService.getHospital(userData.token), this.ticketsService.getInsmart(userData.token, params)).subscribe(result=>{
+      combineLatest(this.insurersService.getHospital(userData.token), this.dataService.getTickets(userData.token, params)).subscribe(result=>{
         if(result[0].code === 200 && result[1].code === 200){
           let insurerResponse = result[0];
           let ticketResponse = result[1];

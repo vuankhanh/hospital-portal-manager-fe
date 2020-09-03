@@ -56,14 +56,14 @@
             justify-content: space-between;
             height: 50px;
             background: #154897;
-                mat-icon{
-                    padding: 15px;
-                    border: none;
-                    color: white;
-                }
-                mat-icon:hover{
-                    cursor: pointer;
-                }
+            mat-icon{
+                padding: 15px;
+                border: none;
+                color: white;
+            }
+            mat-icon:hover{
+                cursor: pointer;
+            }
         }
         .router-outlet{
             width: 100%;

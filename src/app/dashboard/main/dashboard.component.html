@@ -26,7 +26,13 @@
     
     <div class="sidenav-content">
         <div class="titleContainer">
-            <mat-icon (click)="drawer.toggle()" class="toggleMenu">menu</mat-icon>
+            <mat-icon
+                (click)="routeLength <= 3 ? drawer.toggle() : localtion.back()"
+                class="toggleMenu"
+            >
+                {{ routeLength <= 3 ? 'menu' : 'keyboard_backspace' }}
+            </mat-icon>
+            
             <img height="35" src="../../assets/imgs/LogoInsmartWhite-small.png">
             <mat-icon svgIcon="home" [routerLink]="['/dashboard/home']"></mat-icon>
         </div>

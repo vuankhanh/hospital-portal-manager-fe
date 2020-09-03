@@ -59,8 +59,6 @@ import { InsuranceListManagementComponent } from './dashboard/insurance-list-man
 import { UserInformationComponent } from './dashboard/user-information/user-information.component';
 import { TimelineTicketComponent } from './dashboard/timeline-ticket/timeline-ticket.component';
 import { ConfirmActionComponent } from './sharing/modal/confirm-action/confirm-action.component';
-import { CreateHospitalComponent } from './sharing/modal/create-hospital/create-hospital.component';
-import { UpdateHospitalComponent } from './sharing/modal/update-hospital/update-hospital.component';
 import { UpdateHospitalAccountComponent } from './sharing/modal/update-hospital-account/update-hospital-account.component';
 
 import { TitleService } from './service/title.service';
@@ -85,8 +83,6 @@ const ISO_FORMAT = {
     CreateAccountHospitalComponent,
     ImageShowComponent,
     ConfirmActionComponent,
-    CreateHospitalComponent,
-    UpdateHospitalComponent,
     UpdateHospitalAccountComponent,
     HospitalInformationComponent
   ],
@@ -112,8 +108,6 @@ const ISO_FORMAT = {
     UserInformationComponent,
     TimelineTicketComponent,
     ConfirmActionComponent,
-    CreateHospitalComponent,
-    UpdateHospitalComponent,
     UpdateHospitalAccountComponent,
     HospitalInformationComponent,
     
