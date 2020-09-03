@@ -22,7 +22,7 @@ export class TimelineTicketComponent implements OnInit {
 
   ticketGroup: FormGroup;
 
-  ticket: Tickets;
+  tickets: Tickets;
   constructor(
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
@@ -49,7 +49,6 @@ export class TimelineTicketComponent implements OnInit {
     if(this.ticketGroup.valid){
       
       let userData = this.localStorageService.getLocalStorage("token");
-
       this.ticketsService.getTickets(userData.token, this.ticketGroup.value).subscribe(result=>{
         if(result.code === 200){
           for(let ticket of result.data){
@@ -57,8 +56,8 @@ export class TimelineTicketComponent implements OnInit {
               comment.content = JSON.parse(comment.content);
             }
           }
-          this.ticket = result.data;
-          console.log(this.ticket);
+          this.tickets = result.data;
+          console.log(this.tickets);
         }else if(result.code == 401){
           alert(result.message);
         }

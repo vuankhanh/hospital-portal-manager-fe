@@ -26,6 +26,8 @@ export class TicketsService {
       if(parameters.fullname){
         params = params.append('full_name', parameters.fullname);
       }
+
+      console.log(parameters);
     }
     return this.httpClient.get<Response>(this.url, { headers: headers, params: params })
   }

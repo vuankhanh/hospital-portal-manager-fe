@@ -12,241 +12,243 @@
     </form>
     <div class="height-container"></div>
     <div class="vertical-container result-container">
-        <ng-container *ngIf="ticket && ticket.detailTicket">
-            <div class="horizontal-container">
-                <div class="vertical-container information-container">
-                    <div class="horizontal-container">
-                        <span class="primary-key">ID:</span>
-                        <span class="secondary-key">{{ticket.ID}}</span>
+        <ng-container *ngFor="let ticket of tickets">
+            <ng-container *ngIf="ticket && ticket.detailTicket">
+                <div class="horizontal-container">
+                    <div class="vertical-container information-container">
+                        <div class="horizontal-container">
+                            <span class="primary-key">ID:</span>
+                            <span class="secondary-key">{{ticket.ID}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Trạng thái Ticket:</span>
+                            <span class="secondary-key">{{
+                                ticket.insmart_status === 'VERIFIED' ?'Có Quyền Lợi' :
+                                ticket.insmart_status === 'DENIED' ? 'Không có quyền lợi' :
+                                ticket.insmart_status === 'CONFIRM' ? 'Đồng ý Bảo Lãnh' :
+                                ticket.insmart_status === 'REJECT' ? 'Từ chối Bảo Lãnh' : ''
+                            }}</span>
+                        </div>
+                        <div class="horizontal-container">
+                                <span class="primary-key">Tên khách hàng:</span>
+                                <span class="secondary-key">{{ticket.fullname}}</span>
+                            </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Ngày sinh:</span>
+                            <span class="secondary-key">{{ticket.dob | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Cty Bảo Hiểm:</span>
+                            <span class="secondary-key">{{ticket.insurerInfo.short_name}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">CMND/Passport:</span>
+                            <span class="secondary-key">{{ticket.cmnd}}</span>
+                        </div>
+                        <div class="horizontal-container" *ngIf="ticket.policy_no">
+                            <span class="primary-key">Số hợp đồng:</span>
+                            <span class="secondary-key">{{ticket.policy_no}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Chẩn đoán:</span>
+                            <span class="secondary-key">{{ticket.diag_note}}</span>
+                        </div>
                     </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Trạng thái Ticket:</span>
-                        <span class="secondary-key">{{
-                            ticket.insmart_status === 'VERIFIED' ?'Có Quyền Lợi' :
-                            ticket.insmart_status === 'DENIED' ? 'Không có quyền lợi' :
-                            ticket.insmart_status === 'CONFIRM' ? 'Đồng ý Bảo Lãnh' :
-                            ticket.insmart_status === 'REJECT' ? 'Từ chối Bảo Lãnh' : ''
-                        }}</span>
-                    </div>
-                    <div class="horizontal-container">
+    
+                    <div class="width-container"></div>
+    
+                    <div class="vertical-container information-container">
+                        <div class="horizontal-container">
+                            <span class="primary-key">ID:</span>
+                            <span class="secondary-key">{{ticket.ID}}</span>
+                        </div>
+                        <div class="horizontal-container">
                             <span class="primary-key">Tên khách hàng:</span>
                             <span class="secondary-key">{{ticket.fullname}}</span>
                         </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Ngày sinh:</span>
-                        <span class="secondary-key">{{ticket.dob | date: 'dd/MM/yyyy'}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Cty Bảo Hiểm:</span>
-                        <span class="secondary-key">{{ticket.insurerInfo.short_name}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">CMND/Passport:</span>
-                        <span class="secondary-key">{{ticket.cmnd}}</span>
-                    </div>
-                    <div class="horizontal-container" *ngIf="ticket.policy_no">
-                        <span class="primary-key">Số hợp đồng:</span>
-                        <span class="secondary-key">{{ticket.policy_no}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Chẩn đoán:</span>
-                        <span class="secondary-key">{{ticket.diag_note}}</span>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Tên CSYT:</span>
+                            <span class="secondary-key">{{ticket.hospitalInfo.hospital_name}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Tên NV CSYT:</span>
+                            <span class="secondary-key">{{ticket.hospital_employee_name}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">SĐT NV CSYT:</span>
+                            <span class="secondary-key">{{ticket.hospital_phone_number}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Mã CSYT:</span>
+                            <span class="secondary-key">{{ticket.hospitalInfo.hospital_code}}</span>
+                        </div>
                     </div>
                 </div>
-
-                <div class="width-container"></div>
-
-                <div class="vertical-container information-container">
-                    <div class="horizontal-container">
-                        <span class="primary-key">ID:</span>
-                        <span class="secondary-key">{{ticket.ID}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Tên khách hàng:</span>
-                        <span class="secondary-key">{{ticket.fullname}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Tên CSYT:</span>
-                        <span class="secondary-key">{{ticket.hospitalInfo.hospital_name}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Tên NV CSYT:</span>
-                        <span class="secondary-key">{{ticket.hospital_employee_name}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">SĐT NV CSYT:</span>
-                        <span class="secondary-key">{{ticket.hospital_phone_number}}</span>
-                    </div>
-                    <div class="horizontal-container">
-                        <span class="primary-key">Mã CSYT:</span>
-                        <span class="secondary-key">{{ticket.hospitalInfo.hospital_code}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="height-container"></div>
-            <div class="detail-container">
-                <div *ngFor="let comment of ticket.detailTicket">
-                    <ng-container *ngIf="comment.type === 'CHANGE_STATUS' && comment.insmart_user_id > 0">
-                        <div
-                            class="comment-container horizontal-container"
-                            [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
-                        >
+                <div class="height-container"></div>
+                <div class="detail-container">
+                    <div *ngFor="let comment of ticket.detailTicket">
+                        <ng-container *ngIf="comment.type === 'CHANGE_STATUS' && comment.insmart_user_id > 0">
                             <div
-                                class="row-container horizontal-container"
+                                class="comment-container horizontal-container"
                                 [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                             >
                                 <div
-                                    class="content-container horizontal-container"
-                                    [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    class="row-container horizontal-container"
+                                    [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                                 >
-                                    <div>
-                                        <mat-icon *ngIf="comment.content.message === 'Insmart verify ticket'">thumb_up</mat-icon>
-                                        <mat-icon *ngIf="comment.content.message === 'Insmart reject ticket' || comment.content.message === 'Insmart deny ticket'">thumb_down</mat-icon>
-                                    </div>
-                                    <div class="width-container"></div>
-                                    <div class="vertical-container">
-                                        <span *ngIf="comment.content.message === 'Insmart verify ticket'">{{'Xác nhận có quyền lợi'}}</span>
-                                        <span *ngIf="comment.content.message === 'Insmart deny ticket'">{{'Xác nhận không có quyền lợi'}}</span>
-                                        <span *ngIf="comment.content.message === 'Insmart reject ticket'">{{'Từ chối Bảo Lãnh'}}</span>
+                                    <div
+                                        class="content-container horizontal-container"
+                                        [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    >
+                                        <div>
+                                            <mat-icon *ngIf="comment.content.message === 'Insmart verify ticket'">thumb_up</mat-icon>
+                                            <mat-icon *ngIf="comment.content.message === 'Insmart reject ticket' || comment.content.message === 'Insmart deny ticket'">thumb_down</mat-icon>
+                                        </div>
                                         <div class="width-container"></div>
-                                        <span *ngIf="comment.content.message === 'Insmart reject ticket' || comment.content.message === 'Insmart deny ticket'">Lý do: {{comment.content.reasons}}</span>
-                                        <span>Người xác nhận: {{ comment.insmartUser.fullname }}</span>
+                                        <div class="vertical-container">
+                                            <span *ngIf="comment.content.message === 'Insmart verify ticket'">{{'Xác nhận có quyền lợi'}}</span>
+                                            <span *ngIf="comment.content.message === 'Insmart deny ticket'">{{'Xác nhận không có quyền lợi'}}</span>
+                                            <span *ngIf="comment.content.message === 'Insmart reject ticket'">{{'Từ chối Bảo Lãnh'}}</span>
+                                            <div class="width-container"></div>
+                                            <span *ngIf="comment.content.message === 'Insmart reject ticket' || comment.content.message === 'Insmart deny ticket'">Lý do: {{comment.content.reasons}}</span>
+                                            <span>Người xác nhận: {{ comment.insmartUser.fullname }}</span>
+                                        </div>
                                     </div>
+                                    <div class="width-container"></div>
+                                    <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                                 </div>
-                                <div class="width-container"></div>
-                                <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                             </div>
-                        </div>
-    
-                    </ng-container>
-    
-                    <ng-container *ngIf="comment.type === 'REQUEST_COST' && comment.hospital_user_id > 0">
-                        <div
-                            class="comment-container horizontal-container"
-                            [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
-                        >
+        
+                        </ng-container>
+        
+                        <ng-container *ngIf="comment.type === 'REQUEST_COST' && comment.hospital_user_id > 0">
                             <div
-                                class="row-container horizontal-container"
+                                class="comment-container horizontal-container"
                                 [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                             >
                                 <div
-                                    class="content-container horizontal-container"
-                                    [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    class="row-container horizontal-container"
+                                    [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                                 >
-                                    <div>
-                                        <mat-icon>table_chart</mat-icon>
+                                    <div
+                                        class="content-container horizontal-container"
+                                        [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    >
+                                        <div>
+                                            <mat-icon>table_chart</mat-icon>
+                                        </div>
+                                        <div class="width-container"></div>
+                                        <div class="vertical-container">
+                                            <span>{{ 'Cơ sở Y Tế gửi yêu cầu Bảo Lãnh' }}</span>
+                                            <span>CSYT gửi: {{ comment.hospitalUser.hospitalInfo.hospital_name }}</span>
+                                        </div>
                                     </div>
                                     <div class="width-container"></div>
-                                    <div class="vertical-container">
-                                        <span>{{ 'Cơ sở Y Tế gửi yêu cầu Bảo Lãnh' }}</span>
-                                        <span>CSYT gửi: {{ comment.hospitalUser.hospitalInfo.hospital_name }}</span>
-                                    </div>
+                                    <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                                 </div>
-                                <div class="width-container"></div>
-                                <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                             </div>
-                        </div>
-    
-                    </ng-container>
-    
-                    <ng-container *ngIf="comment.type === 'COMMENT' && comment.insmart_user_id > 0">
-                        <div
-                            class="comment-container horizontal-container"
-                            [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
-                        >
+        
+                        </ng-container>
+        
+                        <ng-container *ngIf="comment.type === 'COMMENT' && comment.insmart_user_id > 0">
                             <div
-                                class="row-container horizontal-container"
+                                class="comment-container horizontal-container"
                                 [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                             >
                                 <div
-                                    class="content-container horizontal-container"
-                                    [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    class="row-container horizontal-container"
+                                    [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                                 >
-                                    <div>
-                                        <mat-icon>comment</mat-icon>
+                                    <div
+                                        class="content-container horizontal-container"
+                                        [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    >
+                                        <div>
+                                            <mat-icon>comment</mat-icon>
+                                        </div>
+                                        <div class="width-container"></div>
+                                        <div class="vertical-container">
+                                            <span>{{ 'Insmart yêu cầu thông tin' }}</span>
+                                            <span>Nội dung: {{ comment.content.message }}</span>
+                                            <span>Người gửi: {{comment.insmartUser.fullname}}</span>
+                                            <button *ngIf="comment.content.files">
+                                                Tệp đính kèm
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="width-container"></div>
-                                    <div class="vertical-container">
-                                        <span>{{ 'Insmart yêu cầu thông tin' }}</span>
-                                        <span>Nội dung: {{ comment.content.message }}</span>
-                                        <span>Người gửi: {{comment.insmartUser.fullname}}</span>
-                                        <button *ngIf="comment.content.files">
-                                            Tệp đính kèm
-                                        </button>
-                                    </div>
+                                    <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                                 </div>
-                                <div class="width-container"></div>
-                                <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                             </div>
-                        </div>
-    
-                    </ng-container>
-    
-                    <ng-container *ngIf="comment.type === 'COMMENT' && comment.hospital_user_id > 0">
-                        <div
-                            class="comment-container horizontal-container"
-                            [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
-                        >
+        
+                        </ng-container>
+        
+                        <ng-container *ngIf="comment.type === 'COMMENT' && comment.hospital_user_id > 0">
                             <div
-                                class="row-container horizontal-container"
+                                class="comment-container horizontal-container"
                                 [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                             >
                                 <div
-                                    class="content-container horizontal-container"
-                                    [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
-                                >   
-                                    <div>
-                                        <mat-icon>comment</mat-icon>
+                                    class="row-container horizontal-container"
+                                    [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
+                                >
+                                    <div
+                                        class="content-container horizontal-container"
+                                        [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    >   
+                                        <div>
+                                            <mat-icon>comment</mat-icon>
+                                        </div>
+                                        <div class="width-container"></div>
+                                        <div class="vertical-container">
+                                            <span>{{ 'CSYT trả lời thông tin' }}</span>
+                                            <span>Nội dung: {{ comment.content.message }}</span>
+                                            <span>Tài khoản: {{comment.hospitalUser.name}}</span>
+                                            <button *ngIf="comment.content.files" mat-icon-button (click)="showImage(comment.content.files, 0)">
+                                                <mat-icon>attach_file</mat-icon>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="width-container"></div>
-                                    <div class="vertical-container">
-                                        <span>{{ 'CSYT trả lời thông tin' }}</span>
-                                        <span>Nội dung: {{ comment.content.message }}</span>
-                                        <span>Tài khoản: {{comment.hospitalUser.name}}</span>
-                                        <button *ngIf="comment.content.files" mat-icon-button (click)="showImage(comment.content.files, 0)">
-                                            <mat-icon>attach_file</mat-icon>
-                                        </button>
-                                    </div>
+                                    <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                                 </div>
-                                <div class="width-container"></div>
-                                <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                             </div>
-                        </div>
-    
-                    </ng-container>
-    
-                    <ng-container *ngIf="comment.type === 'INSMART_UPDATE_COST' && comment.insmart_user_id > 0">
-                        <div
-                            class="comment-container horizontal-container"
-                            [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
-                        >
+        
+                        </ng-container>
+        
+                        <ng-container *ngIf="comment.type === 'INSMART_UPDATE_COST' && comment.insmart_user_id > 0">
                             <div
-                                class="row-container horizontal-container"
+                                class="comment-container horizontal-container"
                                 [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
                             >
                                 <div
-                                    class="content-container horizontal-container"
-                                    [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
-                                >  
-                                    <div>
-                                        <mat-icon>table_chart</mat-icon>
+                                    class="row-container horizontal-container"
+                                    [style.flex-direction]="comment.insmart_user_id > 0 ? 'row-reverse' : 'row'"
+                                >
+                                    <div
+                                        class="content-container horizontal-container"
+                                        [ngClass]="comment.insmart_user_id > 0 ? 'content-ins' : 'content-hos'"
+                                    >  
+                                        <div>
+                                            <mat-icon>table_chart</mat-icon>
+                                        </div>
+                                        <div class="width-container"></div>
+                                        <div class="vertical-container">
+                                            <span>{{ 'Phương án Bảo Lãnh của Insmart' }}</span>
+                                            <span>Người đưa ra phương án: {{ comment.insmartUser.fullname }}</span>
+                                        </div>
                                     </div>
                                     <div class="width-container"></div>
-                                    <div class="vertical-container">
-                                        <span>{{ 'Phương án Bảo Lãnh của Insmart' }}</span>
-                                        <span>Người đưa ra phương án: {{ comment.insmartUser.fullname }}</span>
-                                    </div>
+                                    <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                                 </div>
-                                <div class="width-container"></div>
-                                <span class="time">Thời gian: {{ comment.created_at | date:'dd/MM/yyy HH:mm:ss' }}</span>
                             </div>
-                        </div>
-    
-                    </ng-container>
+        
+                        </ng-container>
+                    </div>
                 </div>
-            </div>
-            <div class="height-container"></div>
-            <button class="btnDownload" type="button" mat-stroked-button (click)="download(ticket)">Tải xuống</button>
+                <div class="height-container"></div>
+                <button class="btnDownload" type="button" mat-stroked-button (click)="download(ticket)">Tải xuống</button>
+            </ng-container>
         </ng-container>
     </div>
 </div>
