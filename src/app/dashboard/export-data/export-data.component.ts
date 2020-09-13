@@ -21,6 +21,7 @@ export class ExportDataComponent implements OnInit {
   filterForm: FormGroup;
 
   insurers: Insurers;
+  inProccessing: boolean = false;
 
   defaultToday: number = Date.now();
 
@@ -61,6 +62,7 @@ export class ExportDataComponent implements OnInit {
   }
 
   filterData(){
+    this.inProccessing=!this.inProccessing;
     if(this.filterForm.valid){
       let userData = this.localStorageService.getLocalStorage('token');
       let dateFrom = this.dateFormatService.formatDate(new Date(this.filterForm.value.dateFrom));
@@ -103,9 +105,11 @@ export class ExportDataComponent implements OnInit {
           }
           console.log(ticketResponse);
           this.exportData(ticketResponse);
+          this.inProccessing=!this.inProccessing;
         }
       },err=>{
         console.log(err);
+        this.inProccessing=!this.inProccessing;
       })
     }
   }

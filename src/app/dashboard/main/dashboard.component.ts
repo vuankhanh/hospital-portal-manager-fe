@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterOutlet, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, RouterOutlet, ActivatedRoute, NavigationEnd, ActivationStart } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { slideInAnimation } from '../../animations/usually-use';
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   routeLength: number;
   constructor(
     private router: Router,
-    private aRouter: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     public localtion: Location,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService
@@ -69,7 +69,8 @@ export class DashboardComponent implements OnInit {
       { id: 3, routerLink:'/dashboard/hospital-list-management', icon: { type: 'customize', name: 'hospital-building' }, name:'Quản lý danh sách CSYT' },
       { id: 4, routerLink:'/dashboard/out-working-time', icon: { type: 'default', name: 'timer_off' }, name:'Trực ngoài giờ' },
       { id: 5, routerLink:'/dashboard/export-data', icon: { type: 'default', name: 'cloud_download' }, name:'Xuất dữ liệu' },
-      { id: 6, routerLink:'/dashboard/timeline-ticket', icon: { type: 'customize', name: 'timeline' }, name:'Quá trình Ticket' },
+      // { id: 6, routerLink:'/dashboard/timeline-ticket', icon: { type: 'customize', name: 'timeline' }, name:'Quá trình Ticket' },
+      { id: 6, routerLink:'/dashboard/search-ticket', icon: { type: 'default', name: 'search' }, name:'Tìm kiếm Ticket' },
     ]
   }
 

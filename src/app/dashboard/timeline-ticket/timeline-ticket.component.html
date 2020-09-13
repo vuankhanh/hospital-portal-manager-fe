@@ -1,16 +1,4 @@
 <div class="vertical-container container">
-    <form [formGroup]="ticketGroup" (ngSubmit)="search()" class="search-bar horizontal-container">
-        <mat-form-field>
-            <input matInput type="text" placeholder="Mã định danh" formControlName="idTicket">
-        </mat-form-field>
-        <div class="width-container"></div>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Tên khách hàng" formControlName="fullname">
-        </mat-form-field>
-        <div class="width-container"></div>
-        <button type="submit" mat-raised-button>Tìm kiếm</button>
-    </form>
-    <div class="height-container"></div>
     <div class="vertical-container result-container">
         <ng-container *ngFor="let ticket of tickets">
             <ng-container *ngIf="ticket && ticket.detailTicket">

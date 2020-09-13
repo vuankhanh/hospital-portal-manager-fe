@@ -5,34 +5,19 @@ import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TicketsService {
+export class TimelineTicketService {
   private url: string = environment.managerHost + 'get_ticket_opd';
   constructor(
     private httpClient: HttpClient
   ) { }
 
-  getTickets(token, parameters){
+  getTimelineTicket(token, id){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token,
     });
 
-    let params = new HttpParams();
-
-    if(parameters){
-      if(parameters.idTicket){
-        params = params.append('id', parameters.idTicket);
-      }
-      if(parameters.fullname){
-        params = params.append('full_name', parameters.fullname);
-      }
-      if(parameters.patient_phone_numb){
-        params = params.append('patient_phone_numb', parameters.patient_phone_numb);
-      }
-
-      console.log(parameters);
-    }
-    return this.httpClient.get<Response>(this.url, { headers: headers, params: params })
+    return this.httpClient.get<Response>(this.url+"/"+id, { headers: headers })
   }
 }
 export interface Response{

@@ -11,6 +11,8 @@ import { LocalStorageService } from '../../service/local-storage.service';
 import { ExportDataService } from '../../service/export-data.service';
 import { DateFormatService } from '../../service/date-format.service';
 import { TicketsService, Tickets } from '../../service/api/get/tickets.service';
+import { ActivatedRoute } from '@angular/router';
+import { TimelineTicketService } from '../../service/api/get/timeline-ticket.service';
 
 @Component({
   selector: 'app-timeline-ticket',
@@ -20,63 +22,39 @@ import { TicketsService, Tickets } from '../../service/api/get/tickets.service';
 export class TimelineTicketComponent implements OnInit {
   idNumber: string;
 
-  ticketGroup: FormGroup;
-
   tickets: Tickets;
   constructor(
+    private activatedRoute: ActivatedRoute,
     private datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private ticketDetailService: TicketDetailService,
-    private ticketsService: TicketsService,
+    private timelineTicketService: TimelineTicketService,
     private localStorageService: LocalStorageService,
     private exportDataService: ExportDataService,
     private dateFormatService: DateFormatService
   ) { }
 
   ngOnInit() {
-    this.initForm();
+    let id = this.activatedRoute.snapshot.paramMap.get("id");
+    this.search(id);
   }
 
-  initForm(){
-    this.ticketGroup = this.formBuilder.group({
-      idTicket :[''],
-      fullname :[''],
-    });
-  }
-
-  search(){
-    if(this.ticketGroup.valid){
-      
-      let userData = this.localStorageService.getLocalStorage("token");
-      this.ticketsService.getTickets(userData.token, this.ticketGroup.value).subscribe(result=>{
-        if(result.code === 200){
-          for(let ticket of result.data){
-            for(let comment of ticket.detailTicket){
-              comment.content = JSON.parse(comment.content);
-            }
+  search(id){
+    let userData = this.localStorageService.getLocalStorage("token");
+    this.timelineTicketService.getTimelineTicket(userData.token, id).subscribe(result=>{
+      if(result.code === 200){
+        for(let ticket of result.data){
+          for(let comment of ticket.detailTicket){
+            comment.content = JSON.parse(comment.content);
           }
-          this.tickets = result.data;
-          console.log(this.tickets);
-        }else if(result.code == 401){
-          alert(result.message);
         }
-      });
-
-      // this.ticketDetailService.getTicketDetail(userData.token, this.ticketGroup.value.idTicket).subscribe(result=>{
-      //   if(result.code === 200){
-      //     for(let comment of result.data.detailTicket){
-      //       comment.content = JSON.parse(comment.content);
-      //     }
-      //     this.ticket = result.data;
-          
-      //   }else if(result.code == 401){
-      //     alert(result.message);
-      //   }
-      // },err=>{
-      //   console.log(err);
-      // })
-    }
+        this.tickets = result.data;
+        console.log(this.tickets);
+      }else if(result.code == 401){
+        alert(result.message);
+      }
+    });
   }
 
   showImage(imageList, index){
@@ -111,6 +89,7 @@ export class TimelineTicketComponent implements OnInit {
       'Tên NV CSYT': ticket.hospital_employee_name,
       'SĐT NV CSYT': ticket.hospital_phone_number,
       'Mã CSYT': ticket.hospitalInfo.hospital_code,
+      'Hành động cuối cùng': this.datePipe.transform(ticket.updated_at, 'dd/MM/yyyy HH:mm:ss'),
     };
     report.push(information);
 

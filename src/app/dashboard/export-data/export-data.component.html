@@ -46,9 +46,12 @@
             <div class="width-container"></div>
         </div>
         <div class="height-container"></div>
-        <button type="submit" [disabled]="!filterForm.valid">
-            <mat-icon>cloud_download</mat-icon>
-            <span>Xuất dữ liệu</span>
-        </button>
+        <div class="horizontal-container">
+            <button type="submit" [disabled]="!filterForm.valid || inProccessing">
+                <mat-icon>cloud_download</mat-icon>
+                <span>Xuất dữ liệu</span>
+            </button>
+            <mat-spinner diameter="24" *ngIf="inProccessing"></mat-spinner>
+        </div>
     </form>
 </div>

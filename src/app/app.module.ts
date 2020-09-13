@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouteReuseStrategy } from '@angular/router/';
+import { CacheRouteReuseStrategy } from './service/cache-route-reuse.strategy';
 import { HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpModule } from '@angular/http';
@@ -65,6 +67,8 @@ import { TitleService } from './service/title.service';
 import { CurrencyDirective } from './directives/currency.directive';
 import { ExportDataService } from './service/export-data.service';
 import { HospitalInformationComponent } from './sharing/modal/hospital-information/hospital-information.component';
+import { SearchTicketComponent } from './dashboard/search-ticket/search-ticket.component';
+import { CostTableComponent } from './sharing/modal/cost-table/cost-table.component';
 
 const ISO_FORMAT = {
   parse: {
@@ -110,6 +114,8 @@ const ISO_FORMAT = {
     ConfirmActionComponent,
     UpdateHospitalAccountComponent,
     HospitalInformationComponent,
+    SearchTicketComponent,
+    CostTableComponent,
     
   ],
   imports: [
@@ -157,6 +163,9 @@ const ISO_FORMAT = {
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: ISO_FORMAT },
+    { provide: RouteReuseStrategy,
+      useClass: CacheRouteReuseStrategy
+    },
     TitleService,
     { provide : LocationStrategy , useClass: HashLocationStrategy },
     CurrencyPipe,

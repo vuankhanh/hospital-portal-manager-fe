@@ -9,6 +9,7 @@ import { HospitalListManagementComponent } from '../hospital-list-management/hos
 import { HospitalDetailComponent } from '../hospital-detail/hospital-detail.component';
 import { OutWorkingTimeComponent } from '../out-working-time/out-working-time.component';
 import { ExportDataComponent } from '../export-data/export-data.component';
+import { SearchTicketComponent } from '../search-ticket/search-ticket.component';
 import { TimelineTicketComponent } from '../timeline-ticket/timeline-ticket.component';
 
 const dashboardModuleRoutes: Routes = [
@@ -77,7 +78,15 @@ const dashboardModuleRoutes: Routes = [
                     animation: 'TheRequirements'
                 }
             },{
-                path: 'timeline-ticket',
+                path: 'search-ticket',
+                component: SearchTicketComponent,
+                data: { 
+                    title: 'Tìm kiếm Ticket',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'timeline-ticket/:id',
                 component: TimelineTicketComponent,
                 data: { 
                     title: 'Quá trình Ticket',

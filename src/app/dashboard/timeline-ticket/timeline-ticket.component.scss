@@ -4,12 +4,6 @@
     .horizontal-container{
         align-items: flex-start;
     }
-    .search-bar{
-        align-items: flex-end;
-        mat-form-field{
-            margin-bottom: -1.25em;
-        }
-    }
     .result-container{
         height: 100%;
         overflow: auto;
