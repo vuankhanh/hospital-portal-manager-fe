@@ -8,7 +8,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
   styleUrls: ['./confirm-action.component.scss']
 })
 export class ConfirmActionComponent implements OnInit {
-  private confirmGroup: FormGroup
+  confirmGroup: FormGroup
   constructor(
     private dialogRef: MatDialogRef<ConfirmActionComponent>,
     private formBuilder: FormBuilder,
@@ -25,7 +25,7 @@ export class ConfirmActionComponent implements OnInit {
     })
   }
 
-  private requestAuthentication(){
+  requestAuthentication(){
     if(this.confirmGroup.valid){
       this.dialogRef.close(this.confirmGroup.value.password);
     }

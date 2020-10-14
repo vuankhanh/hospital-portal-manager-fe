@@ -11,9 +11,6 @@
         <mat-form-field>
             <mat-label>Tìm kiếm CSYT</mat-label>
             <input matInput type="text" (input)="onSearchChange($event)" placeholder="Mã CSYT">
-            <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-                <mat-icon>close</mat-icon>
-            </button>
         </mat-form-field>
     </div>
 

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-direct-billing-team": {
+    "hospital-portal-manager": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-direct-billing-team",
+            "outputPath": "dist/hospital-portal-manager",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -69,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-direct-billing-team:build"
+            "browserTarget": "hospital-portal-manager:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-direct-billing-team:build:production"
+              "browserTarget": "hospital-portal-manager:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-direct-billing-team:build"
+            "browserTarget": "hospital-portal-manager:build"
           }
         },
         "test": {
@@ -118,16 +118,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-direct-billing-team:serve"
+            "devServerTarget": "hospital-portal-manager:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-direct-billing-team:serve:production"
+              "devServerTarget": "hospital-portal-manager:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "angular-direct-billing-team"
+  "defaultProject": "hospital-portal-manager"
 }

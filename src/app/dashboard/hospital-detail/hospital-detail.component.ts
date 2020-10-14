@@ -25,10 +25,10 @@ export class HospitalDetailComponent implements OnInit {
   @ViewChild(MatTable, { static: false }) table: MatTable<any>;
   private id: number;
   private subsciption: Subscription = new Subscription();
-  private hospitalDetail: Hospitals;
-  private hospitalAccounts: HospitalAccounts;
+  hospitalDetail: Hospitals;
+  hospitalAccounts: HospitalAccounts;
 
-  private displayedColumns: string[] = ['id', 'name'];
+  displayedColumns: string[] = ['id', 'name'];
   constructor(
     private router: Router,
     private activedRoute: ActivatedRoute,

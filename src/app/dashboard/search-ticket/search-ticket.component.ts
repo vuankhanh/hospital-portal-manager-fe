@@ -33,7 +33,8 @@ export class SearchTicketComponent implements OnInit {
     this.ticketGroup = this.formBuilder.group({
       idTicket :[''],
       fullname :[''],
-      patient_phone_numb: ['']
+      patient_phone_numb: [''],
+      case_number: ['']
     });
   }
 

@@ -57,7 +57,7 @@ export class HospitalInformationComponent implements OnInit {
     });
   }
 
-  private createHospital(){
+  createHospital(){
     if(this.hospitalForm.valid){
       let changeProperty = {};
       Object.keys(this.hospitalForm.value).forEach(key=>{
@@ -75,7 +75,7 @@ export class HospitalInformationComponent implements OnInit {
     }
   }
 
-  private selectionCity(event, city){
+  selectionCity(event, city){
     if(event.isUserInput){
       this.hospitalForm.controls['idCity'].setValue(city.ID);
     }
