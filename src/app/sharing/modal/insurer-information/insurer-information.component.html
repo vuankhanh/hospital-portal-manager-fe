@@ -1,0 +1,54 @@
+<form [formGroup]="insurerForm" (ngSubmit)="createInsurer()">
+  <div mat-dialog-content>
+    <p>Tạo thông tin Nhà Bảo Hiểm mới.</p>
+    <div class="create-insurer-container">
+      <mat-form-field>
+        <mat-label>Tên Viết Tắt</mat-label>
+        <input type="text" matInput formControlName="short_name">
+      </mat-form-field>
+
+      <div class="width-container"></div>
+
+      <mat-form-field>
+        <mat-label>Tên Nhà Bảo Hiểm</mat-label>
+        <input type="text" matInput formControlName="name">
+      </mat-form-field>
+
+      <div class="width-container"></div>
+
+      <mat-form-field>
+        <mat-label>Logo</mat-label>
+        <input type="text" matInput formControlName="logo">
+      </mat-form-field>
+
+      <div class="width-container"></div>
+
+      <mat-form-field>
+        <mat-label>Kiểm tra quyền lợi trong</mat-label>
+        <input type="text" matInput formControlName="check_benefit_countdown">
+      </mat-form-field>
+
+      <div class="width-container"></div>
+
+      <mat-form-field>
+        <mat-label>Đưa ra phương án BL trong</mat-label>
+        <input type="text" matInput formControlName="gl_countdown">
+      </mat-form-field>
+
+      <div class="width-container"></div>
+
+      <mat-form-field>
+        <mat-label>Loại Bảo Hiểm</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of types" [value]="type.ID">
+            {{type.name}}
+        </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button type="button" mat-dialog-close>Huỷ</button>
+    <button mat-button type="submit" cdkFocusInitial>{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
+  </div>
+</form>

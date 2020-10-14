@@ -11,6 +11,7 @@ import { OutWorkingTimeComponent } from '../out-working-time/out-working-time.co
 import { ExportDataComponent } from '../export-data/export-data.component';
 import { SearchTicketComponent } from '../search-ticket/search-ticket.component';
 import { TimelineTicketComponent } from '../timeline-ticket/timeline-ticket.component';
+import { InsurerDetailComponent } from '../insurer-detail/insurer-detail.component';
 
 const dashboardModuleRoutes: Routes = [
     {
@@ -90,6 +91,14 @@ const dashboardModuleRoutes: Routes = [
                 component: TimelineTicketComponent,
                 data: { 
                     title: 'Quá trình Ticket',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'insurer-detail/:id',
+                component: InsurerDetailComponent,
+                data: { 
+                    title: 'Thông tin Nhà Bảo Hiểm',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }

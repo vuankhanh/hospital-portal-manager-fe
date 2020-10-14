@@ -53,7 +53,7 @@ export class LoginService {
 
   thenLogin(token){
     let getServerConfig = this.profileService.getProfile(token).toPromise();
-    let insurersService = this.insurersService.getHospital(token).toPromise();
+    let insurersService = this.insurersService.getInsurer(token, null).toPromise();
     return Promise.all([getServerConfig, insurersService]);
   }
 }

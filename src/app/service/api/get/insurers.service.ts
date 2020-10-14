@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { environment } from '../../../../environments/environment';
 @Injectable({
@@ -11,18 +11,36 @@ export class InsurersService {
     private httpClient: HttpClient
   ) { }
 
-  getHospital(token){
+  getInsurer(token, parameters){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token
     });
-    return this.httpClient.get<Response>(this.url, { headers: headers })
+
+    let params = new HttpParams();
+    if(parameters) {
+      if(parameters.pageSize){
+        params = params.append('page_size', parameters.pageSize);
+      }
+      if(parameters.pageIndex){
+        params = params.append('page_index', parameters.pageIndex);
+      }
+      if(parameters.shortName){
+        params = params.append('short_name', parameters.shortName);
+      }
+      
+      return this.httpClient.get<Response>(this.url, { headers: headers, params: params })
+    } else {
+
+      return this.httpClient.get<Response>(this.url, { headers: headers})
+    }
   }
 }
 export interface Response{
   code: number;
   message: string;
   data: Insurers;
+  length: number;
 }
 export interface Insurers extends Array<Insurer>{};
 interface Insurer {

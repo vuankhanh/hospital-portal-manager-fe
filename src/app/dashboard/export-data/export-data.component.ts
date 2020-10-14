@@ -37,7 +37,7 @@ export class ExportDataComponent implements OnInit {
     private dataService: DataService
   ) {
     let userData = this.localStorageService.getLocalStorage("token");
-    this.insurersService.getHospital(userData.token).subscribe(res=>{
+    this.insurersService.getInsurer(userData.token, null).subscribe(res=>{
       if(res.data){
         this.insurers = res.data;
       }
@@ -75,7 +75,7 @@ export class ExportDataComponent implements OnInit {
         isToday: this.filterForm.value.isToday
       }
 
-      combineLatest(this.insurersService.getHospital(userData.token), this.dataService.getTickets(userData.token, params)).subscribe(result=>{
+      combineLatest(this.insurersService.getInsurer(userData.token, params), this.dataService.getTickets(userData.token, params)).subscribe(result=>{
         if(result[0].code === 200 && result[1].code === 200){
           let insurerResponse = result[0];
           let ticketResponse = result[1];

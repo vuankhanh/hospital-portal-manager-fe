@@ -1,52 +1,72 @@
 <div class="container vertical-container">
-    <div class="height-container"></div>
+  <div class="height-container"></div>
+
+  <div class="button-container horizontal-container">
+    <button (click)="createInsurer()">
+      <mat-icon>add</mat-icon>
+      <span>Tạo mới</span>
+    </button>
+    <div class="width-container"></div>
+    <mat-form-field>
+      <mat-label>Tìm kiếm Nhà BH</mat-label>
+      <input matInput type="text" (input)="onSearchChange($event)" placeholder="Tên viết tắt Nhà Bảo Hiểm">
+    </mat-form-field>
+  </div>
+  <div class="height-container"></div>
+  <ng-container *ngIf="insurers && insurers.length>0; else empty">
     <mat-table [dataSource]="insurers" class="mat-elevation-z8">
-        <!-- ID Nhà Bảo Hiểm -->
-        <ng-container matColumnDef="id" sticky>
-            <mat-header-cell *matHeaderCellDef>ID Nhà Bảo Hiểm</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.ID}} </mat-cell>
-        </ng-container>
+      <!-- ID Nhà Bảo Hiểm -->
+      <ng-container matColumnDef="id" sticky>
+        <mat-header-cell *matHeaderCellDef>ID Nhà Bảo Hiểm</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ID}} </mat-cell>
+      </ng-container>
 
-        <!-- Tên Viết Tắt -->
-        <ng-container matColumnDef="short_name" sticky>
-            <mat-header-cell *matHeaderCellDef>Tên Viết Tắt</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.short_name}} </mat-cell>
-        </ng-container>
+      <!-- Tên Viết Tắt -->
+      <ng-container matColumnDef="short_name" sticky>
+        <mat-header-cell *matHeaderCellDef>Tên Viết Tắt</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.short_name}} </mat-cell>
+      </ng-container>
 
-        <!-- Tên Nhà Bảo Hiểm -->
-        <ng-container matColumnDef="name" sticky>
-            <mat-header-cell *matHeaderCellDef class="longText">Tên Nhà Bảo Hiểm</mat-header-cell>
-            <mat-cell *matCellDef="let element" class="longText"> {{element.name}} </mat-cell>
-        </ng-container>
-        
-        <!-- Logo -->
-        <ng-container matColumnDef="logo">
-            <mat-header-cell *matHeaderCellDef>Logo</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <img class="insurer-logo-img" src="{{element.logo}}" height="20">
-            </mat-cell>
-        </ng-container>
+      <!-- Tên Nhà Bảo Hiểm -->
+      <ng-container matColumnDef="name" sticky>
+        <mat-header-cell *matHeaderCellDef class="longText">Tên Nhà Bảo Hiểm</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="longText"> {{element.name}} </mat-cell>
+      </ng-container>
 
-        <!-- Kiểm tra Quyền lợi trong -->
-        <ng-container matColumnDef="check_benefit_countdown">
-            <mat-header-cell *matHeaderCellDef>Kiểm tra Quyền lợi trong</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.check_benefit_countdown}} </mat-cell>
-        </ng-container>
+      <!-- Logo -->
+      <ng-container matColumnDef="logo">
+        <mat-header-cell *matHeaderCellDef>Logo</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <img class="insurer-logo-img" src="{{element.logo}}" height="20">
+        </mat-cell>
+      </ng-container>
 
-        <!-- Đưa ra phương án BL trong -->
-        <ng-container matColumnDef="gl_countdown">
-            <mat-header-cell *matHeaderCellDef>Đưa ra phương án BL trong</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.gl_countdown}} </mat-cell>
-        </ng-container>
+      <!-- Kiểm tra Quyền lợi trong -->
+      <ng-container matColumnDef="check_benefit_countdown">
+        <mat-header-cell *matHeaderCellDef>Kiểm tra Quyền lợi trong</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.check_benefit_countdown}} </mat-cell>
+      </ng-container>
 
-        <!-- Loại hình -->
-        <ng-container matColumnDef="type">
-            <mat-header-cell *matHeaderCellDef>Loại hình</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ traTuService.typeInsurers[element.type-1].name }} </mat-cell>
-        </ng-container>
-        
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <!-- Đưa ra phương án BL trong -->
+      <ng-container matColumnDef="gl_countdown">
+        <mat-header-cell *matHeaderCellDef>Đưa ra phương án BL trong</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.gl_countdown}} </mat-cell>
+      </ng-container>
+
+      <!-- Loại hình -->
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Loại hình</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ traTuService.typeInsurers[element.type-1].name }} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showDetail(row)"></mat-row>
+
     </mat-table>
-    <div class="height-container"></div>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChangeEvent($event)">
+    </mat-paginator>
+  </ng-container>
+  <ng-template #empty>Không tìm thấy Nhà Bảo Hiểm nào.</ng-template>
+  <div class="height-container"></div>
 </div>

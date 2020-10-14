@@ -1,0 +1,64 @@
+<div class="container">
+    <ng-container *ngFor="let insurer of insurerDetail">
+        <div class="insurer-information-container">
+            <div>
+                <div class="vertical-container">
+                    <div class="horizontal-container">
+                        <span>ID:</span>
+                        <span>{{insurer.ID}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Tên viết tắt:</span>
+                        <span>{{insurer.short_name}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Tên Nhà Bảo Hiểm:</span>
+                        <span>{{insurer.name}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Logo:</span>
+                        <span>{{insurer.logo}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span>Kiểm tra quyền lợi trong:</span>
+                        <span>{{insurer.check_benefit_countdown}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span>Đưa ra phương án BL trong:</span>
+                        <span>{{insurer.gl_countdown}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span>Loại Bảo Hiểm:</span>
+                        <span>{{insurer.type}}</span>
+                    </div>
+                </div>
+
+                <div class="height-container"></div>
+
+                <div class="horizontal-container">
+                    <div class="width-container"></div>
+                    <button (click)="updateInsurer(insurer)">
+                        <mat-icon>update</mat-icon>
+                        <span> Cập nhật thông tin Nhà Bảo Hiểm</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="width-container"></div>
+
+        </div>
+
+        <div class="button-container">
+            <button (click)="deleteInsurer(insurer)">
+                <mat-icon>delete</mat-icon>
+                <span> Xoá Nhà Bảo Hiểm</span>
+            </button>
+        </div>
+        
+    </ng-container>
+</div>
+

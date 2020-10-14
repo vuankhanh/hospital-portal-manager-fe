@@ -69,6 +69,8 @@ import { ExportDataService } from './service/export-data.service';
 import { HospitalInformationComponent } from './sharing/modal/hospital-information/hospital-information.component';
 import { SearchTicketComponent } from './dashboard/search-ticket/search-ticket.component';
 import { CostTableComponent } from './sharing/modal/cost-table/cost-table.component';
+import { InsurerInformationComponent } from './sharing/modal/insurer-information/insurer-information.component';
+import { InsurerDetailComponent } from './dashboard/insurer-detail/insurer-detail.component';
 
 const ISO_FORMAT = {
   parse: {
@@ -88,7 +90,8 @@ const ISO_FORMAT = {
     ImageShowComponent,
     ConfirmActionComponent,
     UpdateHospitalAccountComponent,
-    HospitalInformationComponent
+    HospitalInformationComponent,
+    InsurerInformationComponent
   ],
   declarations: [
     AppComponent,
@@ -116,7 +119,9 @@ const ISO_FORMAT = {
     HospitalInformationComponent,
     SearchTicketComponent,
     CostTableComponent,
-    
+    InsurerInformationComponent,
+    InsurerDetailComponent
+
   ],
   imports: [
     BrowserModule,
