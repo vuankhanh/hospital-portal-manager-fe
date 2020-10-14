@@ -19,7 +19,7 @@ export class StaffAccountManagementComponent implements OnInit {
   ngOnInit() {
     let userData = this.localStorageService.getLocalStorage("token");
     if(userData){
-      this.accountInsmartService.getInsmart(userData.token).subscribe(res=>{
+      this.accountInsmartService.getInsmart(userData.token, null).subscribe(res=>{
         console.log(res);
         this.accounts = res.data;
       })
