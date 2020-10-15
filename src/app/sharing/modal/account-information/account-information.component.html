@@ -1,63 +1,66 @@
-<form [formGroup]="accountForm" (ngSubmit)="createAccount()">
-  <div mat-dialog-content>
-    <p>Tạo Tài khoản mới.</p>
-    <div class="create-account-container">
-      <mat-form-field>
-        <mat-label>User Name</mat-label>
-        <input type="text" matInput formControlName="name">
-      </mat-form-field>
-
-      <div class="width-container"></div>
-
-      <mat-form-field>
-        <mat-label>Tên Đầy Đủ</mat-label>
-        <input type="text" matInput formControlName="fullname">
-      </mat-form-field>
-
-      <div class="width-container"></div>
-
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="email">
-      </mat-form-field>
-
-      <div class="width-container"></div>
-
-      <mat-form-field>
-        <mat-label>Tel</mat-label>
-        <input type="text" matInput formControlName="phone">
-      </mat-form-field>
-
-      <div class="width-container"></div>
-
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <mat-select formControlName="title">
-          <mat-option *ngFor="let title of titles" [value]="title.value">
-            {{title.name}}
-        </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div class="width-container"></div>
-
-      <!-- <mat-form-field *ngIf="checkObject !== 0">
-        <mat-label>Status</mat-label>
-        <input type="text" matInput formControlName="status">
-      </mat-form-field> -->
-
-      <div class="width-container"></div>
-
-      <mat-form-field *ngIf="checkObject === 0">
-        <mat-label>Password</mat-label>
-        <input type="password" matInput formControlName="password">
-      </mat-form-field>
-
-      <div class="width-container"></div>
+<div class="horizontal-container">
+  <form [formGroup]="accountForm" (ngSubmit)="createAccount()">
+    <div mat-dialog-content>
+      <p>Tạo Tài khoản mới.</p>
+      <div class="create-account-container">
+        <mat-form-field>
+          <mat-label>User Name</mat-label>
+          <input type="text" matInput formControlName="name">
+        </mat-form-field>
+  
+        <div class="width-container"></div>
+  
+        <mat-form-field>
+          <mat-label>Tên Đầy Đủ</mat-label>
+          <input type="text" matInput formControlName="fullname">
+        </mat-form-field>
+  
+        <div class="width-container"></div>
+  
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input type="email" matInput formControlName="email">
+        </mat-form-field>
+  
+        <div class="width-container"></div>
+  
+        <mat-form-field>
+          <mat-label>Tel</mat-label>
+          <input type="text" matInput formControlName="phone">
+        </mat-form-field>
+  
+        <div class="width-container"></div>
+  
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <mat-select formControlName="title">
+            <mat-option *ngFor="let title of titles" [value]="title.value">
+              {{title.name}}
+          </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <div class="width-container"></div>
+  
+        <!-- <mat-form-field *ngIf="checkObject !== 0">
+          <mat-label>Status</mat-label>
+          <input type="text" matInput formControlName="status">
+        </mat-form-field> -->
+  
+        <div class="width-container"></div>
+  
+        <mat-form-field *ngIf="checkObject === 0">
+          <mat-label>Password</mat-label>
+          <input type="password" matInput formControlName="password">
+        </mat-form-field>
+  
+        <div class="width-container"></div>
+      </div>
     </div>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button type="button" mat-dialog-close>Huỷ</button>
-    <button mat-button type="submit" cdkFocusInitial>{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
-  </div>
-</form>
+    <div mat-dialog-actions>
+      <button mat-button type="button" mat-dialog-close>Huỷ</button>
+      <button mat-button type="submit" cdkFocusInitial>{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
+    </div>
+  </form>
+  
+</div>

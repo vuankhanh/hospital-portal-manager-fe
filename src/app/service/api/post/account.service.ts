@@ -17,7 +17,7 @@ export class AccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token,
-      'table': 'insmart'
+      'tablechoose': 'insmart'
     });
 
     return this.httpClient.post<Response>(this.urlCreateAccount, body, { headers: headers });
@@ -26,7 +26,8 @@ export class AccountService {
   removeAccount(token, idAccount, password){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': "Bearer "+token
+      'Authorization': "Bearer "+token,
+      'tablechoose': 'insmart'
     });
 
     return this.httpClient.post<Response>(this.urlRemoveAccount+"/"+idAccount, { password: password }, { headers: headers });
@@ -35,14 +36,16 @@ export class AccountService {
   updateAccount(token, idAccount, password, information){
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': "Bearer "+token
+      'Authorization': "Bearer "+token,
+      'tablechoose': 'insmart'
     });
 
     let body = {
       password: password,
       information: information
     }
-
+    console.log(body);
+    
     return this.httpClient.post<Response>(this.urlUpdateAccount+"/"+idAccount, body, { headers: headers });
   }
 }

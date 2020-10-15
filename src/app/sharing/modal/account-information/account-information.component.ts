@@ -44,11 +44,11 @@ export class AccountInformationComponent implements OnInit {
       email: [this.account.email ? this.account.email : ''],
       phone: [this.account.phone ? this.account.phone : ''],
       // status: [this.account.status ? this.account.status : ''],
-      created_at: [this.account.created_at ? this.account.created_at : this.dateFormatService.fullTime(new Date())],
-      updated_at: [this.account.updated_at ? this.account.updated_at : this.dateFormatService.fullTime(new Date())],
+      updated_at: [this.dateFormatService.fullTime(new Date()), Validators.required],
     });
 
     if(this.checkObject === 0) {
+      this.accountForm.addControl('created_at', new FormControl(this.dateFormatService.fullTime(new Date()), Validators.required));
       this.accountForm.addControl('password', new FormControl('', Validators.required));
     }
   }
