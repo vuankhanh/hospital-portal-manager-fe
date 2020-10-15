@@ -27,3 +27,17 @@ interface Response{
   data: any,
   message: string;
 }
+
+export interface Account {
+  ID: number;
+  name: string;
+  email: string;
+  phone: string;
+  fullname: string;
+  title:string;
+  status: number;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date;
+}

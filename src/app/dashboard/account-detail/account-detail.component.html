@@ -1,0 +1,64 @@
+<div class="container">
+    <ng-container *ngFor="let account of accountDetail">
+        <div class="account-information-container">
+            <div>
+                <div class="vertical-container">
+                    <div class="horizontal-container">
+                        <span>ID:</span>
+                        <span>{{account.ID}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>User name:</span>
+                        <span>{{account.name}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Tên đầy đủ:</span>
+                        <span>{{account.fullname}}</span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container">
+                        <span>Email:</span>
+                        <span>{{account.email}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span>Số điện thoại:</span>
+                        <span>{{account.phone}}</span>
+                    </div>
+                    <div class="horizontal-container">
+                        <span>Quyền:</span>
+                        <span>{{account.title}}</span>
+                    </div>
+                    <!-- <div class="horizontal-container">
+                        <span>Trạng thái:</span>
+                        <span>{{account.status}}</span>
+                    </div> -->
+                </div>
+
+                <div class="height-container"></div>
+
+                <div class="horizontal-container">
+                    <div class="width-container"></div>
+                    <button (click)="updateAccount(account)">
+                        <mat-icon>update</mat-icon>
+                        <span> Cập nhật thông tin Tài khoản</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="width-container"></div>
+
+        </div>
+
+        <div class="button-container">
+            <button (click)="deleteAccount(account)">
+                <mat-icon>delete</mat-icon>
+                <span> Xoá Tài khoản</span>
+            </button>
+        </div>
+        
+    </ng-container>
+</div>
+

@@ -1,49 +1,69 @@
 <div class="container vertical-container">
-    <div class="height-container"></div>
+<div class="height-container"></div>
+
+<div class="button-container horizontal-container">
+  <button (click)="createAccount()">
+    <mat-icon>add</mat-icon>
+    <span>Tạo mới</span>
+  </button>
+  <div class="width-container"></div>
+  <mat-form-field>
+    <mat-label>Tìm kiếm User</mat-label>
+    <input matInput type="text" (input)="onSearchChange($event)" placeholder="Tên viết tắt Nhà Bảo Hiểm">
+  </mat-form-field>
+</div>
+<!-- <div class="container vertical-container"> -->
+  <div class="height-container"></div>
+  <ng-container *ngIf="accounts && accounts.length>0; else empty">
     <mat-table [dataSource]="accounts" class="mat-elevation-z8">
 
-        <!-- Tài khoản -->
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef>
-                <span>Tài khoản</span>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-        </ng-container>
+      <!-- Tài khoản -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>
+          <span>Tài khoản</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
 
-        <!-- Tên đầy đủ -->
-        <ng-container matColumnDef="fullname">
-            <mat-header-cell *matHeaderCellDef>
-                <span>Tên đầy đủ</span>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.fullname}} </mat-cell>
-        </ng-container>
-        
-        <!-- Email -->
-        <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef>
-                <span>Email</span>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
-        </ng-container>
+      <!-- Tên đầy đủ -->
+      <ng-container matColumnDef="fullname">
+        <mat-header-cell *matHeaderCellDef>
+          <span>Tên đầy đủ</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.fullname}} </mat-cell>
+      </ng-container>
 
-        <!-- Số điện thoại -->
-        <ng-container matColumnDef="phone">
-            <mat-header-cell *matHeaderCellDef>
-                <span>Số điện thoại</span>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
-        </ng-container>
+      <!-- Email -->
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>
+          <span>Email</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+      </ng-container>
 
-        <!-- Loại tài khoản -->
-        <ng-container matColumnDef="type">
-            <mat-header-cell *matHeaderCellDef>
-                <span>Loại tài khoản</span>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
-        </ng-container>
-        
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <!-- Số điện thoại -->
+      <ng-container matColumnDef="phone">
+        <mat-header-cell *matHeaderCellDef>
+          <span>Số điện thoại</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+      </ng-container>
+
+      <!-- Loại tài khoản -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef>
+          <span>Loại tài khoản</span>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showDetail(row)"></mat-row>
     </mat-table>
-    <div class="height-container"></div>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      (page)="pageChangeEvent($event)">
+    </mat-paginator>
+  </ng-container>
+  <ng-template #empty>Không tìm thấy User nào.</ng-template>
+  <div class="height-container"></div>
 </div>

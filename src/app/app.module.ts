@@ -71,6 +71,8 @@ import { SearchTicketComponent } from './dashboard/search-ticket/search-ticket.c
 import { CostTableComponent } from './sharing/modal/cost-table/cost-table.component';
 import { InsurerInformationComponent } from './sharing/modal/insurer-information/insurer-information.component';
 import { InsurerDetailComponent } from './dashboard/insurer-detail/insurer-detail.component';
+import { AccountInformationComponent } from './sharing/modal/account-information/account-information.component';
+import { AccountDetailComponent } from './dashboard/account-detail/account-detail.component';
 
 const ISO_FORMAT = {
   parse: {
@@ -91,7 +93,8 @@ const ISO_FORMAT = {
     ConfirmActionComponent,
     UpdateHospitalAccountComponent,
     HospitalInformationComponent,
-    InsurerInformationComponent
+    InsurerInformationComponent,
+    AccountInformationComponent
   ],
   declarations: [
     AppComponent,
@@ -120,7 +123,9 @@ const ISO_FORMAT = {
     SearchTicketComponent,
     CostTableComponent,
     InsurerInformationComponent,
-    InsurerDetailComponent
+    InsurerDetailComponent,
+    AccountInformationComponent,
+    AccountDetailComponent
 
   ],
   imports: [

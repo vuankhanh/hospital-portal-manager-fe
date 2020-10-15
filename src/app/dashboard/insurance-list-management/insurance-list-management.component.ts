@@ -25,10 +25,9 @@ export class InsuranceListManagementComponent implements OnInit {
   constructor(
     private router: Router,
     private insurersService: InsurersService,
-    private localStorageService: LocalStorageService,
     public traTuService: TraTuService,
     private dialog: MatDialog,
-    private localStorageSerivce: LocalStorageService,
+    private localStorageService: LocalStorageService,
     private createInsurerService: CreateInsurerService
   ) { }
 
@@ -56,7 +55,7 @@ export class InsuranceListManagementComponent implements OnInit {
       data: {}
     }).afterClosed().subscribe(result=>{
       if(result){
-        let userData = this.localStorageSerivce.getLocalStorage("token");
+        let userData = this.localStorageService.getLocalStorage("token");
         this.createInsurerService.createInsurer(userData.token, result.information).subscribe(res=>{          
           if(res.code === 200){
             alert(res.message);
@@ -74,7 +73,7 @@ export class InsuranceListManagementComponent implements OnInit {
   }
 
   setInsurer(params){
-    let userInfo = this.localStorageSerivce.getLocalStorage('token');
+    let userInfo = this.localStorageService.getLocalStorage('token');
 
     this.insurersService.getInsurer(userInfo.token, params).subscribe(res=>{
       this.insurers = res.data;

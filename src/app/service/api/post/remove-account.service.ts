@@ -15,7 +15,7 @@ export class RemoveAccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token,
-      'table': 'insmart'
+      'tablechoose': 'insmart'
     });
 
     return this.httpClient.post<Response>(this.url+"/"+idAccount, { password: password }, { headers: headers });

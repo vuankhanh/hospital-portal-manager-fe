@@ -12,6 +12,7 @@ import { ExportDataComponent } from '../export-data/export-data.component';
 import { SearchTicketComponent } from '../search-ticket/search-ticket.component';
 import { TimelineTicketComponent } from '../timeline-ticket/timeline-ticket.component';
 import { InsurerDetailComponent } from '../insurer-detail/insurer-detail.component';
+import { AccountDetailComponent } from '../account-detail/account-detail.component';
 
 const dashboardModuleRoutes: Routes = [
     {
@@ -99,6 +100,14 @@ const dashboardModuleRoutes: Routes = [
                 component: InsurerDetailComponent,
                 data: { 
                     title: 'Thông tin Nhà Bảo Hiểm',
+                    shouldReuse: true,
+                    animation: 'TheRequirements'
+                }
+            },{
+                path: 'account-detail/:id',
+                component: AccountDetailComponent,
+                data: { 
+                    title: 'Thông tin Tài khoản',
                     shouldReuse: true,
                     animation: 'TheRequirements'
                 }

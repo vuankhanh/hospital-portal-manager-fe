@@ -26,8 +26,8 @@ export class AccountInsmartService {
       if(parameters.pageIndex){
         params = params.append('page_index', parameters.pageIndex);
       }
-      if(parameters.shortName){
-        params = params.append('short_name', parameters.shortName);
+      if(parameters.name){
+        params = params.append('name', parameters.name);
       }
       
       return this.httpClient.get<Response>(this.url, { headers: headers, params: params })
@@ -41,17 +41,19 @@ export interface Response{
   code: number;
   message: string;
   data: InsmartAccounts;
+  length: number;
 }
 export interface InsmartAccounts extends Array<Account>{};
 interface Account {
   ID: number;
   name: string;
   email: string;
+  phone: string;
   fullname: string;
   status: number;
+  title: string;
   password: string;
   created_at: Date;
   updated_at: Date;
   deleted_at: Date;
-  hospital_id: number;
 }
