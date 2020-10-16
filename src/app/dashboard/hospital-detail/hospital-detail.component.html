@@ -3,35 +3,33 @@
         <div class="hospital-information-container">
             <div>
                 <div class="vertical-container">
-                    <div class="horizontal-container">
-                        <span>ID:</span>
-                        <span>{{hospital.ID}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">ID:</span>
+                        <span class="secondary-key">{{hospital.ID}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Tên CSYT:</span>
-                        <span>{{hospital.hospital_name}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Tên CSYT:</span>
+                        <span class="secondary-key">{{hospital.hospital_name}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Mã CSYT:</span>
-                        <span>{{hospital.hospital_code}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Mã CSYT:</span>
+                        <span class="secondary-key">{{hospital.hospital_code}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Địa chỉ CSYT:</span>
-                        <span>
-                            <span>{{hospital.street}}</span>
-                            <span *ngIf="hospital.ward">, {{hospital.ward}}</span>
-                            <span *ngIf="hospital.district">, {{hospital.district}}</span>
-                            <span *ngIf="hospital.city">, {{hospital.city}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Địa chỉ CSYT:</span>
+                        <span class="secondary-key">
+                            {{hospital.street}}{{hospital.ward ? ", " + hospital.ward : ""}}{{hospital.district ? ", " + hospital.district : ""}}{{hospital.city ? ", " + hospital.city : ""}}
                         </span>
                     </div>
+                    <div class="height-container"></div>
                 </div>
 
                 <div class="height-container"></div>
 
-                <div class="horizontal-container">
+                <div class="horizontal-container centered">
                     <button (click)="createAccount(hospital.ID)">
                         <mat-icon>add</mat-icon>
                         <span> Tạo tài khoản</span>

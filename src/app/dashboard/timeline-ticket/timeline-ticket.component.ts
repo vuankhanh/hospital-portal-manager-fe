@@ -13,6 +13,7 @@ import { DateFormatService } from '../../service/date-format.service';
 import { TicketsService, Tickets } from '../../service/api/get/tickets.service';
 import { ActivatedRoute } from '@angular/router';
 import { TimelineTicketService } from '../../service/api/get/timeline-ticket.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-timeline-ticket',
@@ -32,7 +33,8 @@ export class TimelineTicketComponent implements OnInit {
     private timelineTicketService: TimelineTicketService,
     private localStorageService: LocalStorageService,
     private exportDataService: ExportDataService,
-    private dateFormatService: DateFormatService
+    private dateFormatService: DateFormatService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -52,7 +54,8 @@ export class TimelineTicketComponent implements OnInit {
         this.tickets = result.data;
         console.log(this.tickets);
       }else if(result.code == 401){
-        alert(result.message);
+        // alert(result.message);
+        this.toastService.showShortToast(result.message, 'Thông báo');
       }
     });
   }

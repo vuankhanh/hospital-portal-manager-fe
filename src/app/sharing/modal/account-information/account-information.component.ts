@@ -18,6 +18,8 @@ export class AccountInformationComponent implements OnInit {
   password: string;
 
   checkObject:number = Object.keys(this.account).length;
+  changeProperty = {};
+  isChangedValue = false;
   
   titles=[
     { value: 'MANAGER', name: "MANAGER" },
@@ -51,8 +53,23 @@ export class AccountInformationComponent implements OnInit {
       this.accountForm.addControl('created_at', new FormControl(this.dateFormatService.fullTime(new Date()), Validators.required));
       this.accountForm.addControl('password', new FormControl('', Validators.required));
     }
+
+    this.onChanges();
   }
 
+  onChanges(): void {
+    this.accountForm.valueChanges.subscribe(val => {
+      Object.keys(this.accountForm.value).forEach(key=>{
+        if(this.accountForm.value[key] != this.account[key]){
+          this.changeProperty[key] = this.accountForm.value[key];
+        }
+      });
+      if (this.changeProperty !== {}) {
+        this.isChangedValue = true;
+      }
+    });
+  }
+  
   createAccount(){
     if(this.accountForm.valid){
       let changeProperty = {};

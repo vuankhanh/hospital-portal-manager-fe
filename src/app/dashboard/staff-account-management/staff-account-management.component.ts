@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatTable, PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import { CreateAccountService } from 'src/app/service/api/post/create-account.service';
+import { ToastService } from 'src/app/service/toast.service';
 import { TraTuService } from 'src/app/service/tra-tu.service';
 import { AccountInformationComponent } from 'src/app/sharing/modal/account-information/account-information.component';
 
@@ -29,7 +30,8 @@ export class StaffAccountManagementComponent implements OnInit {
     private localStorageService: LocalStorageService,
     public traTuService: TraTuService,
     private dialog: MatDialog,
-    private createAccountService: CreateAccountService
+    private createAccountService: CreateAccountService,
+    private toastService: ToastService
   ) { }
 
   // ngOnInit() {
@@ -72,7 +74,8 @@ export class StaffAccountManagementComponent implements OnInit {
         let userData = this.localStorageService.getLocalStorage("token");
         this.createAccountService.createAccount(userData.token, result.information, 'insmart').subscribe(res=>{          
           if(res.code === 200){
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, "Thông báo");
             console.log(res.data);
             console.log(this.length);
             
@@ -80,7 +83,8 @@ export class StaffAccountManagementComponent implements OnInit {
             this.length++;
             this.table.renderRows();
           }else if(res.code === 500){
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, "Thông báo");
           }
         },error=>{
           console.log(error);

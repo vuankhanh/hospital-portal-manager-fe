@@ -20,3 +20,29 @@
         left: 15px;
     }
 }
+
+.card-container {
+    display: flex;
+    direction: row;
+    justify-content: space-between;
+}
+
+.primary-key{
+    color: #333333;
+    font-size: 14px;
+    max-width: 190px;
+}
+
+.secondary-key{
+    color: #999999;
+    font-size: 16px;
+    max-width: 190px;
+    text-align: right;
+}
+.centered {
+    justify-content: center;
+}
+
+.vertical-container {
+    width: 400px;
+}

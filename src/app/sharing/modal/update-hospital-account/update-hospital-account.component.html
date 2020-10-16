@@ -1,1 +1,33 @@
-<p>update-hospital-account works!</p>
+<div class="horizontal-container">
+    <form [formGroup]="accountForm" (ngSubmit)="createAccount()">
+      <div mat-dialog-content class="userInformation-container">
+        <p>Cập nhật thông tin tài khoản</p>
+      
+        <div class="create-account-container">
+          <mat-form-field>
+            <mat-label>Tên đại diện</mat-label>
+            <input type="text" matInput formControlName="name">
+          </mat-form-field>
+          <div class="width-container"></div>
+    
+          <!-- <mat-form-field *ngIf="checkObject !== 0">
+            <mat-label>Status</mat-label>
+            <input type="text" matInput formControlName="status">
+          </mat-form-field> -->
+    
+          <div class="width-container"></div>
+    
+          <mat-form-field>
+            <mat-label>Mật khẩu</mat-label>
+            <input type="password" matInput formControlName="password">
+          </mat-form-field>
+    
+          <div class="width-container"></div>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button type="button" mat-dialog-close>Huỷ</button>
+        <button [disabled]="!isChangedValue" mat-button type="submit" cdkFocusInitial>{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
+      </div>
+    </form>  
+  </div>

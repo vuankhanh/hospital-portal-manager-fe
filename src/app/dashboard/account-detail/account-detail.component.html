@@ -3,48 +3,52 @@
         <div class="account-information-container">
             <div>
                 <div class="vertical-container">
-                    <div class="horizontal-container">
-                        <span>ID:</span>
-                        <span>{{account.ID}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">ID:</span>
+                        <span class="secondary-key">{{account.ID}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>User name:</span>
-                        <span>{{account.name}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">User name:</span>
+                        <span class="secondary-key">{{account.name}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Tên đầy đủ:</span>
-                        <span>{{account.fullname}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Tên đầy đủ:</span>
+                        <span class="secondary-key">{{account.fullname}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Email:</span>
-                        <span>{{account.email}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Email:</span>
+                        <span class="secondary-key">{{account.email}}</span>
                     </div>
-                    <div class="horizontal-container">
-                        <span>Số điện thoại:</span>
-                        <span>{{account.phone}}</span>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Số điện thoại:</span>
+                        <span class="secondary-key">{{account.phone}}</span>
                     </div>
-                    <div class="horizontal-container">
-                        <span>Quyền:</span>
-                        <span>{{account.title}}</span>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Quyền:</span>
+                        <span class="secondary-key">{{account.title}}</span>
                     </div>
+                    <div class="height-container"></div>
                     <!-- <div class="horizontal-container">
                         <span>Trạng thái:</span>
                         <span>{{account.status}}</span>
                     </div> -->
+                    <div class="horizontal-container centered">
+                        <div class="width-container"></div>
+                        <button (click)="updateAccount(account)">
+                            <mat-icon>update</mat-icon>
+                            <span> Cập nhật thông tin Tài khoản</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="height-container"></div>
 
-                <div class="horizontal-container">
-                    <div class="width-container"></div>
-                    <button (click)="updateAccount(account)">
-                        <mat-icon>update</mat-icon>
-                        <span> Cập nhật thông tin Tài khoản</span>
-                    </button>
-                </div>
+
 
             </div>
 

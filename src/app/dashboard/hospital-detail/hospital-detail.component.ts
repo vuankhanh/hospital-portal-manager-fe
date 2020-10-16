@@ -10,12 +10,15 @@ import { AccountHospitalService, HospitalAccounts } from '../../service/api/get/
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageService } from '../../service/local-storage.service';
 import { CreateHospitalAccountService } from '../../service/api/post/create-hospital-account.service';
+import { HospitalAccountService } from 'src/app/service/api/post/hospital-account.service';
 
 import { Subscription } from 'rxjs';
 import { RemoveHospitalAccountService } from '../../service/api/post/remove-hospital-account.service';
 import { RemoveElementByAttributeService } from '../../service/remove-element-by-attribute.service';
 import { RemoveHospitalService } from '../../service/api/post/remove-hospital.service';
 import { HospitalService } from '../../service/api/post/hospital.service';
+import { ToastService } from 'src/app/service/toast.service';
+import { UpdateHospitalAccountComponent } from 'src/app/sharing/modal/update-hospital-account/update-hospital-account.component';
 @Component({
   selector: 'app-hospital-detail',
   templateUrl: './hospital-detail.component.html',
@@ -37,10 +40,12 @@ export class HospitalDetailComponent implements OnInit {
     private accountHospitalService: AccountHospitalService,
     private createHospitalAccountService: CreateHospitalAccountService,
     private removeHospitalAccountService: RemoveHospitalAccountService,
+    private hospitalAccountService: HospitalAccountService,
     private removeHospitalService: RemoveHospitalService,
     private localStorageService: LocalStorageService,
     private removeElementByAttributeService: RemoveElementByAttributeService,
-    private hositalService: HospitalService
+    private hositalService: HospitalService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -74,7 +79,8 @@ export class HospitalDetailComponent implements OnInit {
         let userData = this.localStorageService.getLocalStorage("token");
 
         this.createHospitalAccountService.createAccount(userData.token, result).subscribe(res=>{
-          alert(res.message);
+          // alert(res.message);
+          this.toastService.showShortToast(res.message, 'Thông báo');
           this.hospitalAccounts.push(res.data);
           this.table.renderRows();
         });
@@ -82,31 +88,86 @@ export class HospitalDetailComponent implements OnInit {
     });
   }
 
-  updateHospital(row){
-    const dialog = this.dialog.open(HospitalInformationComponent,{
+  updateHospital(row) {
+    const dialog = this.dialog.open(HospitalInformationComponent, {
       data: row
     });
 
-    dialog.afterClosed().subscribe(result=>{
-      if(result && result.password){
-        delete result.information.created_at;
-        console.log(result);
-        let userToken = this.localStorageService.getLocalStorage("token");
-        this.hositalService.updateHospital(userToken.token, row.ID, result.password, result.information).subscribe(res=>{
-          console.log(res);
-        },error=>console.log(error));
+    dialog.afterClosed().subscribe(result => {
+      console.log(result);
+      
+      if (result) {
+        this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password => {
+          if (password) {
+            result.password = password;
+          }
+          if (result && result.password) {
+            delete result.information.created_at;
+            let userToken = this.localStorageService.getLocalStorage("token");
+            this.hositalService.updateHospital(userToken.token, row.ID, result.password, result.information).subscribe(res => {
+              this.toastService.showShortToast("Cập nhật dữ liệu thành công!", "Thông báo");
+              // Re-rendering changes in the detail page
+              for (const [key, value] of Object.entries(result.information)) {
+                if (key == 'hospital_name') {
+                  this.hospitalDetail[0].hospital_name = value as string;
+                } else if (key == 'hospital_code') {
+                  this.hospitalDetail[0].hospital_code = value as string;
+                } else if (key == 'street') {
+                  this.hospitalDetail[0].street = value as string;
+                } else if (key == 'ward') {
+                  this.hospitalDetail[0].ward = value as string;
+                } else if (key == 'district') {
+                  this.hospitalDetail[0].district = value as string;
+                } else if (key == 'city') {
+                  this.hospitalDetail[0].city = value as string;
+                }
+              }
+              // console.log(res);
+            }, error => console.log(error));
+          }
+        });
       }
     });
   }
 
-  updateAccount(row){
-    console.log(row);
-    // this.dialog.open(UpdateHospitalComponent,{
-    //   data: row
-    // }).afterClosed().subscribe(updated=>{
-    //   let userToken = this.localStorageService.getLocalStorage("token");
-    //   console.log(updated);
-    // })
+  // updateAccount(row){
+  //   console.log(row);
+  //   this.dialog.open(CreateAccountHospitalComponent,{
+  //     data: row
+  //   }).afterClosed().subscribe(updated=>{
+  //     let userToken = this.localStorageService.getLocalStorage("token");
+  //     console.log(updated);
+  //   })
+  // }
+
+  updateAccount(row) {
+    const dialog = this.dialog.open(UpdateHospitalAccountComponent, {
+      data: row
+    });
+
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password => {
+          if (password) {
+            result.password = password;
+          }
+          if (result && result.password) {
+            delete result.information.created_at;
+            let userToken = this.localStorageService.getLocalStorage("token");
+            this.hospitalAccountService.updateAccount(userToken.token, row.ID, result.password, result.information).subscribe(res => {
+              // Re-rendering changes in the detail page
+              this.toastService.showShortToast("Cập nhật dữ liệu thành công!", "Thông báo");
+              for (const [key, value] of Object.entries(result.information)) {
+                if (key == 'name') {
+                  this.hospitalAccounts.find((s) => s.ID === row.ID).name = value as string;
+                }
+              }
+              // console.log(res);
+            }, error => console.log(error));
+          }
+        });
+      }
+    });
   }
 
   deleteAccount(row){
@@ -118,8 +179,10 @@ export class HospitalDetailComponent implements OnInit {
           if(res.code === 200){
             this.hospitalAccounts = this.removeElementByAttributeService.removeByAttr(this.hospitalAccounts, 'ID', res.data.id);
             this.table.renderRows();
+            this.toastService.showShortToast(res.message, 'Thông báo');
           }else{
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, 'Thông báo');
           }
         });
       }
@@ -133,10 +196,12 @@ export class HospitalDetailComponent implements OnInit {
         this.removeHospitalService.removeHospital(userToken.token, hospital.ID, password).subscribe(res=>{
           if(res.code === 200){
             this.router.navigate(['dashboard/hospital-list-management']).then(_=>{
-              alert(res.message);
+              // alert(res.message);
+              this.toastService.showShortToast(res.message, 'Thông báo');
             })
           }else{
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, 'Thông báo');
           }
         });
       }

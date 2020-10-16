@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { LocalStorageService } from '../../service/local-storage.service';
 import { TicketsService, Tickets } from '../../service/api/get/tickets.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-search-ticket',
@@ -24,6 +25,7 @@ export class SearchTicketComponent implements OnInit {
     private formBuilder: FormBuilder,
     private ticketsService: TicketsService,
     private localStorageService: LocalStorageService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -55,7 +57,8 @@ export class SearchTicketComponent implements OnInit {
           console.log(this.tickets);
         }else if(result.code == 401){
           this.inProccessing=!this.inProccessing;
-          alert(result.message);
+          // alert(result.message);
+          this.toastService.showShortToast(result.message, 'Thông báo');
         }
       },err=>{
         this.inProccessing=!this.inProccessing;

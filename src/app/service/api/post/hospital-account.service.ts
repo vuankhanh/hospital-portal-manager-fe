@@ -5,10 +5,11 @@ import { environment } from '../../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
-  private urlCreateAccount: string = environment.managerHost + 'create_account';
-  private urlRemoveAccount: string = environment.managerHost + 'remove_account';
-  private urlUpdateAccount: string = environment.managerHost + 'update_account';
+export class HospitalAccountService {
+  private urlCreateAccount: string = environment.managerHost + 'create_hospital_account';
+  private urlRemoveAccount: string = environment.managerHost + 'remove_hospital_user';
+  private urlUpdateAccount: string = environment.managerHost + 'update_hospital_account';
+
   constructor(
     private httpClient: HttpClient
   ) { }
@@ -17,7 +18,7 @@ export class AccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token,
-      'tablechoose': 'insmart'
+      'tablechoose': 'hospital'
     });
 
     return this.httpClient.post<Response>(this.urlCreateAccount, body, { headers: headers });
@@ -27,7 +28,7 @@ export class AccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token,
-      'tablechoose': 'insmart'
+      'tablechoose': 'hospital'
     });
 
     return this.httpClient.post<Response>(this.urlRemoveAccount+"/"+idAccount, { password: password }, { headers: headers });
@@ -37,7 +38,7 @@ export class AccountService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+token,
-      'tablechoose': 'insmart'
+      'tablechoose': 'hospital'
     });
 
     let body = {

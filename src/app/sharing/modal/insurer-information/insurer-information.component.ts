@@ -16,10 +16,13 @@ import { DateFormatService } from '../../../service/date-format.service';
 export class InsurerInformationComponent implements OnInit {
   insurerForm: FormGroup;
   password: string;
+  isChangedValue = false;
+  changeProperty = {};
+  ngForm: any;
 
   checkObject:number = Object.keys(this.insurer).length;
   
-  types=[
+  types = [
     { ID: 1, name: "Nhân Thọ" },
     { ID: 2, name: "Phi Nhân Thọ" }
   ];
@@ -47,26 +50,34 @@ export class InsurerInformationComponent implements OnInit {
       created_at: [this.insurer.created_at ? this.insurer.created_at : this.dateFormatService.fullTime(new Date())],
       updated_at: [this.insurer.updated_at ? this.insurer.updated_at : this.dateFormatService.fullTime(new Date())],
     });
+
+  this.onChanges();
+  this.dialogRef.disableClose = true;
+  }
+
+  onChanges(): void {
+    this.insurerForm.valueChanges.subscribe(val => {
+      Object.keys(this.insurerForm.value).forEach(key=>{
+        if(this.insurerForm.value[key] != this.insurer[key]){
+          this.changeProperty[key] = this.insurerForm.value[key];
+        }
+      });
+      if (this.changeProperty !== {}) {
+        this.isChangedValue = true;
+      }
+    });
   }
 
   createInsurer(){
     if(this.insurerForm.valid){
-      let changeProperty = {};
-      Object.keys(this.insurerForm.value).forEach(key=>{
-        if(this.insurerForm.value[key] != this.insurer[key]){
-          changeProperty[key] = this.insurerForm.value[key];
-        }
-      });
-      console.log(changeProperty);
-      this.dialogRef.close(
-        this.checkObject === 0 ? { information: changeProperty } :
-        {
-          password: this.password,
-          information: changeProperty
-        }
-        
-      );
-    }
+        this.dialogRef.disableClose = false;
+        this.dialogRef.close(
+          this.checkObject === 0 ? { information: this.changeProperty } :
+          {
+            password: this.password,
+            information: this.changeProperty
+          }
+        );
+      }
   }
-
 }

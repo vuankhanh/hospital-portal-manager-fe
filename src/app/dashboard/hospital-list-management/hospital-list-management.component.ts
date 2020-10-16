@@ -7,6 +7,7 @@ import { HospitalInformationComponent } from '../../sharing/modal/hospital-infor
 import { HospitalsService, Hospitals } from '../../service/api/get/hospitals.service';
 import { LocalStorageService } from '../../service/local-storage.service';
 import { CreateHospitalService, Hospital } from '../../service/api/post/create-hospital.service';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-hospital-list-management',
@@ -27,7 +28,8 @@ export class HospitalListManagementComponent implements OnInit {
     private dialog: MatDialog,
     private hospitalsService: HospitalsService,
     private localStorageSerivce: LocalStorageService,
-    private createHospitalService: CreateHospitalService
+    private createHospitalService: CreateHospitalService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -81,11 +83,13 @@ export class HospitalListManagementComponent implements OnInit {
         let userData = this.localStorageSerivce.getLocalStorage("token");
         this.createHospitalService.createHospital(userData.token, result.information).subscribe(res=>{
           if(res.code === 200){
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, 'Thông báo');
             this.hospitals.push(res.data[0]);
             this.table.renderRows();
           }else if(res.code === 500){
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, 'Thông báo');
           }
         },error=>{
           console.log(error);

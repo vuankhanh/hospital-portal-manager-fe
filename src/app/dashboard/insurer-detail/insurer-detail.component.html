@@ -3,36 +3,46 @@
         <div class="insurer-information-container">
             <div>
                 <div class="vertical-container">
-                    <div class="horizontal-container">
-                        <span>ID:</span>
-                        <span>{{insurer.ID}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">ID:</span>
+                        <span class="secondary-key">{{insurer.ID}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Tên viết tắt:</span>
-                        <span>{{insurer.short_name}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Tên viết tắt:</span>
+                        <span class="secondary-key">{{insurer.short_name}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Tên Nhà Bảo Hiểm:</span>
-                        <span>{{insurer.name}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Tên Nhà Bảo Hiểm:</span>
+                        <span class="secondary-key">{{insurer.name}}</span>
                     </div>
                     <div class="height-container"></div>
-                    <div class="horizontal-container">
-                        <span>Logo:</span>
-                        <span>{{insurer.logo}}</span>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Kiểm tra quyền lợi trong:</span>
+                        <span class="secondary-key">{{insurer.check_benefit_countdown}}</span>
                     </div>
-                    <div class="horizontal-container">
-                        <span>Kiểm tra quyền lợi trong:</span>
-                        <span>{{insurer.check_benefit_countdown}}</span>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Đưa ra phương án BL trong:</span>
+                        <span class="secondary-key">{{insurer.gl_countdown}}</span>
                     </div>
-                    <div class="horizontal-container">
-                        <span>Đưa ra phương án BL trong:</span>
-                        <span>{{insurer.gl_countdown}}</span>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Loại Bảo Hiểm:</span>
+                        <span class="secondary-key">{{traTuService.typeInsurers[insurer.type-1].name}}</span>
                     </div>
-                    <div class="horizontal-container">
-                        <span>Loại Bảo Hiểm:</span>
-                        <span>{{insurer.type}}</span>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container card-container">
+                        <span class="primary-key">Logo:</span>
+                        <span class="secondary-key"><img src="{{insurer.logo}}" width="80px" alt="logo"></span>
+                    </div>
+                    <div class="height-container"></div>
+                    <div class="horizontal-container centered">
+                        <button (click)="updateInsurer(insurer)">
+                            <mat-icon>update</mat-icon>
+                            <span> Cập nhật thông tin Nhà Bảo Hiểm</span>
+                        </button>
                     </div>
                 </div>
 
@@ -40,10 +50,7 @@
 
                 <div class="horizontal-container">
                     <div class="width-container"></div>
-                    <button (click)="updateInsurer(insurer)">
-                        <mat-icon>update</mat-icon>
-                        <span> Cập nhật thông tin Nhà Bảo Hiểm</span>
-                    </button>
+                    
                 </div>
 
             </div>

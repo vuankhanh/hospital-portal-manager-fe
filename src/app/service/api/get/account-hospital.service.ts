@@ -25,7 +25,7 @@ export interface Response{
   data: HospitalAccounts;
 }
 export interface HospitalAccounts extends Array<Account>{};
-interface Account {
+export interface Account {
   ID: number;
   name: string;
   email: string;

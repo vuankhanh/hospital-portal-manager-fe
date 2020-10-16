@@ -58,6 +58,9 @@ export class HospitalInformationComponent implements OnInit {
   }
 
   createHospital(){
+    console.log("IN CREATE HOSPITAL");
+    console.log(this.hospitalForm.valid);
+    
     if(this.hospitalForm.valid){
       let changeProperty = {};
       Object.keys(this.hospitalForm.value).forEach(key=>{

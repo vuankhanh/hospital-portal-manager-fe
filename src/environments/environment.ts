@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   managerHost: 'http://localhost:3333/',
+  // managerHost: 'http://192.168.9.247:3333/',
   apiHost: 'https://inshos.insmart.com.vn/hosapi/'
 };
 

@@ -1,6 +1,6 @@
-<form [formGroup]="insurerForm" (ngSubmit)="createInsurer()">
+<form [formGroup]="insurerForm" #ngForm="ngForm" (ngSubmit)="createInsurer()">
   <div mat-dialog-content>
-    <p>Tạo thông tin Nhà Bảo Hiểm mới.</p>
+    <p>{{ checkObject === 0 ? 'Tạo thông tin Nhà Bảo Hiểm mới.' : ('Cập nhật thông tin Nhà Bảo Hiểm '+ this.insurer.short_name) }}</p>
     <div class="create-insurer-container">
       <mat-form-field>
         <mat-label>Tên Viết Tắt</mat-label>
@@ -49,6 +49,6 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button type="button" mat-dialog-close>Huỷ</button>
-    <button mat-button type="submit" cdkFocusInitial>{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
+    <button mat-button type="submit" cdkFocusInitial [disabled]="!isChangedValue">{{ checkObject === 0 ? 'Tạo mới' : 'Cập nhật' }}</button>
   </div>
 </form>

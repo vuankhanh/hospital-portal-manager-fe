@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatTable, PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import { CreateInsurerService } from 'src/app/service/api/post/create-insurer.service';
+import { ToastService } from 'src/app/service/toast.service';
 import { InsurerInformationComponent } from 'src/app/sharing/modal/insurer-information/insurer-information.component';
 
 import { InsurersService, Insurers } from '../../service/api/get/insurers.service';
@@ -28,7 +29,8 @@ export class InsuranceListManagementComponent implements OnInit {
     public traTuService: TraTuService,
     private dialog: MatDialog,
     private localStorageService: LocalStorageService,
-    private createInsurerService: CreateInsurerService
+    private createInsurerService: CreateInsurerService,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit() {
@@ -58,12 +60,14 @@ export class InsuranceListManagementComponent implements OnInit {
         let userData = this.localStorageService.getLocalStorage("token");
         this.createInsurerService.createInsurer(userData.token, result.information).subscribe(res=>{          
           if(res.code === 200){
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, "Thông báo");
             this.insurers.push(res.data[0]);
             this.length++;
             this.table.renderRows();
           }else if(res.code === 500){
-            alert(res.message);
+            // alert(res.message);
+            this.toastService.showShortToast(res.message, 'Thông báo');
           }
         },error=>{
           console.log(error);

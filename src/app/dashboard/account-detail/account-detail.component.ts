@@ -8,6 +8,7 @@ import { RemoveAccountService } from 'src/app/service/api/post/remove-account.se
 import { LocalStorageService } from 'src/app/service/local-storage.service';
 import { ConfirmActionComponent } from 'src/app/sharing/modal/confirm-action/confirm-action.component';
 import { AccountInformationComponent } from 'src/app/sharing/modal/account-information/account-information.component';
+import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
   selector: 'app-account-detail',
@@ -26,12 +27,13 @@ export class AccountDetailComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private accountService: AccountService,
-    private removeAccountService: RemoveAccountService
+    private removeAccountService: RemoveAccountService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
     this.subsciption.add(
-      this.activedRoute.params.subscribe(params=>{
+      this.activedRoute.params.subscribe(params => {
         this.id = params['id'];
       })
     );
@@ -40,60 +42,65 @@ export class AccountDetailComponent implements OnInit {
     this.initData(userData.token, this.id);
   }
 
-  initData(token, id){
-    this.accountDetailService.getInsmartUser(token, id).subscribe(res=>{
+  initData(token, id) {
+    this.accountDetailService.getInsmartUser(token, id).subscribe(res => {
       this.accountDetail = res.data;
     });
   }
 
-  updateAccount(row){    
-    const dialog = this.dialog.open(AccountInformationComponent,{
+  updateAccount(row) {
+    const dialog = this.dialog.open(AccountInformationComponent, {
       data: row
     });
 
-    dialog.afterClosed().subscribe(result=>{
-      this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password=>{
-        if(password){
-          result.password = password;
-        }
-      if(result && result.password){
-        delete result.information.created_at;
-        let userToken = this.localStorageService.getLocalStorage("token");
-        this.accountService.updateAccount(userToken.token, row.ID, result.password, result.information).subscribe(res=>{
-          // Re-rendering changes in the detail page
-          for (const [key, value] of Object.entries(result.information)) {
-            if(key == 'fullname') {
-              this.accountDetail[0].fullname = value as string;
-            } else if (key == 'name') {
-              this.accountDetail[0].name = value as string;
-            } else if (key == 'email') {
-              this.accountDetail[0].email = value as string;
-            } else if (key == 'phone') {
-              this.accountDetail[0].phone = value as string;
-            } else if (key == 'title') {
-              this.accountDetail[0].title = value as string;
-            } else if (key == 'status') {
-              this.accountDetail[0].status = value as number;
-            }
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password => {
+          if (password) {
+            result.password = password;
           }
-          // console.log(res);
-        },error=>console.log(error));
+          if (result && result.password) {
+            delete result.information.created_at;
+            let userToken = this.localStorageService.getLocalStorage("token");
+            this.accountService.updateAccount(userToken.token, row.ID, result.password, result.information).subscribe(res => {
+              // Re-rendering changes in the detail page
+              this.toastService.showShortToast("Cập nhật dữ liệu thành công!", "Thông báo");
+              for (const [key, value] of Object.entries(result.information)) {
+                if (key == 'fullname') {
+                  this.accountDetail[0].fullname = value as string;
+                } else if (key == 'name') {
+                  this.accountDetail[0].name = value as string;
+                } else if (key == 'email') {
+                  this.accountDetail[0].email = value as string;
+                } else if (key == 'phone') {
+                  this.accountDetail[0].phone = value as string;
+                } else if (key == 'title') {
+                  this.accountDetail[0].title = value as string;
+                } else if (key == 'status') {
+                  this.accountDetail[0].status = value as number;
+                }
+              }
+              // console.log(res);
+            }, error => console.log(error));
+          }
+        });
       }
     });
-  });
   }
 
-  deleteAccount(account){
+  deleteAccount(account) {
     let userToken = this.localStorageService.getLocalStorage("token");
-    this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password=>{
-      if(password){
-        this.removeAccountService.removeAccount(userToken.token, account.ID, password).subscribe(res=>{
-          if(res.code === 200){
-            this.router.navigate(['dashboard/staff-account-management']).then(_=>{
-              alert(res.message);
+    this.dialog.open(ConfirmActionComponent).afterClosed().subscribe(password => {
+      if (password) {
+        this.removeAccountService.removeAccount(userToken.token, account.ID, password).subscribe(res => {
+          if (res.code === 200) {
+            this.router.navigate(['dashboard/staff-account-management']).then(_ => {
+              this.toastService.showShortToast(res.message, 'Thông báo');
+              // alert(res.message);
             })
-          }else{
-            alert(res.message);
+          } else {
+            this.toastService.showShortToast(res.message, 'Thông báo');
+            // alert(res.message);
           }
         });
       }

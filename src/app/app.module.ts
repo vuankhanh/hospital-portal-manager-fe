@@ -94,7 +94,8 @@ const ISO_FORMAT = {
     UpdateHospitalAccountComponent,
     HospitalInformationComponent,
     InsurerInformationComponent,
-    AccountInformationComponent
+    AccountInformationComponent,
+    UpdateHospitalAccountComponent
   ],
   declarations: [
     AppComponent,
@@ -125,8 +126,8 @@ const ISO_FORMAT = {
     InsurerInformationComponent,
     InsurerDetailComponent,
     AccountInformationComponent,
-    AccountDetailComponent
-
+    AccountDetailComponent,
+    UpdateHospitalAccountComponent
   ],
   imports: [
     BrowserModule,
