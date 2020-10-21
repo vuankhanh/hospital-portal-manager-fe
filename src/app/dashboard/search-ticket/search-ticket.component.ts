@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { LocalStorageService } from '../../service/local-storage.service';
-import { TicketsService, Tickets } from '../../service/api/get/tickets.service';
+import { TicketsService, Tickets, TicketList } from '../../service/api/get/tickets.service';
 import { ToastService } from 'src/app/service/toast.service';
 
 @Component({
@@ -16,10 +16,10 @@ export class SearchTicketComponent implements OnInit {
 
   ticketGroup: FormGroup;
 
-  tickets: Tickets;
+  tickets: TicketList;
   inProccessing: boolean = false;
 
-  displayedColumns: string[] = ['ID', 'fullname', 'status', 'insurerInfo', 'illCause',  'hospitalInfo'];
+  displayedColumns: string[] = ['ID', 'fullname', 'insmart_status', 'insurer_short_name', 'ill_cause',  'hospital_name', 'created_at', 'updated_at'];
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -36,22 +36,21 @@ export class SearchTicketComponent implements OnInit {
       idTicket :[''],
       fullname :[''],
       patient_phone_numb: [''],
-      case_number: ['']
+      cmnd: [''],
+      dob: [''],
+      policy_no: [''],
+      note: ['']
     });
   }
 
   search(){
     this.inProccessing=!this.inProccessing;
     if(this.ticketGroup.valid){
+      console.log(this.ticketGroup.value);
       
       let userData = this.localStorageService.getLocalStorage("token");
       this.ticketsService.getTickets(userData.token, this.ticketGroup.value).subscribe(result=>{
         if(result.code === 200){
-          for(let ticket of result.data){
-            for(let comment of ticket.detailTicket){
-              comment.content = JSON.parse(comment.content);
-            }
-          }
           this.inProccessing=!this.inProccessing;
           this.tickets = result.data;
           console.log(this.tickets);

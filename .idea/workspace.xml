@@ -19,6 +19,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../theories/reactnative/react-native-onesignal-master/examples/RNOneSignal" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -28,7 +29,14 @@
       <option name="presentableId" value="Default" />
       <updated>1602723890677</updated>
       <workItem from="1602723893346" duration="3000" />
+      <workItem from="1603081998590" duration="32000" />
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="463" y="124" key="FileChooserDialogImpl" timestamp="1603082028875">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="463" y="124" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1603082028875" />
   </component>
 </project>

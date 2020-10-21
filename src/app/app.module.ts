@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouteReuseStrategy } from '@angular/router/';
-import { CacheRouteReuseStrategy } from './service/cache-route-reuse.strategy';
+// import { CacheRouteReuseStrategy } from './service/cache-route-reuse.strategy';
+import { CacheRouteReuseSearchStrategy } from './service/cache-route-reuse-search.strategy';
 import { HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpModule } from '@angular/http';
@@ -175,7 +176,7 @@ const ISO_FORMAT = {
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: ISO_FORMAT },
     { provide: RouteReuseStrategy,
-      useClass: CacheRouteReuseStrategy
+      useClass: CacheRouteReuseSearchStrategy
     },
     TitleService,
     { provide : LocationStrategy , useClass: HashLocationStrategy },

@@ -29,6 +29,18 @@ export class TicketsService {
       if(parameters.patient_phone_numb){
         params = params.append('patient_phone_numb', parameters.patient_phone_numb);
       }
+      if(parameters.cmnd){
+        params = params.append('cmnd', parameters.cmnd);
+      }
+      if(parameters.dob){
+        params = params.append('dob', parameters.dob);
+      }
+      if(parameters.policy_no){
+        params = params.append('policy_no', parameters.policy_no);
+      }
+      if(parameters.note){
+        params = params.append('note', parameters.note);
+      }
 
       console.log(parameters);
     }
@@ -38,7 +50,7 @@ export class TicketsService {
 export interface Response{
   code: number;
   message: string;
-  data: Tickets;
+  data: TicketList;
 }
 export interface Tickets extends Array<Ticket>{};
 export interface Ticket {
@@ -77,6 +89,19 @@ export interface Ticket {
   insmartRejectAt: string;
   hospitalUpdatedCostAt: string;
 }
+
+export interface TicketList extends Array<TicketView>{};
+export interface TicketView {
+  ID: number;
+  fullname: string;
+  hospital_name: string;
+  insmart_status: string;
+  insurer_short_name: string;
+  ill_cause: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Comments extends Array<Comment>{};
 interface Comment{
   ID: number;

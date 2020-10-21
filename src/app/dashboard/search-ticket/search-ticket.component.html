@@ -1,22 +1,40 @@
 <div class="vertical-container container">
-    <form [formGroup]="ticketGroup" (ngSubmit)="search()" class="search-bar horizontal-container">
-        <mat-form-field>
-            <input matInput type="text" placeholder="Mã định danh" formControlName="idTicket">
-        </mat-form-field>
-        <div class="width-container"></div>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Tên khách hàng" formControlName="fullname">
-        </mat-form-field>
-        <div class="width-container"></div>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Số điện thoại" formControlName="patient_phone_numb">
-        </mat-form-field>
-        <div class="width-container"></div>
-        <button type="submit" mat-raised-button [disabled]="inProccessing">
-            <span>Tìm kiếm</span>
-        </button>
-        <mat-spinner diameter="24" *ngIf="inProccessing"></mat-spinner>
-    </form>
+    <div class="horizontal-container">
+        <form [formGroup]="ticketGroup" (ngSubmit)="search()" class="search-bar horizontal-container">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Mã định danh" formControlName="idTicket">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Tên khách hàng" formControlName="fullname">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Số điện thoại" formControlName="patient_phone_numb">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="CMND" formControlName="cmnd">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Ngày sinh" formControlName="dob">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Số hợp đồng" formControlName="policy_no">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <mat-form-field>
+                <input matInput type="text" placeholder="Số trường hợp" formControlName="note">
+            </mat-form-field>
+            <div class="width-container"></div>
+            <button type="submit" mat-raised-button [disabled]="inProccessing">
+                <span>Tìm kiếm</span>
+            </button>
+            <mat-spinner diameter="24" *ngIf="inProccessing"></mat-spinner>
+        </form>
+    </div>
     <div class="height-container"></div>
     <div class="vertical-container result-container">
         <ng-container *ngIf="tickets && tickets.length>0; else empty">
@@ -34,34 +52,39 @@
                 </ng-container>
 
                 <!-- Status Column -->
-                <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef>Trạng thái</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{
-                            element.insmart_status === 'VERIFIED' ?'Có Quyền Lợi' :
-                            element.insmart_status === 'DENIED' ? 'Không có quyền lợi' :
-                            element.insmart_status === 'CONFIRM' ? 'Đồng ý Bảo Lãnh' :
-                            element.insmart_status === 'REJECT' ? 'Từ chối Bảo Lãnh' : ''
-                        }}
-                    </mat-cell>
+                <ng-container matColumnDef="insmart_status">
+                    <mat-header-cell *matHeaderCellDef>Trạng Thái</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.insmart_status}} </mat-cell>
                 </ng-container>
                 
                 <!-- Insurer Column -->
-                <ng-container matColumnDef="insurerInfo">
+                <ng-container matColumnDef="insurer_short_name">
                     <mat-header-cell *matHeaderCellDef>Tên nhà Bảo hiểm</mat-header-cell>
-                    <mat-cell *matCellDef="let element">{{element.insurerInfo.short_name}}</mat-cell>
+                    <mat-cell *matCellDef="let element">{{element.insurer_short_name}}</mat-cell>
                 </ng-container>
                 
                 <!-- Ill Cause Column -->
-                <ng-container matColumnDef="illCause">
+                <ng-container matColumnDef="ill_cause">
                     <mat-header-cell *matHeaderCellDef>Loại hình điều trị</mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.ill_cause}} </mat-cell>
                 </ng-container>
 
                 <!-- Hospital Name Column -->
-                <ng-container matColumnDef="hospitalInfo">
+                <ng-container matColumnDef="hospital_name">
                     <mat-header-cell *matHeaderCellDef>Tên CSYT</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.hospitalInfo.hospital_name}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.hospital_name}} </mat-cell>
+                </ng-container>
+
+                <!-- Created Column -->
+                <ng-container matColumnDef="created_at">
+                    <mat-header-cell *matHeaderCellDef>Ngày Tạo</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.created_at | date:"dd/MM/yyyy HH:mm:ss"}} </mat-cell>
+                </ng-container>
+
+                <!-- Updated Column -->
+                <ng-container matColumnDef="updated_at">
+                    <mat-header-cell *matHeaderCellDef>Ngày Cập Nhật</mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.updated_at | date:"dd/MM/yyyy HH:mm:ss"}} </mat-cell>
                 </ng-container>
                 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

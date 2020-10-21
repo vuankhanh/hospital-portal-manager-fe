@@ -26,3 +26,10 @@
         }
     }
 }
+
+.horizontal-container {
+    width: calc(100% - 30px);
+    max-width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+}
