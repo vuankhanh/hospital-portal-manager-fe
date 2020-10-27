@@ -33,6 +33,10 @@
                             <span class="primary-key">CMND/Passport:</span>
                             <span class="secondary-key">{{ticket.cmnd}}</span>
                         </div>
+                        <div class="horizontal-container" *ngIf="ticket.patient_phone_numb">
+                            <span class="primary-key">Số điện thoại:</span>
+                            <span class="secondary-key">{{ticket.patient_phone_numb}}</span>
+                        </div>
                         <div class="horizontal-container" *ngIf="ticket.policy_no">
                             <span class="primary-key">Số hợp đồng:</span>
                             <span class="secondary-key">{{ticket.policy_no}}</span>
@@ -46,10 +50,6 @@
                     <div class="width-container"></div>
     
                     <div class="vertical-container information-container">
-                        <div class="horizontal-container">
-                            <span class="primary-key">ID:</span>
-                            <span class="secondary-key">{{ticket.ID}}</span>
-                        </div>
                         <div class="horizontal-container">
                             <span class="primary-key">Tên khách hàng:</span>
                             <span class="secondary-key">{{ticket.fullname}}</span>
@@ -69,6 +69,10 @@
                         <div class="horizontal-container">
                             <span class="primary-key">Mã CSYT:</span>
                             <span class="secondary-key">{{ticket.hospitalInfo.hospital_code}}</span>
+                        </div>
+                        <div class="horizontal-container">
+                            <span class="primary-key">Thời gian tạo Ticket:</span>
+                            <span class="secondary-key">{{ticket.created_at | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
                         </div>
                     </div>
                 </div>
@@ -234,8 +238,8 @@
                         </ng-container>
                     </div>
                 </div>
-                <div class="height-container"></div>
-                <button class="btnDownload" type="button" mat-stroked-button (click)="download(ticket)">Tải xuống</button>
+                <!-- <div class="height-container"></div>
+                <button class="btnDownload" type="button" mat-stroked-button (click)="download(ticket)">Tải xuống</button> -->
             </ng-container>
         </ng-container>
     </div>
